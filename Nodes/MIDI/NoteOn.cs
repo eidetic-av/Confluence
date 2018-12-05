@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 using MidiJack;
+using Eidetic.Confluence;
 
 [CreateNodeMenu("MIDI/NoteOn"),
-    NodeTint(Nodes.Colors.ExternalInputTint)]
+    NodeTint(Colors.ExternalInputTint)]
 public class NoteOn : RuntimeNode
 {
     public MidiChannel Channel;

@@ -4,6 +4,7 @@ using UnityEngine;
 using XNode;
 using Utility;
 
+[CreateNodeMenu("Math/Map")]
 public class Map : Node
 {
     [Input(ShowBackingValue.Never, ConnectionType.Override)] public float Input;

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
+using Eidetic.Confluence;
 
-[CreateNodeMenu("Material/TextureController"),
-    NodeTint(Nodes.Colors.ControllerTint)]
+[CreateNodeMenu("Texture/TextureController"),
+    NodeTint(Colors.ControllerTint)]
 public class TextureController : RuntimeNode
 {
     public Material Material;

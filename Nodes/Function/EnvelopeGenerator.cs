@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
+using Eidetic.Confluence;
 
-[CreateNodeMenu("Functions/EnvelopeGenerator"),
-    NodeTint(Nodes.Colors.FunctionTint)]
+[CreateNodeMenu("Function/EnvelopeGenerator"),
+    NodeTint(Colors.FunctionTint)]
 public class EnvelopeGenerator : RuntimeNode
 {
 
