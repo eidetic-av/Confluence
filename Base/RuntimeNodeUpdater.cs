@@ -1,4 +1,5 @@
 using UnityEngine;
+using MidiJack;
 
 public class RuntimeNodeUpdater : MonoBehaviour{
     public static RuntimeNodeUpdater Instance;
@@ -9,6 +10,7 @@ public class RuntimeNodeUpdater : MonoBehaviour{
     }
     public void Update() 
     {
+        MidiDriver.Instance.Update();
         RuntimeNode.InstantiatedNodes.ForEach(n => n.ValueUpdate());
         RuntimeNode.InstantiatedNodes.ForEach(n => n.Update());
     }
