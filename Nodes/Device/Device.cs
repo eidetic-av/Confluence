@@ -12,29 +12,36 @@ namespace Eidetic.Confluence
 
         public List<MidiDriver.KnobDelegate> ControlChangeDelegates = new List<MidiDriver.KnobDelegate>();
 
+        public FieldInfo[] Fields;
+        public List<FieldInfo> ControlChangeOutputs;
+
+        public virtual DevicePanel GetDevicePanelLayout() { return null; }
+
         protected override void Init()
         {
             base.Init();
+            InitialiseFields();
             InitialiseMidiConnections();
         }
 
-        /// <summary>
-        /// Initialise Input and Output NodePorts that update based on midi data.
-        /// </summary>
-        void InitialiseMidiConnections()
+        void InitialiseFields()
         {
             // Get all the fields on the class
-            var fields = GetType().GetFields();
+            Fields = GetType().GetFields();
             // Get the Control Change output ports
-            var ccOutputPorts = fields.Where(
+            ControlChangeOutputs = Fields.Where(
                 f => f.IsDefined(typeof(ControlChangeOutputAttribute), false)
             ).ToList();
+        }
+
+        void InitialiseMidiConnections()
+        {
             // For each port created, add a delegate that changes the field when the 
             // corresponding MIDI event occurs
-            ccOutputPorts.ForEach(portField =>
+            ControlChangeOutputs.ForEach(portField =>
             {
                 var attributes = CustomAttributeData.GetCustomAttributes(portField);
-                var ccNumber = (int) attributes.First().ConstructorArguments.First().Value;
+                var ccNumber = (int)attributes.First().ConstructorArguments.First().Value;
                 MidiMaster.knobDelegate += CreateControlChangeDelegate(ccNumber, portField);
             });
         }
@@ -56,10 +63,35 @@ namespace Eidetic.Confluence
             return knobDelegate;
         }
 
-        void OnDestroy() 
+        void OnDestroy()
         {
             // Remove the delegates from the MidiMaster
             ControlChangeDelegates.ForEach(del => MidiMaster.knobDelegate -= del);
+        }
+
+        public class DevicePanel
+        {
+            public List<PanelGroup> Groups;
+            public PanelGroup GetPanelGroup(string groupName)
+            {
+                return Groups.FirstOrDefault(g => g.Name.Equals(groupName));
+            }
+            public class PanelGroup
+            {
+                public string Name;
+                public int Width;
+                public int Height;
+                public int VerticalPosition;
+                public int HorizontalPosition;
+                public PanelGroup(string name, int width, int height, int horizontalPosition, int verticalPosition)
+                {
+                    Name = name;
+                    Width = width;
+                    Height = height;
+                    HorizontalPosition = horizontalPosition;
+                    VerticalPosition = verticalPosition;
+                }
+            }
         }
     }
 }

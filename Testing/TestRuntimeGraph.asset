@@ -30,7 +30,7 @@ MonoBehaviour:
   m_Name: Tanzmaus
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -504, y: -130}
+  position: {x: -264, y: -8}
   ports:
     keys:
     - BassDrumAttack
@@ -51,6 +51,7 @@ MonoBehaviour:
     - Sample1Decay
     - Sample2Tune
     - Sample2Decay
+    - BassDrumNoiseDecay
     values:
     - _fieldName: BassDrumAttack
       _node: {fileID: 114266165957234966}
@@ -196,20 +197,29 @@ MonoBehaviour:
       _direction: 1
       _connectionType: 0
       _dynamic: 0
+    - _fieldName: BassDrumNoiseDecay
+      _node: {fileID: 114266165957234966}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
   MidiChannel: 9
   BassDrumAttack: 0
   BassDrumDecay: 0
   BassDrumPitch: 0
-  BassDrumTune: 0
+  BassDrumNoiseDecay: 0
   BassDrumNoiseLevel: 0
+  BassDrumTune: 0
   SnareNoiseDecay: 0
   SnareNoiseLevel: 0
   SnareTune: 0
   ClapFilter: 0
   ClapDecay: 0
   TomAttack: 0
-  TomDecay: 0
   TomPitch: 0
+  TomDecay: 0
   TomTune: 0
   Sample1Tune: 0
   Sample1Decay: 0
@@ -228,7 +238,7 @@ MonoBehaviour:
   m_Name: Auto Rotate
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -72, y: -136}
+  position: {x: -280, y: -184}
   ports:
     keys:
     - Speed
@@ -275,7 +285,7 @@ MonoBehaviour:
   m_Name: Envelope Generator
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -280, y: -136}
+  position: {x: -488, y: -184}
   ports:
     keys:
     - Trigger
