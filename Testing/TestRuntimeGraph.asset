@@ -15,9 +15,10 @@ MonoBehaviour:
   nodes:
   - {fileID: 114905328114161074}
   - {fileID: 114469976738703838}
-  - {fileID: 114266165957234966}
+  - {fileID: 114631384226401792}
+  - {fileID: 114276403009045456}
   - {fileID: 0}
---- !u!114 &114266165957234966
+--- !u!114 &114276403009045456
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -26,205 +27,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db5776bc7c2e0484ab866d6c52aa87ed, type: 3}
-  m_Name: Tanzmaus
+  m_Script: {fileID: 11500000, guid: a0cae302eea966a41b5ac6a68a6399b7, type: 3}
+  m_Name: Note On
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -264, y: -8}
+  position: {x: -552, y: -232}
   ports:
     keys:
-    - BassDrumAttack
-    - BassDrumDecay
-    - BassDrumPitch
-    - BassDrumTune
-    - BassDrumNoiseLevel
-    - SnareNoiseDecay
-    - SnareNoiseLevel
-    - SnareTune
-    - ClapFilter
-    - ClapDecay
-    - TomAttack
-    - TomDecay
-    - TomPitch
-    - TomTune
-    - Sample1Tune
-    - Sample1Decay
-    - Sample2Tune
-    - Sample2Decay
-    - BassDrumNoiseDecay
+    - Trigger
     values:
-    - _fieldName: BassDrumAttack
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+    - _fieldName: Trigger
+      _node: {fileID: 114276403009045456}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: Trigger
+        node: {fileID: 114905328114161074}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _dynamic: 0
-    - _fieldName: BassDrumDecay
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: BassDrumPitch
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: BassDrumTune
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: BassDrumNoiseLevel
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: SnareNoiseDecay
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: SnareNoiseLevel
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: SnareTune
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: ClapFilter
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: ClapDecay
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: TomAttack
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: TomDecay
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: TomPitch
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: TomTune
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: Sample1Tune
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: Sample1Decay
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: Sample2Tune
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: Sample2Decay
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-    - _fieldName: BassDrumNoiseDecay
-      _node: {fileID: 114266165957234966}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _dynamic: 0
-  MidiChannel: 9
-  BassDrumAttack: 0
-  BassDrumDecay: 0
-  BassDrumPitch: 0
-  BassDrumNoiseDecay: 0
-  BassDrumNoiseLevel: 0
-  BassDrumTune: 0
-  SnareNoiseDecay: 0
-  SnareNoiseLevel: 0
-  SnareTune: 0
-  ClapFilter: 0
-  ClapDecay: 0
-  TomAttack: 0
-  TomPitch: 0
-  TomDecay: 0
-  TomTune: 0
-  Sample1Tune: 0
-  Sample1Decay: 0
-  Sample2Tune: 0
-  Sample2Decay: 0
+  Channel: 9
+  NoteNumber: 35
+  Trigger: 0
 --- !u!114 &114469976738703838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +63,7 @@ MonoBehaviour:
   m_Name: Auto Rotate
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -280, y: -184}
+  position: {x: -120, y: -248}
   ports:
     keys:
     - Speed
@@ -272,6 +97,47 @@ MonoBehaviour:
     values: []
   Target: {fileID: 0}
   Speed: {x: 20, y: 30, z: 50}
+--- !u!114 &114631384226401792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb03ca4733077a1499565b41f393e7ba, type: 3}
+  m_Name: Texture Controller
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -72, y: -24}
+  ports:
+    keys:
+    - ScaleX
+    - ScaleY
+    values:
+    - _fieldName: ScaleX
+      _node: {fileID: 114631384226401792}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Value
+        node: {fileID: 114905328114161074}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _dynamic: 0
+    - _fieldName: ScaleY
+      _node: {fileID: 114631384226401792}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 1
+      _dynamic: 0
+  Material: {fileID: 2100000, guid: cfc5e2166fa34a1408dea2cd94f9da5b, type: 2}
+  ScaleX: 0.48947015
+  ScaleY: 0
 --- !u!114 &114905328114161074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,7 +151,7 @@ MonoBehaviour:
   m_Name: Envelope Generator
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -488, y: -184}
+  position: {x: -472, y: -88}
   ports:
     keys:
     - Trigger
@@ -300,7 +166,10 @@ MonoBehaviour:
       _node: {fileID: 114905328114161074}
       _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: Trigger
+        node: {fileID: 114276403009045456}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _dynamic: 0
@@ -348,12 +217,15 @@ MonoBehaviour:
       _node: {fileID: 114905328114161074}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: ScaleX
+        node: {fileID: 114631384226401792}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _dynamic: 0
   Trigger: 0
-  Length: 1
+  Length: 0.25
   Shape:
     serializedVersion: 2
     m_Curve:
@@ -367,8 +239,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.102436066
-      value: 0.90004396
+      time: 0.0036811829
+      value: 0.8889203
       inSlope: 1.5410385
       outSlope: 1.5410385
       tangentMode: 0
@@ -387,7 +259,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  Running: 0
-  StartTime: 0
-  Position: 0
-  Value: 0
+  Running: 1
+  StartTime: 21.865387
+  Position: 0.5836334
+  Value: 0.48947015

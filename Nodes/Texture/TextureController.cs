@@ -18,6 +18,13 @@ public class TextureController : RuntimeNode
     {
         MainTextureScale.x = ScaleX = GetInputValue<float>("ScaleX");
         MainTextureScale.y = ScaleY = GetInputValue<float>("ScaleY");
-        Material.SetTextureScale("_MainTex", MainTextureScale);
+        try
+        {
+            Material.SetTextureScale("_MainTex", MainTextureScale);
+        }
+        catch (UnassignedReferenceException exception)
+        {
+            Debug.LogWarning("This TextureController isn't assigned to any Texture.");
+        }
     }
 }

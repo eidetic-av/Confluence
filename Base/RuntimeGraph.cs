@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
@@ -28,5 +29,11 @@ public class RuntimeGraph : NodeGraph
         //         Instantiate(heirarchyObject);
         //     NodeUpdaterInstantiated = true;
         // }
+    }
+
+    /// <summary> Add a node to the graph by type </summary>
+    public Node AddNode(Type type)
+    {
+        return base.AddNode(type);
     }
 }

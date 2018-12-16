@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using MidiJack;
 
-public class RuntimeNodeUpdater : MonoBehaviour{
+public class RuntimeNodeUpdater : MonoBehaviour, IPointerDownHandler{
     public static RuntimeNodeUpdater Instance;
 
     public void Awake() 
@@ -17,5 +18,10 @@ public class RuntimeNodeUpdater : MonoBehaviour{
     public void LateUpdate() 
     {
         RuntimeNode.InstantiatedNodes.ForEach(n => n.LateUpdate());
+    }
+
+    public void OnPointerDown(PointerEventData data)
+    {
+        Debug.Log("pionter");
     }
 }

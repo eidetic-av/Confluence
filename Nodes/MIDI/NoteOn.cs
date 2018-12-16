@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using XNode;
 using MidiJack;
@@ -17,6 +18,13 @@ public class NoteOn : RuntimeNode
     protected override void Init()
     {
         base.Init();
+        MidiMaster.noteOnDelegate += (MidiChannel channel, int noteNumber, float velocity) =>
+        {
+            if (channel == Channel && noteNumber == NoteNumber)
+            {
+                Trigger = true;
+            }
+        };
     }
 
     void OnDestroy()
@@ -28,11 +36,11 @@ public class NoteOn : RuntimeNode
     }
     public override void ValueUpdate()
     {
+    }
+
+    public override void LateUpdate() 
+    {
         Trigger = false;
-        if (MidiMaster.GetKeyDown(Channel, NoteNumber))
-        {
-            Trigger = true;
-        }
     }
 
     public override object GetValue(NodePort port)
