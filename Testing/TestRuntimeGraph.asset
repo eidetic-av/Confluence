@@ -14,10 +14,184 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 114905328114161074}
-  - {fileID: 114469976738703838}
-  - {fileID: 114631384226401792}
   - {fileID: 114276403009045456}
+  - {fileID: 114975959003921000}
+  - {fileID: 114582878513161882}
+  - {fileID: 114509761851444244}
+  - {fileID: 114213599774444158}
+  - {fileID: 114903376820593732}
+  - {fileID: 114375880898375126}
+  - {fileID: 114699860921329728}
+  - {fileID: 114724090461337720}
+  - {fileID: 114191291136013222}
   - {fileID: 0}
+--- !u!114 &114191291136013222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69aa19cd8876fc946a76cb5d43c02f06, type: 3}
+  m_Name: Map
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 296, y: -424}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 114191291136013222}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Value
+        node: {fileID: 114699860921329728}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 114191291136013222}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+  Input: 0
+  InputMinMax: {x: 0.33, y: 1.64}
+  OutputMinMax: {x: 0.8, y: 4.8}
+  Output: 0
+--- !u!114 &114213599774444158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 700b8a220544fff4fa835f51860dec10, type: 3}
+  m_Name: Envelope Generator
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -328, y: -520}
+  ports:
+    keys:
+    - Trigger
+    - Length
+    - Shape
+    - Running
+    - StartTime
+    - Position
+    - Value
+    values:
+    - _fieldName: Trigger
+      _node: {fileID: 114213599774444158}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Trigger
+        node: {fileID: 114509761851444244}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Length
+      _node: {fileID: 114213599774444158}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Shape
+      _node: {fileID: 114213599774444158}
+      _typeQualifiedName: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Running
+      _node: {fileID: 114213599774444158}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: StartTime
+      _node: {fileID: 114213599774444158}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Position
+      _node: {fileID: 114213599774444158}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: 114213599774444158}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Input
+        node: {fileID: 114903376820593732}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+  Trigger: 0
+  Length: 0.5
+  Shape:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.018096924
+      inSlope: 0.036053825
+      outSlope: 0.036053825
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.006246336
+      value: 0.9843497
+      inSlope: -0.17158145
+      outSlope: -0.17158145
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 1
+      outWeight: 0.14124162
+    - serializedVersion: 3
+      time: 0.7659302
+      value: 0.23712158
+      inSlope: -0.007349652
+      outSlope: 0.09988432
+      tangentMode: 1
+      weightedMode: 1
+      inWeight: 0.7324551
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  Running: 0
+  StartTime: 709.70715
+  Position: 1
+  Value: 0.23712158
 --- !u!114 &114276403009045456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50,7 +224,7 @@ MonoBehaviour:
   Channel: 9
   NoteNumber: 35
   Trigger: 0
---- !u!114 &114469976738703838
+--- !u!114 &114375880898375126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,25 +233,61 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68d3a0ce2750bf947988f46e20de4d46, type: 3}
-  m_Name: Auto Rotate
+  m_Script: {fileID: 11500000, guid: a0cae302eea966a41b5ac6a68a6399b7, type: 3}
+  m_Name: Note On
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -120, y: -248}
+  position: {x: -600, y: -648}
   ports:
     keys:
-    - Speed
+    - Trigger
     values:
-    - _fieldName: Speed
-      _node: {fileID: 114469976738703838}
-      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 0
+    - _fieldName: Trigger
+      _node: {fileID: 114375880898375126}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Trigger
+        node: {fileID: 114699860921329728}
+        reroutePoints: []
+      _direction: 1
       _connectionType: 0
       _dynamic: 0
-  Target: {fileID: 0}
-  Speed: {x: 20, y: 30, z: 50}
+  Channel: 9
+  NoteNumber: 49
+  Trigger: 0
+--- !u!114 &114509761851444244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0cae302eea966a41b5ac6a68a6399b7, type: 3}
+  m_Name: Note On
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -552, y: -344}
+  ports:
+    keys:
+    - Trigger
+    values:
+    - _fieldName: Trigger
+      _node: {fileID: 114509761851444244}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Trigger
+        node: {fileID: 114213599774444158}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+  Channel: 9
+  NoteNumber: 41
+  Trigger: 0
 --- !u!114 &114545657245024990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,7 +307,7 @@ MonoBehaviour:
     values: []
   Target: {fileID: 0}
   Speed: {x: 20, y: 30, z: 50}
---- !u!114 &114631384226401792
+--- !u!114 &114582878513161882
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,18 +316,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb03ca4733077a1499565b41f393e7ba, type: 3}
-  m_Name: Texture Controller
+  m_Script: {fileID: 11500000, guid: 69aa19cd8876fc946a76cb5d43c02f06, type: 3}
+  m_Name: Map
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -72, y: -24}
+  position: {x: -248, y: -104}
   ports:
     keys:
-    - ScaleX
-    - ScaleY
+    - Input
+    - Output
     values:
-    - _fieldName: ScaleX
-      _node: {fileID: 114631384226401792}
+    - _fieldName: Input
+      _node: {fileID: 114582878513161882}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
@@ -127,17 +337,219 @@ MonoBehaviour:
       _direction: 0
       _connectionType: 1
       _dynamic: 0
-    - _fieldName: ScaleY
-      _node: {fileID: 114631384226401792}
+    - _fieldName: Output
+      _node: {fileID: 114582878513161882}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: OffsetX
+        node: {fileID: 0}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+  Input: 0
+  InputMinMax: {x: 0, y: 1}
+  OutputMinMax: {x: 2.85, y: 0.05}
+  Output: 0
+--- !u!114 &114699860921329728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 700b8a220544fff4fa835f51860dec10, type: 3}
+  m_Name: Envelope Generator
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -328, y: -824}
+  ports:
+    keys:
+    - Trigger
+    - Length
+    - Shape
+    - Running
+    - StartTime
+    - Position
+    - Value
+    values:
+    - _fieldName: Trigger
+      _node: {fileID: 114699860921329728}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Trigger
+        node: {fileID: 114375880898375126}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Length
+      _node: {fileID: 114699860921329728}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
       _direction: 0
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Shape
+      _node: {fileID: 114699860921329728}
+      _typeQualifiedName: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Running
+      _node: {fileID: 114699860921329728}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: StartTime
+      _node: {fileID: 114699860921329728}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Position
+      _node: {fileID: 114699860921329728}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: Value
+      _node: {fileID: 114699860921329728}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Input
+        node: {fileID: 114191291136013222}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+  Trigger: 0
+  Length: 0.5
+  Shape:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.018096924
+      inSlope: 0.036053825
+      outSlope: 0.036053825
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.006246336
+      value: 0.9843497
+      inSlope: -0.17158145
+      outSlope: -0.17158145
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 1
+      outWeight: 0.14124162
+    - serializedVersion: 3
+      time: 0.7659302
+      value: 0.23712158
+      inSlope: -0.007349652
+      outSlope: 0.09988432
+      tangentMode: 1
+      weightedMode: 1
+      inWeight: 0.7324551
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  Running: 0
+  StartTime: 608.0013
+  Position: 1
+  Value: 0.23712158
+--- !u!114 &114724090461337720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d3a0ce2750bf947988f46e20de4d46, type: 3}
+  m_Name: Auto Rotate
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 200, y: -600}
+  ports:
+    keys:
+    - Speed
+    values:
+    - _fieldName: Speed
+      _node: {fileID: 114724090461337720}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _dynamic: 0
+  Target: {fileID: 0}
+  Speed: {x: 20, y: 30, z: 50}
+--- !u!114 &114903376820593732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69aa19cd8876fc946a76cb5d43c02f06, type: 3}
+  m_Name: Map
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -56, y: -344}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 114903376820593732}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Value
+        node: {fileID: 114213599774444158}
+        reroutePoints: []
+      _direction: 0
       _connectionType: 1
       _dynamic: 0
-  Material: {fileID: 2100000, guid: cfc5e2166fa34a1408dea2cd94f9da5b, type: 2}
-  ScaleX: 0.48947015
-  ScaleY: 0
+    - _fieldName: Output
+      _node: {fileID: 114903376820593732}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: ScaleY
+        node: {fileID: 0}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+  Input: 0
+  InputMinMax: {x: 0, y: 1}
+  OutputMinMax: {x: 3, y: 1.5}
+  Output: 0
 --- !u!114 &114905328114161074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +563,7 @@ MonoBehaviour:
   m_Name: Envelope Generator
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -472, y: -88}
+  position: {x: -520, y: -88}
   ports:
     keys:
     - Trigger
@@ -218,48 +630,96 @@ MonoBehaviour:
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: ScaleX
-        node: {fileID: 114631384226401792}
+      - fieldName: Input
+        node: {fileID: 114975959003921000}
+        reroutePoints: []
+      - fieldName: Input
+        node: {fileID: 114582878513161882}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _dynamic: 0
   Trigger: 0
-  Length: 0.25
+  Length: 1
   Shape:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
+      value: 0.018096924
+      inSlope: 0.036053825
+      outSlope: 0.036053825
       tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      weightedMode: 2
+      inWeight: 0
+      outWeight: 1
     - serializedVersion: 3
-      time: 0.0036811829
-      value: 0.8889203
-      inSlope: 1.5410385
-      outSlope: 1.5410385
+      time: 0.012704618
+      value: 0.27773046
+      inSlope: 0.9463906
+      outSlope: 0.9463906
       tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      weightedMode: 3
+      inWeight: 1
+      outWeight: 0.16895114
     - serializedVersion: 3
-      time: 0.9945679
-      value: 0.006248474
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      time: 0.2341919
+      value: 0.018432617
+      inSlope: -0.46537545
+      outSlope: 0.09988432
+      tangentMode: 1
+      weightedMode: 1
+      inWeight: 0.6667711
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  Running: 1
-  StartTime: 21.865387
-  Position: 0.5836334
-  Value: 0.48947015
+  Running: 0
+  StartTime: 702.28925
+  Position: 1
+  Value: 0.018432617
+--- !u!114 &114975959003921000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69aa19cd8876fc946a76cb5d43c02f06, type: 3}
+  m_Name: Map
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -248, y: 104}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 114975959003921000}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Value
+        node: {fileID: 114905328114161074}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 114975959003921000}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: ScaleX
+        node: {fileID: 0}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+  Input: 0
+  InputMinMax: {x: 0, y: 1}
+  OutputMinMax: {x: 0, y: 500}
+  Output: 0
