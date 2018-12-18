@@ -245,7 +245,13 @@ namespace XNodeEditor
                             }
                             if (e.clickCount == 2)
                             {
-                                ((RuntimeGraph)graphEditor.target).AddNode(typeof(ObjectSelector));
+                                // Add a new node on double click
+                                // Start by making it the "ObjectSelector" node
+                                var pos = WindowToGridPosition(Event.current.mousePosition);
+                                var offset = new Vector2(-110, -30);
+                                ObjectSelectorEditor.Position = pos + offset;
+                                CreateNode(typeof(ObjectSelector), pos + offset);
+                                e.Use();
                             }
                         }
                     }
@@ -400,7 +406,7 @@ namespace XNodeEditor
             panOffset = Vector2.zero;
         }
 
-        public void CreateNode(Type type, Vector2 position)
+        public XNode.Node CreateNode(Type type, Vector2 position)
         {
             XNode.Node node = graph.AddNode(type);
             node.position = position;
@@ -408,6 +414,7 @@ namespace XNodeEditor
             AssetDatabase.AddObjectToAsset(node, graph);
             if (NodeEditorPreferences.GetSettings().autoSave) AssetDatabase.SaveAssets();
             Repaint();
+            return node;
         }
 
         /// <summary> Remove nodes in the graph in Selection.objects</summary>

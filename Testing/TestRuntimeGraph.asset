@@ -341,10 +341,7 @@ MonoBehaviour:
       _node: {fileID: 114582878513161882}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: OffsetX
-        node: {fileID: 0}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 0
       _dynamic: 0
@@ -539,10 +536,7 @@ MonoBehaviour:
       _node: {fileID: 114903376820593732}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: ScaleY
-        node: {fileID: 0}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 0
       _dynamic: 0
@@ -712,10 +706,7 @@ MonoBehaviour:
       _node: {fileID: 114975959003921000}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: ScaleX
-        node: {fileID: 0}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 0
       _dynamic: 0

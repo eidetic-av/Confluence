@@ -13,12 +13,17 @@ namespace XNodeEditor {
         public static Texture2D nodeHighlight { get { return _nodeHighlight != null ? _nodeHighlight : _nodeHighlight = Resources.Load<Texture2D>("xnode_node_highlight"); } }
         private static Texture2D _nodeHighlight;
 
+        
+        public static Texture2D selectorListHighlight { get { return _selectorListHighlight != null ? _selectorListHighlight : _selectorListHighlight = Resources.Load<Texture2D>("xnode_selector_list_highlight"); } }
+        private static Texture2D _selectorListHighlight;
+
+
         // Styles
         public static Styles styles { get { return _styles != null ? _styles : _styles = new Styles(); } }
         public static Styles _styles = null;
         public static GUIStyle OutputPort { get { return new GUIStyle(EditorStyles.label) { alignment = TextAnchor.UpperRight }; } }
         public class Styles {
-            public GUIStyle inputPort, nodeHeader, nodeBody, tooltip, nodeHighlight;
+            public GUIStyle inputPort, nodeHeader, nodeBody, tooltip, nodeHighlight, selectorList, selectorListHighlighted;
 
             public Styles() {
                 GUIStyle baseStyle = new GUIStyle("Label");
@@ -44,6 +49,14 @@ namespace XNodeEditor {
 
                 tooltip = new GUIStyle("helpBox");
                 tooltip.alignment = TextAnchor.MiddleCenter;
+
+                selectorList = new GUIStyle();
+                selectorList.normal.textColor = Color.white;
+                selectorList.padding = new RectOffset(20, 20, 0, 0);
+
+                selectorListHighlighted = new GUIStyle();
+                selectorListHighlighted.normal.background = NodeEditorResources.selectorListHighlight;
+                selectorListHighlighted.padding = new RectOffset(20, 20, 0, 0);
             }
         }
 

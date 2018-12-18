@@ -12,10 +12,4 @@ public class RuntimeGraphEditor : NodeGraphEditor
         if (Target == null)
             Target = target as RuntimeGraph;
     }
-
-    public Node AddNode(Type type)
-    {
-        Debug.Log("abababa");
-        return null;
-    }
 }

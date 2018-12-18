@@ -4,10 +4,17 @@ using XNode;
 
 public class ObjectSelector : RuntimeNode
 {
+
+    public string Input;
+
     protected override void Init()
     {
         base.Init();
+        Input = "";
     }
 
-    public virtual void Update() { }
+    public override void Update()
+    {
+        base.Update();
+    }
 }
