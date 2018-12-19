@@ -189,16 +189,19 @@ namespace XNodeEditor {
         }
 
         /// <summary> Add a port field to previous layout element. </summary>
-        public static void AddPortField(XNode.NodePort port) {
+        public static void AddPortField(XNode.NodePort port, XNode.NodePort.IO portDirection = XNode.NodePort.IO.Undefined) {
             if (port == null) return;
             Rect rect = new Rect();
 
+            if (portDirection == XNode.NodePort.IO.Undefined)
+                portDirection = port.direction;
+
             // If property is an input, display a regular property field and put a port handle on the left side
-            if (port.direction == XNode.NodePort.IO.Input) {
+            if (portDirection == XNode.NodePort.IO.Input) {
                 rect = GUILayoutUtility.GetLastRect();
                 rect.position = rect.position - new Vector2(16, 0);
                 // If property is an output, display a text label and put a port handle on the right side
-            } else if (port.direction == XNode.NodePort.IO.Output) {
+            } else if (portDirection == XNode.NodePort.IO.Output) {
                 rect = GUILayoutUtility.GetLastRect();
                 rect.position = rect.position + new Vector2(rect.width, 0);
             }

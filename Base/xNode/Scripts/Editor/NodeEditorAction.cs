@@ -66,11 +66,13 @@ namespace XNodeEditor
                     {
                         if (IsDraggingPort)
                         {
-                            if (IsHoveringPort && hoveredPort.IsInput)
+                            if (IsHoveringPort)
                             {
-                                if (!draggedOutput.IsConnectedTo(hoveredPort))
-                                {
-                                    draggedOutputTarget = hoveredPort;
+                                if (hoveredPort.IsInput) {
+                                    if (!draggedOutput.IsConnectedTo(hoveredPort))
+                                    {
+                                        draggedOutputTarget = hoveredPort;
+                                    }
                                 }
                             }
                             else
@@ -415,6 +417,18 @@ namespace XNodeEditor
             if (NodeEditorPreferences.GetSettings().autoSave) AssetDatabase.SaveAssets();
             Repaint();
             return node;
+        }
+
+        public XNode.Node CreateGraphHolderNode(RuntimeGraph runtimeGraph, Vector2 position)
+        {
+            var holder = graph.AddNode(typeof(RuntimeGraphHolder)) as RuntimeGraphHolder;
+            holder.position = position;
+            holder.name = UnityEditor.ObjectNames.NicifyVariableName(runtimeGraph.name);
+            holder.InitialiseTargetGraph(runtimeGraph);
+            AssetDatabase.AddObjectToAsset(holder, graph);
+            if (NodeEditorPreferences.GetSettings().autoSave) AssetDatabase.SaveAssets();
+            Repaint();
+            return holder;
         }
 
         /// <summary> Remove nodes in the graph in Selection.objects</summary>
