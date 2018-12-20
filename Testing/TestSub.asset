@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 114001255878024568}
-  - {fileID: 114695180106185794}
 --- !u!114 &114001255878024568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48,40 +47,11 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: 114695180106185794}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _dynamic: 0
+  Holder: {fileID: 0}
   HolderInput: 0
   Value: 0
---- !u!114 &114695180106185794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95d25f704a8f8284d90dd3b3179f1951, type: 3}
-  m_Name: Print
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 68.5, y: -81}
-  ports:
-    keys:
-    - Input
-    values:
-    - _fieldName: Input
-      _node: {fileID: 114695180106185794}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Value
-        node: {fileID: 114001255878024568}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 1
-      _dynamic: 0
-  Input: 0

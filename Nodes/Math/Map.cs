@@ -8,8 +8,8 @@ using Utility;
 public class Map : Node
 {
     [Input(ShowBackingValue.Never, ConnectionType.Override)] public float Input;
-    public Vector2 InputMinMax;
-    public Vector2 OutputMinMax;
+    public Vector2 InputMinMax = new Vector2(0, 1);
+    public Vector2 OutputMinMax = new Vector2(0, 1);
     [Output(ShowBackingValue.Always, ConnectionType.Multiple)] public float Output;
 
     public float GetValue()

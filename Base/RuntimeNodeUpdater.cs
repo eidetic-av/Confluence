@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using MidiJack;
 
+[ExecuteInEditMode]
 public class RuntimeNodeUpdater : MonoBehaviour, IPointerDownHandler{
     public static RuntimeNodeUpdater Instance;
 
