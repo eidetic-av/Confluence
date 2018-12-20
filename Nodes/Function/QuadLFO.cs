@@ -202,25 +202,25 @@ namespace Eidetic.Confluence
             /// <summary>
             /// Sawtooth wave output value.
             /// </summary>
-            public float Sawtooth { get { return 1 - Ramp; } }
+            public float Sawtooth { get { return Ramp * -1; } }
             /// <summary>
             /// Returns the sawtooth wave with it's speed multiplied by an input float.
             /// </summary>
             public float GetSawtoothMultiple(float multiplier)
             {
-                return 1 - GetRampMultiple(multiplier);
+                return GetRampMultiple(multiplier) * -1;
             }
 
             /// <summary>
             /// Ramp (inverse-sawtooth) wave output value.
             /// </summary>
-            public float Ramp { get { return (Phase) % 1f; } }
+            public float Ramp { get { return ((Phase % 1f) * 2) - 1; } }
             /// <summary>
             /// Returns the ramp wave with it's speed multiplied by an input float.
             /// </summary>
             public float GetRampMultiple(float multiplier)
             {
-                return (Phase * multiplier) % 1f;
+                return (((Phase * multiplier) % 1f) * 2) - 1;
             }
         }
     }
