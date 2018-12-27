@@ -10,10 +10,12 @@ using Eidetic.Confluence;
     NodeTint(Colors.ExternalInputTint)]
 public class NoteOn : RuntimeNode
 {
+    static readonly float TriggerHoldTime = .003f;
+
     public MidiChannel Channel;
     public int NoteNumber;
-
     [Output] public bool Trigger = false;
+    float LastTriggeredTime;
 
     protected override void Init()
     {
@@ -23,24 +25,18 @@ public class NoteOn : RuntimeNode
             if (channel == Channel && noteNumber == NoteNumber)
             {
                 Trigger = true;
+                LastTriggeredTime = Time.time;
             }
         };
     }
 
-    void OnDestroy()
-    {
-    }
-
-    void OnValidate()
-    {
-    }
     public override void ValueUpdate()
     {
-    }
-
-    public override void LateUpdate() 
-    {
-        Trigger = false;
+        if (Trigger)
+        {
+            if (Time.time - LastTriggeredTime >= TriggerHoldTime)
+                Trigger = false;
+        }
     }
 
     public override object GetValue(NodePort port)
@@ -49,8 +45,8 @@ public class NoteOn : RuntimeNode
         {
             case "Trigger":
                 return Trigger;
-			default:
-				return null;
+            default:
+                return null;
         }
     }
 }
