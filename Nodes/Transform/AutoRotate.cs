@@ -46,8 +46,10 @@ public class AutoRotate : RuntimeNode
 
         // Update values from each input port
         this.Ports.Where(port => port.IsInput).ToList()
-            .ForEach((NodePort port) => {
-                switch(port.fieldName) {
+            .ForEach((NodePort port) =>
+            {
+                switch (port.fieldName)
+                {
                     case "SpeedX":
                         float? speedX;
                         port.TryGetInputValue(out speedX);
