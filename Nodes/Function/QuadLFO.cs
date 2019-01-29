@@ -8,9 +8,7 @@ namespace Eidetic.Confluence
         NodeTint(Colors.FunctionTint)]
     public class QuadLFO : RuntimeNode
     {
-        public static int ClockMin { get; } = 40;
-        public static int ClockMax { get; } = 170;
-        public static float[] MultiplierRates = new float[] {
+        public static readonly float[] MultiplierRates = new float[] {
             (1/32f),
             (1/16f),
             (1/16f)*(4/3f),
@@ -25,7 +23,7 @@ namespace Eidetic.Confluence
             (2f),
             (4f)
         };
-        public static string[] MultiplierRateLabels = new string[] {
+        public static readonly string[] MultiplierRateLabels = new string[] {
             "1/32",
             "1/16",
             "1/16T",
@@ -40,6 +38,9 @@ namespace Eidetic.Confluence
             "2",
             "4"
         };
+        
+        public static int ClockMin { get; } = 40;
+        public static int ClockMax { get; } = 170;
 
         /// <summary>
         /// Master clock rate in beats per minute (BPM).

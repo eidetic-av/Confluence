@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using XNode;
 
@@ -7,46 +8,31 @@ namespace Eidetic.Confluence
 {
     [CreateNodeMenu("Function/EnvelopeGenerator"),
         NodeTint(Colors.FunctionTint)]
-    public class EnvelopeGenerator : RuntimeNode
+    public class EnvelopeGenerator : Node, NoteOn.ITriggeredNode
     {
+        public Stopwatch EnvelopeTimer { get; private set; } = new Stopwatch();
 
-        [Input] public bool Trigger = false;
+        [TriggerInput] public bool _trigger;
+        public bool Trigger { set { if (value) EnvelopeTimer.Restart(); } }
         [Input] public float Length = 1f;
-        [Input] public AnimationCurve Shape = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        [Input] public AnimationCurve Shape = AnimationCurve.EaseInOut(1, 1, 0, 0);
 
-        [Output] public bool Running = false;
-        [Output] public float StartTime = 0f;
-        [Output] public float Position = 0f;
-        [Output] public float Value = 0f;
-
-
-        protected override void Init()
+        [Output] public float _value = 0f;
+        float Value { get { return Shape.Evaluate(Position); } }
+        [Output] public bool _running;
+        bool Running { get { return EnvelopeTimer.IsRunning; } }
+        [Output] public float _position;
+        float Position
         {
-            base.Init();
-        }
-
-        public void TriggerEnvelope()
-        {
-            StartTime = Time.time;
-            Position = 0;
-            Running = true;
-            Trigger = false;
-        }
-
-        public override void Update()
-        {
-            Trigger = GetInputValue<bool>("Trigger");
-
-            if (Trigger) TriggerEnvelope();
-            if (Running)
+            get
             {
-                Position = (Time.time - StartTime) / Length;
-                if (Position > 1)
+                var position = EnvelopeTimer.Elapsed.TotalSeconds / Length;
+                if (position > 1)
                 {
-                    Position = 1;
-                    Running = false;
+                    EnvelopeTimer.Reset();
+                    position = 0;
                 }
-                Value = Shape.Evaluate(Position);
+                return (float)position;
             }
         }
 

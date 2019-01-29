@@ -13,7 +13,8 @@ namespace XNodeEditor {
         /// <summary> Are we currently renaming a node? </summary>
         protected bool isRenaming;
 
-        public virtual void OnGUI() { }
+        public virtual void OnGUI() { 
+        }
 
         public virtual Texture2D GetGridTexture() {
             return NodeEditorPreferences.GetSettings().gridTexture;

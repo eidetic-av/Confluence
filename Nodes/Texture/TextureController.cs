@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using XNode;
 using Eidetic.Confluence;
@@ -19,18 +20,42 @@ public class TextureController : RuntimeNode
 
     public override void Update()
     {
-        MainTextureScale.x = ScaleX = GetInputValue<float>("ScaleX");
-        MainTextureScale.y = ScaleY = GetInputValue<float>("ScaleY");
-        MainTextureOffset.x = OffsetX = GetInputValue<float>("OffsetX");
-        MainTextureOffset.y = OffsetY = GetInputValue<float>("OffsetY");
-        try
-        {
-            Material.SetTextureScale("_MainTex", MainTextureScale);
-            Material.SetTextureOffset("_MainTex", MainTextureOffset);
-        }
-        catch (UnassignedReferenceException exception)
-        {
-            Debug.LogWarning("This TextureController isn't assigned to any Texture.");
-        }
+        if (Material == null) return;
+
+        // Update values from each input port
+        this.Ports.Where(port => port.IsInput).ToList()
+            .ForEach((NodePort port) =>
+            {
+                switch (port.fieldName)
+                {
+                    case "ScaleX":
+                        float? scaleX;
+                        if (port.TryGetInputValue(out scaleX))
+                            ScaleX = scaleX.Value;
+                            MainTextureScale.x = ScaleX;
+                        break;
+                    case "ScaleY":
+                        float? scaleY;
+                        if (port.TryGetInputValue(out scaleY))
+                            ScaleY = scaleY.Value;
+                            MainTextureScale.y = ScaleY;
+                        break;
+                    case "OffsetX":
+                        float? offsetX;
+                        if (port.TryGetInputValue(out offsetX))
+                            OffsetX = offsetX.Value;
+                            MainTextureOffset.x = OffsetX;
+                        break;
+                    case "OffsetY":
+                        float? offsetY;;
+                        if (port.TryGetInputValue(out offsetY))
+                            OffsetY = offsetY.Value;
+                            MainTextureOffset.y = OffsetY;
+                        break;
+                }
+            });
+
+        Material.SetTextureScale("_MainTex", MainTextureScale);
+        Material.SetTextureOffset("_MainTex", MainTextureOffset);
     }
 }

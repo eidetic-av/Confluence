@@ -62,13 +62,15 @@ namespace XNodeEditor
                     else zoom -= 0.1f * zoom;
                     break;
                 case EventType.MouseDrag:
+                    Debug.Log(e.type);
                     if (e.button == 0)
                     {
                         if (IsDraggingPort)
                         {
                             if (IsHoveringPort)
                             {
-                                if (hoveredPort.IsInput) {
+                                if (hoveredPort.IsInput)
+                                {
                                     if (!draggedOutput.IsConnectedTo(hoveredPort))
                                     {
                                         draggedOutputTarget = hoveredPort;
@@ -177,6 +179,7 @@ namespace XNodeEditor
                     }
                     break;
                 case EventType.MouseDown:
+                    Debug.Log(e.type);
                     Repaint();
                     if (e.button == 0)
                     {
@@ -259,6 +262,7 @@ namespace XNodeEditor
                     }
                     break;
                 case EventType.MouseUp:
+                    Debug.Log(e.type);
                     if (e.button == 0)
                     {
                         //Port drag release
