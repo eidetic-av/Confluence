@@ -1,5 +1,5 @@
 # Confluence
-Node editor for live creation of audio-visual scenes in Unity.
+Node editor for live creation of audio-visual scenes within the Unity editor.
 
 This is very early development.
 A lot of features are not yet implemented and the code will probably change a lot.
