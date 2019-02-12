@@ -21,7 +21,7 @@ Copyright (c) 2017 Thor Brigsted
 As well as [MidiJack by Keijiro](https://github.com/keijiro/MidiJack) for Midi (although probably not for much longer).
 Copyright (C) 2013-2015 Keijiro Takahashi
 
-#License
+## License
 
 Copyright (C) 2018 Matthew Hughes
 
