@@ -179,42 +179,6 @@ namespace XNodeEditor {
             endPoint = GridToWindowPosition(endPoint);
 
             switch (NodeEditorPreferences.GetSettings().noodleType) {
-                case NodeEditorPreferences.NoodleType.Cable:
-
-                    float xDistance = Mathf.Abs(startPoint.x - endPoint.x);
-                    float yDistance = Mathf.Abs(startPoint.y - endPoint.y);
-
-                    float windowZoom = (1 / NodeEditorWindow.current.zoom);
-
-                    float tension = Prototyping.Floats[0];
-
-                    Vector2 slump = new Vector2();
-                    slump.y = ((1.0f - tension) * (150.0f + 1.0f * xDistance)) * windowZoom;
-
-                    float midX = ((startPoint.x + endPoint.x) / 2) + slump.x;
-                    float midY = ((startPoint.y + endPoint.y) / 2) + slump.y;
-                    Vector2 midPoint = new Vector2(midX, midY);
-
-                    Vector2 startCableTangent = startPoint;
-                    startCableTangent.x += Prototyping.Floats[1] * windowZoom;
-                    startCableTangent.y += Prototyping.Floats[2] * windowZoom;
-
-                    Vector2 midCableStartTangent = midPoint;
-                    midCableStartTangent.x += Prototyping.Floats[3] * windowZoom;
-                    midCableStartTangent.y += Prototyping.Floats[4] * windowZoom;
-                    
-                    Vector2 midCableEndTangent = midPoint;
-                    midCableEndTangent.x -= Prototyping.Floats[3] * windowZoom;
-                    midCableEndTangent.y -= Prototyping.Floats[4] * windowZoom;
-
-                    Vector2 endCableTangent = endPoint;
-                    endCableTangent.x += Prototyping.Floats[5] * windowZoom;
-                    endCableTangent.y += Prototyping.Floats[6] * windowZoom;
-
-                    Handles.DrawBezier(startPoint, midPoint, startCableTangent, midCableStartTangent, col, null, 4);
-                    Handles.DrawBezier(midPoint, endPoint, midCableEndTangent, endCableTangent, col, null, 4);
-                    
-                    break;
 
                 case NodeEditorPreferences.NoodleType.Curve:
                     Vector2 startTangent = startPoint;
