@@ -10,14 +10,13 @@ You can create a RuntimeGraph in the Project window with Right-click > Create > 
 
 Double-click anywhere in the graph and type the name of your node to add it to the graph.
 
-
-## Libraries
-
 To create your own node, extend RuntimeNode.
 A RuntimeNode can override Start() and Update() to influence game logic.
 
 See the xNode documentation below to learn how to create Input and Output ports.
 
+
+## Libraries
 
 Uses [xNode from Siccity](https://github.com/Siccity/xNode) as a base.
 Copyright (c) 2017 Thor Brigsted
