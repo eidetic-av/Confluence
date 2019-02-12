@@ -6,6 +6,8 @@ A lot of features are not yet implemented and the code will probably change a lo
 
 ## Use
 
+At the moment you need to first add RuntimeNodeUpdater to your scene.
+
 You can create a RuntimeGraph in the Project window with Right-click > Create > RuntimeGraph.
 
 Double-click anywhere in the graph and type the name of your node to add it to the graph.
