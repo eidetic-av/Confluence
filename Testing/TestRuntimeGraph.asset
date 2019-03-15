@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7451704021909118014
+--- !u!114 &-4814266838218586814
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Emitter
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -658.5, y: -125}
+  position: {x: -663.5, y: -265}
   ports:
     keys:
     - TestOut
@@ -21,28 +21,24 @@ MonoBehaviour:
     values:
     - memberName: TestOut
       memberType: 4
-      node: {fileID: -7451704021909118014}
+      node: {fileID: -4814266838218586814}
       typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - MemberName: MaxParticles
-        MemberType: 16
-        node: {fileID: 4596331680044658181}
-        reroutePoints: []
+      connections: []
       Direction: 1
       ConnectionType: 0
       Dynamic: 0
     - memberName: MaxParticles
       memberType: 16
-      node: {fileID: -7451704021909118014}
+      node: {fileID: -4814266838218586814}
       typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
       Direction: 0
       ConnectionType: 1
       Dynamic: 0
-  maxParticles: 35
-  TestOut: 141
+  maxParticles: 50
+  TestOut: 30
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56,48 +52,4 @@ MonoBehaviour:
   m_Name: TestRuntimeGraph
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: 4596331680044658181}
-  - {fileID: -7451704021909118014}
---- !u!114 &4596331680044658181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c989bb4b5265cd344a5467a5e919cc77, type: 3}
-  m_Name: Emitter
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -355.5, y: -253}
-  ports:
-    keys:
-    - TestOut
-    - MaxParticles
-    values:
-    - memberName: TestOut
-      memberType: 4
-      node: {fileID: 4596331680044658181}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MaxParticles
-      memberType: 16
-      node: {fileID: 4596331680044658181}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - MemberName: TestOut
-        MemberType: 4
-        node: {fileID: -7451704021909118014}
-        reroutePoints: []
-      Direction: 0
-      ConnectionType: 1
-      Dynamic: 0
-  maxParticles: 141
-  TestOut: 30
+  - {fileID: -4814266838218586814}

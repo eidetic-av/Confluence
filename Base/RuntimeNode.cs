@@ -54,19 +54,37 @@ public abstract class RuntimeNode : Node
         if (Application.isPlaying) Exit();
     }
 
+    // Todo:
+    // All connected ports are updated every frame
+    // Is that necessary if the values don't update?
     public void ValueUpdate()
     {
+        // Todo:
+        // I guess these property setters should be cached so there is no Runtime reflection?
+
+        // Same with the GetValue() method
+
         var connectedInputPorts = Ports.Where(port => port.IsInput && port.IsConnected);
         foreach (var port in connectedInputPorts)
         {
             var inputValue = port.Connection.Node.GetValue(port.Connection);
-            var member = this.GetType().GetMember(port.MemberName).SingleOrDefault();
+            var member = this.GetType().GetMember(port.MemberName).Single();
+
             if (port.MemberType == MemberTypes.Property)
-            {
-                var property = member as PropertyInfo;
-                property.SetValue(this, inputValue);
-            }
+                (member as PropertyInfo).SetValue(this, inputValue);
+            else
+                (member as FieldInfo).SetValue(this, inputValue);
         }
+    }
+
+    public override object GetValue(NodePort port)
+    {
+        var member = this.GetType().GetMember(port.MemberName).Single();
+
+        if (port.MemberType == MemberTypes.Property)
+            return (member as PropertyInfo).GetValue(this);
+        else
+            return (member as FieldInfo).GetValue(this);
     }
 
     public virtual void Start() { }

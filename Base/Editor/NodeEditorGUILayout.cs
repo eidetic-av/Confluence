@@ -53,6 +53,25 @@ namespace XNodeEditor
         {
             if (property == null) throw new NullReferenceException();
 
+            
+            if (Event.current.type == EventType.MouseDrag)
+            {
+                // Todo:
+                // Cache this reflective getter & setter
+
+                // if the port is a property, then we need to call the property setter manually,
+                // because the interface exposed to the user to manipulate with mouse dragging
+                // is the backing field even though Unity refer to it as a property...
+                //
+                //  ...for some reason  ◔_◔
+
+                if (port.MemberType == MemberTypes.Property)
+                {
+                    var backingFieldValue = port.NodeType.GetField(property.name).GetValue(port.Node);
+                    port.NodeType.GetProperty(port.MemberName).SetValue(port.Node, backingFieldValue);
+                }
+            }
+
             GUILayoutOption[] size = new GUILayoutOption[]
             {
                 GUILayout.MinWidth(NodeEditorWindow.HitTargetSize),
