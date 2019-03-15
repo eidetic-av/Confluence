@@ -54,7 +54,7 @@ namespace XNodeEditor
             if (property == null) throw new NullReferenceException();
 
             
-            if (Event.current.type == EventType.MouseDrag)
+            if (Event.current.isMouse)
             {
                 // Todo:
                 // Cache this reflective getter & setter

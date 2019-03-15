@@ -33,6 +33,10 @@ public abstract class RuntimeNode : Node
                 .WithHideFlags(HideFlags.NotEditable)
                 .InDontDestroyMode();
         InstantiatedNodes.ForEachOnMain(n => n.Start());
+
+        // Todo:
+        // need to figure out a way to run all property setters for
+        // backing fields that could have been updated outside of play mode
     }
 
     public static void OnExit()

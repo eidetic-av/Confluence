@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Emitter
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -663.5, y: -265}
+  position: {x: -647.5, y: -192}
   ports:
     keys:
     - TestOut
@@ -37,7 +37,7 @@ MonoBehaviour:
       Direction: 0
       ConnectionType: 1
       Dynamic: 0
-  maxParticles: 50
+  maxParticles: 0
   TestOut: 30
 --- !u!114 &11400000
 MonoBehaviour:
