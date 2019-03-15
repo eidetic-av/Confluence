@@ -53,6 +53,7 @@ namespace XNodeEditor
         {
             wantsMouseMove = true;
             Event e = Event.current;
+
             switch (e.type)
             {
                 case EventType.MouseMove:
@@ -179,6 +180,14 @@ namespace XNodeEditor
                     break;
                 case EventType.MouseDown:
                     Repaint();
+
+                    // portConnectionPoints.ToList().ForEach(kvp => Debug.Log(kvp.Value));
+                    var touchedPort = portConnectionPoints
+                        .SingleOrDefault(kvp => GridToWindowRectNoClipped(kvp.Value)
+                        .Contains(e.mousePosition)).Key;
+                    
+                    if (touchedPort != null) hoveredPort = touchedPort;
+
                     if (e.button == 0)
                     {
                         draggedOutputReroutes.Clear();
