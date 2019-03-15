@@ -28,7 +28,7 @@ MonoBehaviour:
   m_Name: Texture Controller
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -523.5, y: -258}
+  position: {x: -588, y: -350}
   ports:
     keys:
     - ScaleX
@@ -73,7 +73,7 @@ MonoBehaviour:
       _dynamic: 0
   Material: {fileID: 2100000, guid: 150603c95ae82bb4a9364677de3f13c1, type: 2}
   ScaleX: 0.29630828
-  ScaleY: 0.9600676
+  ScaleY: 0.30293122
   OffsetX: -0.46
   OffsetY: 0
 --- !u!114 &7491571186962530863
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Name: Quad LFO
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -879, y: -239.5}
+  position: {x: -830, y: -346}
   ports:
     keys:
     - Clock

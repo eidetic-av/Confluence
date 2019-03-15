@@ -186,13 +186,13 @@ namespace XNodeEditor
 
                     // So, check if we've touched a port on this event
                     hoveredPort = portConnectionPoints
-                        .SingleOrDefault(kvp => GridToWindowRectNoClipped(kvp.Value)
+                        .FirstOrDefault(kvp => GridToWindowRectNoClipped(kvp.Value)
                         .Contains(e.mousePosition)).Key;
                     
                     // and if we didn't, check if we touched a node title
                     if (hoveredPort == default)
                         hoveredNode = graph.nodes
-                            .SingleOrDefault(node => IsHoveringTitle(node));
+                            .FirstOrDefault(node => IsHoveringTitle(node));
 
 
                     if (e.button == 0)

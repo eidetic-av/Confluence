@@ -51,17 +51,31 @@ namespace XNodeEditor
 
         void DrawToolbar()
         {
-            GUILayout.BeginArea(new Rect(position.width - 50, 0, 50, position.height));
 
-            if (GUILayout.Button("Delete"))
-            {
-                UnityEditor.Selection.objects
+            var selectedNodes = UnityEditor.Selection.objects
                     .Where(o => o.GetType().IsSubclassOf(typeof(XNode.Node)))
-                    .Cast<XNode.Node>().ToList()
-                    .ForEach(n => graphEditor.RemoveNode(n));
-            }
-            
+                    .Cast<XNode.Node>().ToList();
+
+            GUI.enabled = selectedNodes.Count != 0;
+
+            var toolbarPadding = 10;
+            var toolbarWidth = 50;
+            var buttonHeight = 50;
+
+            GUILayout.BeginArea(new Rect(
+                position.width - toolbarWidth - toolbarPadding,
+                toolbarPadding, toolbarWidth, position.height));
+
+            if (GUILayout.Button("Delete", GUILayout.Height(buttonHeight)))
+                    selectedNodes.ForEach(n => graphEditor.RemoveNode(n));
+
+            GUILayout.Space(toolbarPadding);
+                    
+            if (GUILayout.Button("Copy", GUILayout.Height(buttonHeight)))
+                    selectedNodes.ForEach(n => graphEditor.CopyNode(n));
+
             GUILayout.EndArea();
+            GUI.enabled = true;
         }
 
         public static void BeginZoomed(Rect rect, float zoom, float topPadding)
