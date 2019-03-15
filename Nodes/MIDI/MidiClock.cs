@@ -16,17 +16,12 @@ namespace Eidetic.Confluence.Midi
         public float BeatsPerMinute;
         [Output(ShowBackingValue.Always)]
         public float SecondsPerBeat;
-        public override void ValueUpdate()
-        {
-            BeatsPerMinute = MidiDriver.BeatsPerMinute;
-            SecondsPerBeat = MidiDriver.SecondsPerBeat;
-        }
 
         public override object GetValue(NodePort port)
         {
-            if (port.fieldName == "BeatsPerMinute")
+            if (port.MemberName == "BeatsPerMinute")
                 return BeatsPerMinute;
-            else if (port.fieldName == "SecondsPerBeat")
+            else if (port.MemberName == "SecondsPerBeat")
                 return SecondsPerBeat;
             else
                 return null;

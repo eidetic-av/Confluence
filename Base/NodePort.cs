@@ -24,8 +24,8 @@ namespace XNode
             }
         }
 
-        public IO direction { get { return _direction; } }
-        public Node.ConnectionType connectionType { get { return _connectionType; } }
+        public IO direction { get { return Direction; } }
+        public Node.ConnectionType connectionType { get { return ConnectionType; } }
 
         /// <summary> Is this port connected to anytihng? </summary>
         public bool IsConnected { get { return connections.Count != 0; } }
@@ -35,57 +35,80 @@ namespace XNode
         {
             get
             {
-                return nodeType.Equals(typeof(Inlet))
-                || nodeType.Equals(typeof(Outlet));
+                return NodeType.Equals(typeof(Inlet))
+                || NodeType.Equals(typeof(Outlet));
             }
         }
 
-        public string fieldName { get { return _fieldName; } }
-        public Node node { get { return _node; } }
-        public Type nodeType { get { return _node.GetType(); } }
-        public bool IsDynamic { get { return _dynamic; } }
-        public bool IsStatic { get { return !_dynamic; } }
+        public string MemberName { get { return memberName; } }
+        public MemberTypes MemberType { get { return memberType; } }
+        public Node Node { get { return node; } }
+        public Type NodeType { get { return node.GetType(); } }
+        public bool IsDynamic { get { return Dynamic; } }
+        public bool IsStatic { get { return !Dynamic; } }
         public Type ValueType
         {
             get
             {
-                if (valueType == null && !string.IsNullOrEmpty(_typeQualifiedName)) valueType = Type.GetType(_typeQualifiedName, false);
+                if (valueType == null && !string.IsNullOrEmpty(typeQualifiedName)) valueType = Type.GetType(typeQualifiedName, false);
                 return valueType;
             }
             set
             {
                 valueType = value;
-                if (value != null) _typeQualifiedName = value.AssemblyQualifiedName;
+                if (value != null) typeQualifiedName = value.AssemblyQualifiedName;
             }
         }
         private Type valueType;
 
-        [SerializeField] private string _fieldName;
-        [SerializeField] private Node _node;
-        [SerializeField] private string _typeQualifiedName;
+        [SerializeField] private string memberName;
+        [SerializeField] private MemberTypes memberType;
+        [SerializeField] private Node node;
+        [SerializeField] private string typeQualifiedName;
         [SerializeField] private List<PortConnection> connections = new List<PortConnection>();
-        [SerializeField] private IO _direction;
-        [SerializeField] private Node.ConnectionType _connectionType;
-        [SerializeField] private bool _dynamic;
+        [SerializeField] private IO Direction;
+        [SerializeField] private Node.ConnectionType ConnectionType;
+        [SerializeField] private bool Dynamic;
 
         /// <summary> Construct a static targetless nodeport. Used as a template. </summary>
-        public NodePort(FieldInfo fieldInfo)
+        public NodePort(MemberInfo memberInfo)
         {
-            _fieldName = fieldInfo.Name;
-            ValueType = fieldInfo.FieldType;
-            _dynamic = false;
-            var attribs = fieldInfo.GetCustomAttributes(false);
-            for (int i = 0; i < attribs.Length; i++)
+            if (memberInfo.MemberType == MemberTypes.Field)
             {
-                if (attribs[i] is Node.InputAttribute)
+                var fieldInfo = memberInfo as FieldInfo;
+                memberName = fieldInfo.Name;
+                memberType = MemberTypes.Field;
+                ValueType = fieldInfo.FieldType;
+                Dynamic = false;
+                var attribs = fieldInfo.GetCustomAttributes(false);
+                for (int i = 0; i < attribs.Length; i++)
                 {
-                    _direction = IO.Input;
-                    _connectionType = (attribs[i] as Node.InputAttribute).connectionType;
+                    if (attribs[i] is Node.InputAttribute)
+                    {
+                        Direction = IO.Input;
+                        ConnectionType = (attribs[i] as Node.InputAttribute).connectionType;
+                    }
+                    else if (attribs[i] is Node.OutputAttribute)
+                    {
+                        Direction = IO.Output;
+                        ConnectionType = (attribs[i] as Node.OutputAttribute).connectionType;
+                    }
                 }
-                else if (attribs[i] is Node.OutputAttribute)
+            } else if (memberInfo.MemberType == MemberTypes.Property)
+            {
+                var propertyInfo = memberInfo as PropertyInfo;
+                memberName = propertyInfo.Name;
+                memberType = MemberTypes.Property;
+                ValueType = propertyInfo.PropertyType;
+                Dynamic = false;
+                var attributes = propertyInfo.GetCustomAttributes(false);
+                for (int i = 0; i < attributes.Length; i++)
                 {
-                    _direction = IO.Output;
-                    _connectionType = (attribs[i] as Node.OutputAttribute).connectionType;
+                    if (attributes[i] is Node.InputAttribute)
+                    {
+                        Direction = IO.Input;
+                        ConnectionType = Node.ConnectionType.Override;
+                    }
                 }
             }
         }
@@ -93,23 +116,25 @@ namespace XNode
         /// <summary> Copy a nodePort but assign it to another node. </summary>
         public NodePort(NodePort nodePort, Node node)
         {
-            _fieldName = nodePort._fieldName;
+            memberName = nodePort.memberName;
+            memberType = nodePort.memberType;
             ValueType = nodePort.valueType;
-            _direction = nodePort.direction;
-            _dynamic = nodePort._dynamic;
-            _connectionType = nodePort._connectionType;
-            _node = node;
+            Direction = nodePort.direction;
+            Dynamic = nodePort.Dynamic;
+            ConnectionType = nodePort.ConnectionType;
+            this.node = node;
         }
 
         /// <summary> Construct a dynamic port. Dynamic ports are not forgotten on reimport, and is ideal for runtime-created ports. </summary>
-        public NodePort(string fieldName, Type type, IO direction, Node.ConnectionType connectionType, Node node)
+        public NodePort(string memberName, Type type, IO direction, Node.ConnectionType connectionType, Node node)
         {
-            _fieldName = fieldName;
+            this.memberName = memberName;
+            // MemberType = memberType;
             this.ValueType = type;
-            _direction = direction;
-            _node = node;
-            _dynamic = true;
-            _connectionType = connectionType;
+            Direction = direction;
+            this.node = node;
+            Dynamic = true;
+            ConnectionType = connectionType;
         }
 
         /// <summary> Checks all connections for invalid references, and removes them. </summary>
@@ -118,8 +143,8 @@ namespace XNode
             for (int i = connections.Count - 1; i >= 0; i--)
             {
                 if (connections[i].node != null &&
-                    !string.IsNullOrEmpty(connections[i].fieldName) &&
-                    connections[i].node.GetPort(connections[i].fieldName) != null)
+                    !string.IsNullOrEmpty(connections[i].MemberName) &&
+                    connections[i].node.GetPort(connections[i].MemberName) != null)
                     continue;
                 connections.RemoveAt(i);
             }
@@ -130,7 +155,7 @@ namespace XNode
         public object GetOutputValue()
         {
             if (direction == IO.Input) return null;
-            return node.GetValue(this);
+            return Node.GetValue(this);
         }
 
         /// <summary> Return the output value of the first connected port. Returns null if none found or invalid.</summary>
@@ -241,8 +266,8 @@ namespace XNode
             connections.Add(new PortConnection(port));
             if (port.connections == null) port.connections = new List<PortConnection>();
             if (!port.IsConnectedTo(this)) port.connections.Add(new PortConnection(this));
-            node.OnCreateConnection(this, port);
-            port.node.OnCreateConnection(this, port);
+            Node.OnCreateConnection(this, port);
+            port.Node.OnCreateConnection(this, port);
         }
 
         public List<NodePort> GetConnections()
@@ -259,12 +284,12 @@ namespace XNode
         public NodePort GetConnection(int i)
         {
             //If the connection is broken for some reason, remove it.
-            if (connections[i].node == null || string.IsNullOrEmpty(connections[i].fieldName))
+            if (connections[i].node == null || string.IsNullOrEmpty(connections[i].MemberName))
             {
                 connections.RemoveAt(i);
                 return null;
             }
-            NodePort port = connections[i].node.GetPort(connections[i].fieldName);
+            NodePort port = connections[i].node.GetPort(connections[i].MemberName);
             if (port == null)
             {
                 connections.RemoveAt(i);
@@ -315,8 +340,8 @@ namespace XNode
                 }
             }
             // Trigger OnRemoveConnection
-            node.OnRemoveConnection(this);
-            if (port != null) port.node.OnRemoveConnection(port);
+            Node.OnRemoveConnection(this);
+            if (port != null) port.Node.OnRemoveConnection(port);
         }
 
         /// <summary> Disconnect this port from another port </summary>
@@ -338,8 +363,8 @@ namespace XNode
             connections.RemoveAt(i);
 
             // Trigger OnRemoveConnection
-            node.OnRemoveConnection(this);
-            if (otherPort != null) otherPort.node.OnRemoveConnection(otherPort);
+            Node.OnRemoveConnection(this);
+            if (otherPort != null) otherPort.Node.OnRemoveConnection(otherPort);
         }
 
         public void ClearConnections()
@@ -426,7 +451,8 @@ namespace XNode
         [Serializable]
         private class PortConnection
         {
-            [SerializeField] public string fieldName;
+            [SerializeField] public string MemberName;
+            [SerializeField] public MemberTypes MemberType;
             [SerializeField] public Node node;
             public NodePort Port { get { return port != null ? port : port = GetPort(); } }
 
@@ -437,15 +463,16 @@ namespace XNode
             public PortConnection(NodePort port)
             {
                 this.port = port;
-                node = port.node;
-                fieldName = port.fieldName;
+                node = port.Node;
+                MemberName = port.memberName;
+                MemberType = port.memberType;
             }
 
             /// <summary> Returns the port that this <see cref="PortConnection"/> points to </summary>
             private NodePort GetPort()
             {
-                if (node == null || string.IsNullOrEmpty(fieldName)) return null;
-                return node.GetPort(fieldName);
+                if (node == null || string.IsNullOrEmpty(MemberName)) return null;
+                return node.GetPort(MemberName);
             }
         }
     }

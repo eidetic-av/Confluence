@@ -456,7 +456,7 @@ namespace XNodeEditor
 
                 if (e.type == EventType.Repaint)
                 {
-                    _portConnectionPoints = _portConnectionPoints.Where(x => x.Key.node != node).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                    _portConnectionPoints = _portConnectionPoints.Where(x => x.Key.Node != node).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
                 }
 
                 NodeEditor nodeEditor = NodeEditor.GetEditor(node);

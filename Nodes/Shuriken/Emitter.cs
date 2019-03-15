@@ -10,14 +10,15 @@ namespace Eidetic.Confluence.Shuriken
 {
     public class Emitter : RuntimeNode
     {
-        [Input] public float Testfloat = 0f;
-
         ParticleSystem System;
         public override void Start()
         {
-            System = new GameObject("Shuriken Instance")
-                .AddComponent<ParticleSystem>();
-            SystemManager.InstantiatedSystems.Add(System);
+            if (System == null)
+            {
+                System = new GameObject("Shuriken Instance")
+                    .AddComponent<ParticleSystem>();
+                SystemManager.InstantiatedSystems.Add(System);
+            }
         }
         public override void Exit()
         {
@@ -27,16 +28,17 @@ namespace Eidetic.Confluence.Shuriken
 
         public override object GetValue(NodePort port)
         {
-            switch (port.fieldName)
+            switch (port.MemberName)
             {
-                case "Particles":
-                    return null;
+                case "TestOut":
+                    return TestOut;
                 default:
                     return null;
             }
         }
 
-        int maxParticles = 50;
+        [SerializeField] int maxParticles = 50;
+        [Input]
         public int MaxParticles
         {
             get
@@ -45,11 +47,14 @@ namespace Eidetic.Confluence.Shuriken
             }
             set
             {
+                if (value <= 0) value = 0;
                 var mainModule = System.main;
                 mainModule.maxParticles = value;
                 maxParticles = value;
             }
         }
+
+        [Output] public int TestOut = 30;
 
     }
 }

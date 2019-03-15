@@ -38,7 +38,7 @@ namespace Eidetic.Confluence
 
         public override object GetValue(NodePort port)
         {
-            switch (port.fieldName)
+            switch (port.MemberName)
             {
                 case "Value":
                     return Value;

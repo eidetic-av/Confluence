@@ -8,37 +8,61 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace XNodeEditor {
+namespace XNodeEditor
+{
     /// <summary> A set of editor-only utilities and extensions for UnityNodeEditorBase </summary>
-    public static class NodeEditorUtilities {
+    public static class NodeEditorUtilities
+    {
 
         /// <summary>C#'s Script Icon [The one MonoBhevaiour Scripts have].</summary>
         private static Texture2D scriptIcon = (EditorGUIUtility.IconContent("cs Script Icon").image as Texture2D);
 
-        public static bool GetAttrib<T>(Type classType, out T attribOut) where T : Attribute {
+        public static bool GetAttribute<T>(Type classType, out T attribOut) where T : Attribute
+        {
             object[] attribs = classType.GetCustomAttributes(typeof(T), false);
-            return GetAttrib(attribs, out attribOut);
+            return GetAttribute(attribs, out attribOut);
         }
 
-        public static bool GetAttrib<T>(object[] attribs, out T attribOut) where T : Attribute {
-            for (int i = 0; i < attribs.Length; i++) {
-                if (attribs[i].GetType() == typeof(T)) {
-                    attribOut = attribs[i] as T;
+        public static bool GetAttribute<T>(object[] attributes, out T attributeOut) where T : Attribute
+        {
+            for (int i = 0; i < attributes.Length; i++)
+            {
+                if (attributes[i].GetType() == typeof(T))
+                {
+                    attributeOut = attributes[i] as T;
                     return true;
                 }
             }
-            attribOut = null;
+            attributeOut = null;
             return false;
         }
 
-        public static bool GetAttrib<T>(Type classType, string fieldName, out T attribOut) where T : Attribute {
-            object[] attribs = classType.GetField(fieldName).GetCustomAttributes(typeof(T), false);
-            return GetAttrib(attribs, out attribOut);
+        public static bool GetAttribute<T>(Type classType, string memberName, out T attributeOut) where T : Attribute
+        {
+            attributeOut = null;
+            var memberInfo = classType.GetMember(memberName).FirstOrDefault();
+            if (memberInfo == null)
+                return false;
+            object[] attributes = new object[0];
+            if (memberInfo.MemberType == MemberTypes.Field)
+            {
+                var fieldInfo = memberInfo as FieldInfo;
+                attributes = fieldInfo.GetCustomAttributes(typeof(T), false);
+            }
+            else if (memberInfo.MemberType == MemberTypes.Property)
+            {
+                var propertyInfo = memberInfo as PropertyInfo;
+                attributes = propertyInfo.GetCustomAttributes(typeof(T), false);
+            }
+            return GetAttribute(attributes, out attributeOut);
         }
 
-        public static bool HasAttrib<T>(object[] attribs) where T : Attribute {
-            for (int i = 0; i < attribs.Length; i++) {
-                if (attribs[i].GetType() == typeof(T)) {
+        public static bool HasAttrib<T>(object[] attribs) where T : Attribute
+        {
+            for (int i = 0; i < attribs.Length; i++)
+            {
+                if (attribs[i].GetType() == typeof(T))
+                {
                     return true;
                 }
             }
@@ -46,7 +70,8 @@ namespace XNodeEditor {
         }
 
         /// <summary> Returns true if this can be casted to <see cref="Type"/></summary>
-        public static bool IsCastableTo(this Type from, Type to) {
+        public static bool IsCastableTo(this Type from, Type to)
+        {
             if (to.IsAssignableFrom(from)) return true;
             var methods = from.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .Where(
@@ -58,7 +83,8 @@ namespace XNodeEditor {
         }
 
         /// <summary> Return a prettiefied type name. </summary>
-        public static string PrettyName(this Type type) {
+        public static string PrettyName(this Type type)
+        {
             if (type == null) return "null";
             if (type == typeof(System.Object)) return "object";
             if (type == typeof(float)) return "float";
@@ -67,7 +93,8 @@ namespace XNodeEditor {
             else if (type == typeof(double)) return "double";
             else if (type == typeof(string)) return "string";
             else if (type == typeof(bool)) return "bool";
-            else if (type.IsGenericType) {
+            else if (type.IsGenericType)
+            {
                 string s = "";
                 Type genericType = type.GetGenericTypeDefinition();
                 if (genericType == typeof(List<>)) s = "List";
@@ -75,30 +102,38 @@ namespace XNodeEditor {
 
                 Type[] types = type.GetGenericArguments();
                 string[] stypes = new string[types.Length];
-                for (int i = 0; i < types.Length; i++) {
+                for (int i = 0; i < types.Length; i++)
+                {
                     stypes[i] = types[i].PrettyName();
                 }
                 return s + "<" + string.Join(", ", stypes) + ">";
-            } else if (type.IsArray) {
+            }
+            else if (type.IsArray)
+            {
                 string rank = "";
-                for (int i = 1; i < type.GetArrayRank(); i++) {
+                for (int i = 1; i < type.GetArrayRank(); i++)
+                {
                     rank += ",";
                 }
                 Type elementType = type.GetElementType();
                 if (!elementType.IsArray) return elementType.PrettyName() + "[" + rank + "]";
-                else {
+                else
+                {
                     string s = elementType.PrettyName();
                     int i = s.IndexOf('[');
                     return s.Substring(0, i) + "[" + rank + "]" + s.Substring(i);
                 }
-            } else return type.ToString();
+            }
+            else return type.ToString();
         }
 
         /// <summary>Creates a new C# Class.</summary>
         [MenuItem("Assets/Create/xNode/Node C# Script", false, 89)]
-        private static void CreateNode() {
+        private static void CreateNode()
+        {
             string[] guids = AssetDatabase.FindAssets("xNode_NodeTemplate.cs");
-            if (guids.Length == 0) {
+            if (guids.Length == 0)
+            {
                 Debug.LogWarning("xNode_NodeTemplate.cs.txt not found in asset database");
                 return;
             }
@@ -111,9 +146,11 @@ namespace XNodeEditor {
 
         /// <summary>Creates a new C# Class.</summary>
         [MenuItem("Assets/Create/xNode/NodeGraph C# Script", false, 89)]
-        private static void CreateGraph() {
+        private static void CreateGraph()
+        {
             string[] guids = AssetDatabase.FindAssets("xNode_NodeGraphTemplate.cs");
-            if (guids.Length == 0) {
+            if (guids.Length == 0)
+            {
                 Debug.LogWarning("xNode_NodeGraphTemplate.cs.txt not found in asset database");
                 return;
             }
@@ -124,7 +161,8 @@ namespace XNodeEditor {
             );
         }
 
-        public static void CreateFromTemplate(string initialName, string templatePath) {
+        public static void CreateFromTemplate(string initialName, string templatePath)
+        {
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
                 0,
                 ScriptableObject.CreateInstance<DoCreateCodeFile>(),
@@ -135,21 +173,25 @@ namespace XNodeEditor {
         }
 
         /// Inherits from EndNameAction, must override EndNameAction.Action
-        public class DoCreateCodeFile : UnityEditor.ProjectWindowCallback.EndNameEditAction {
-            public override void Action(int instanceId, string pathName, string resourceFile) {
+        public class DoCreateCodeFile : UnityEditor.ProjectWindowCallback.EndNameEditAction
+        {
+            public override void Action(int instanceId, string pathName, string resourceFile)
+            {
                 Object o = CreateScript(pathName, resourceFile);
                 ProjectWindowUtil.ShowCreatedAsset(o);
             }
         }
 
         /// <summary>Creates Script from Template's path.</summary>
-        internal static UnityEngine.Object CreateScript(string pathName, string templatePath) {
+        internal static UnityEngine.Object CreateScript(string pathName, string templatePath)
+        {
             string className = Path.GetFileNameWithoutExtension(pathName).Replace(" ", string.Empty);
             string templateText = string.Empty;
 
             UTF8Encoding encoding = new UTF8Encoding(true, false);
 
-            if (File.Exists(templatePath)) {
+            if (File.Exists(templatePath))
+            {
                 /// Read procedures.
                 StreamReader reader = new StreamReader(templatePath);
                 templateText = reader.ReadToEnd();
@@ -169,7 +211,9 @@ namespace XNodeEditor {
 
                 AssetDatabase.ImportAsset(pathName);
                 return AssetDatabase.LoadAssetAtPath(pathName, typeof(Object));
-            } else {
+            }
+            else
+            {
                 Debug.LogError(string.Format("The template file was not found: {0}", templatePath));
                 return null;
             }

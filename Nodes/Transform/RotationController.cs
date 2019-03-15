@@ -48,7 +48,7 @@ public class RotationController : RuntimeNode
         this.Ports.Where(port => port.IsInput).ToList()
             .ForEach((NodePort port) =>
             {
-                switch (port.fieldName)
+                switch (port.MemberName)
                 {
                     case "XRotation":
                         float? xRotation;

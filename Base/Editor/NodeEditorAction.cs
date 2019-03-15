@@ -209,7 +209,7 @@ namespace XNodeEditor
                                 hoveredPort.VerifyConnections();
                                 if (hoveredPort.IsConnected)
                                 {
-                                    XNode.Node node = hoveredPort.node;
+                                    XNode.Node node = hoveredPort.Node;
                                     XNode.NodePort output = hoveredPort.Connection;
                                     int outputConnectionIndex = output.GetConnectionIndex(hoveredPort);
                                     draggedOutputReroutes = output.GetReroutePoints(outputConnectionIndex);
@@ -283,7 +283,7 @@ namespace XNodeEditor
                             //If connection is valid, save it
                             if (draggedOutputTarget != null)
                             {
-                                XNode.Node node = draggedOutputTarget.node;
+                                XNode.Node node = draggedOutputTarget.Node;
                                 if (graph.nodes.Count != 0) draggedOutput.Connect(draggedOutputTarget);
 
                                 // ConnectionIndex can be -1 if the connection is removed instantly after creation
@@ -525,12 +525,12 @@ namespace XNodeEditor
                             XNode.NodePort outputPort = port.direction == XNode.NodePort.IO.Output ? port : port.GetConnection(c);
 
                             XNode.Node newNodeIn, newNodeOut;
-                            if (substitutes.TryGetValue(inputPort.node, out newNodeIn) && substitutes.TryGetValue(outputPort.node, out newNodeOut))
+                            if (substitutes.TryGetValue(inputPort.Node, out newNodeIn) && substitutes.TryGetValue(outputPort.Node, out newNodeOut))
                             {
                                 newNodeIn.UpdateStaticPorts();
                                 newNodeOut.UpdateStaticPorts();
-                                inputPort = newNodeIn.GetInputPort(inputPort.fieldName);
-                                outputPort = newNodeOut.GetOutputPort(outputPort.fieldName);
+                                inputPort = newNodeIn.GetInputPort(inputPort.MemberName);
+                                outputPort = newNodeOut.GetOutputPort(outputPort.MemberName);
                             }
                             if (!inputPort.IsConnectedTo(outputPort)) inputPort.Connect(outputPort);
                         }

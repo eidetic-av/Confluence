@@ -110,23 +110,9 @@ namespace Eidetic.Confluence
             MultiplierCSawtoothPort = GetOutputPort("MultiplierCSawtooth");
         }
 
-        public override void ValueUpdate()
-        {
-            float clockValue;
-            if (ClockPort.TryGetInputValue(out clockValue))
-            {
-                clockValue = Mathf.Clamp(clockValue, ClockMin, ClockMax);
-                if (Clock != clockValue)
-                {
-                    Clock = clockValue;
-                    Oscillator.Speed = Clock;
-                }
-            }
-        }
-
         public override object GetValue(NodePort port)
         {
-            switch(port.fieldName)
+            switch(port.MemberName)
             {
                 case "MasterSine": return Oscillator.Sine;
                 case "MultiplierASine": return Oscillator.GetSineMultiple(1 / MultiplierA);

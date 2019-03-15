@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -136,7 +137,7 @@ namespace XNode
             if (port == null) throw new ArgumentNullException("port");
             else if (port.IsStatic) throw new ArgumentException("cannot remove static port");
             port.ClearConnections();
-            ports.Remove(port.fieldName);
+            ports.Remove(port.MemberName);
         }
 
         /// <summary> Removes all instance ports from the node </summary>
@@ -152,33 +153,33 @@ namespace XNode
         #endregion
 
         #region Ports
-        /// <summary> Returns output port which matches fieldName </summary>
-        public NodePort GetOutputPort(string fieldName)
+        /// <summary> Returns output port which matches memberName </summary>
+        public NodePort GetOutputPort(string memberName)
         {
-            NodePort port = GetPort(fieldName);
+            NodePort port = GetPort(memberName);
             if (port == null || port.direction != NodePort.IO.Output) return null;
             else return port;
         }
 
-        /// <summary> Returns input port which matches fieldName </summary>
-        public NodePort GetInputPort(string fieldName)
+        /// <summary> Returns input port which matches memberName </summary>
+        public NodePort GetInputPort(string memberName)
         {
-            NodePort port = GetPort(fieldName);
+            NodePort port = GetPort(memberName);
             if (port == null || port.direction != NodePort.IO.Input) return null;
             else return port;
         }
 
         /// <summary> Returns port which matches fieldName </summary>
-        public NodePort GetPort(string fieldName)
+        public NodePort GetPort(string memberName)
         {
             NodePort port;
-            if (ports.TryGetValue(fieldName, out port)) return port;
+            if (ports.TryGetValue(memberName, out port)) return port;
             else return null;
         }
 
-        public bool HasPort(string fieldName)
+        public bool HasPort(string memberName)
         {
-            return ports.ContainsKey(fieldName);
+            return ports.ContainsKey(memberName);
         }
         #endregion
 
@@ -231,8 +232,8 @@ namespace XNode
             return JsonUtility.ToJson(this).GetHashCode();
         }
 
-        /// <summary> Mark a serializable field as an input port. You can access this through <see cref="GetInputPort(string)"/> </summary>
-        [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+        /// <summary> Mark a field or property as an input port. You can access this through <see cref="GetInputPort(string)"/> </summary>
+        [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
         public class InputAttribute : Attribute
         {
             public ShowBackingValue backingValue;

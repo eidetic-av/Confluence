@@ -33,7 +33,7 @@ namespace XNodeEditor {
         public virtual string GetNodeMenuName(Type type) {
             //Check if type has the CreateNodeMenuAttribute
             XNode.Node.CreateNodeMenuAttribute attrib;
-            if (NodeEditorUtilities.GetAttrib(type, out attrib)) // Return custom path
+            if (NodeEditorUtilities.GetAttribute(type, out attrib)) // Return custom path
                 return attrib.menuName;
             else // Return generated path
                 return ObjectNames.NicifyVariableName(type.ToString().Replace('.', '/'));

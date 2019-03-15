@@ -19,7 +19,7 @@ namespace XNode {
             List<NodePort> typePortCache;
             if (portDataCache.TryGetValue(nodeType, out typePortCache)) {
                 for (int i = 0; i < typePortCache.Count; i++) {
-                    staticPorts.Add(typePortCache[i].fieldName, portDataCache[nodeType][i]);
+                    staticPorts.Add(typePortCache[i].MemberName, portDataCache[nodeType][i]);
                 }
             }
 
@@ -28,18 +28,18 @@ namespace XNode {
             foreach (NodePort port in ports.Values.ToList()) {
                 // If port still exists, check it it has been changed
                 NodePort staticPort;
-                if (staticPorts.TryGetValue(port.fieldName, out staticPort)) {
+                if (staticPorts.TryGetValue(port.MemberName, out staticPort)) {
                     // If port exists but with wrong settings, remove it. Re-add it later.
-                    if (port.connectionType != staticPort.connectionType || port.IsDynamic || port.direction != staticPort.direction) ports.Remove(port.fieldName);
+                    if (port.connectionType != staticPort.connectionType || port.IsDynamic || port.direction != staticPort.direction) ports.Remove(port.MemberName);
                     else port.ValueType = staticPort.ValueType;
                 }
                 // If port doesn't exist anymore, remove it
-                else if (port.IsStatic) ports.Remove(port.fieldName);
+                else if (port.IsStatic) ports.Remove(port.MemberName);
             }
             // Add missing ports
             foreach (NodePort staticPort in staticPorts.Values) {
-                if (!ports.ContainsKey(staticPort.fieldName)) {
-                    ports.Add(staticPort.fieldName, new NodePort(staticPort, node));
+                if (!ports.ContainsKey(staticPort.MemberName)) {
+                    ports.Add(staticPort.MemberName, new NodePort(staticPort, node));
                 }
             }
         }
@@ -69,20 +69,36 @@ namespace XNode {
         }
 
         private static void CachePorts(System.Type nodeType) {
+            // Cache ports attributed to fields
             System.Reflection.FieldInfo[] fieldInfo = nodeType.GetFields();
             for (int i = 0; i < fieldInfo.Length; i++) {
 
                 //Get InputAttribute and OutputAttribute
-                object[] attribs = fieldInfo[i].GetCustomAttributes(false);
-                Node.InputAttribute inputAttrib = attribs.FirstOrDefault(x => x is Node.InputAttribute) as Node.InputAttribute;
-                Node.OutputAttribute outputAttrib = attribs.FirstOrDefault(x => x is Node.OutputAttribute) as Node.OutputAttribute;
+                object[] attributes = fieldInfo[i].GetCustomAttributes(false);
+                Node.InputAttribute inputAttribute = attributes.FirstOrDefault(x => x is Node.InputAttribute) as Node.InputAttribute;
+                Node.OutputAttribute outputAttribute = attributes.FirstOrDefault(x => x is Node.OutputAttribute) as Node.OutputAttribute;
 
-                if (inputAttrib == null && outputAttrib == null) continue;
+                if (inputAttribute == null && outputAttribute == null) continue;
 
-                if (inputAttrib != null && outputAttrib != null) Debug.LogError("Field " + fieldInfo[i].Name + " of type " + nodeType.FullName + " cannot be both input and output.");
+                if (inputAttribute != null && outputAttribute != null) Debug.LogError("Field " + fieldInfo[i].Name + " of type " + nodeType.FullName + " cannot be both input and output.");
                 else {
                     if (!portDataCache.ContainsKey(nodeType)) portDataCache.Add(nodeType, new List<NodePort>());
                     portDataCache[nodeType].Add(new NodePort(fieldInfo[i]));
+                }
+            }
+            // Cache ports that are attributed to properties
+            System.Reflection.PropertyInfo[] propertyInfo = nodeType.GetProperties();
+            for (int i = 0; i < propertyInfo.Length; i++) {
+
+                //Get InputPropertyAttribute
+                object[] attributes = propertyInfo[i].GetCustomAttributes(false);
+                Node.InputAttribute inputAttribute =
+                    attributes.FirstOrDefault(x => x is Node.InputAttribute) as Node.InputAttribute;
+               
+                if (inputAttribute == null) continue;
+                else {
+                    if (!portDataCache.ContainsKey(nodeType)) portDataCache.Add(nodeType, new List<NodePort>());
+                    portDataCache[nodeType].Add(new NodePort(propertyInfo[i]));
                 }
             }
         }

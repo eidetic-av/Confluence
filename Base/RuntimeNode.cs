@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using XNode;
@@ -51,9 +53,24 @@ public abstract class RuntimeNode : Node
         InstantiatedNodes.Remove(this);
         if (Application.isPlaying) Exit();
     }
+
+    public void ValueUpdate()
+    {
+        var connectedInputPorts = Ports.Where(port => port.IsInput && port.IsConnected);
+        foreach (var port in connectedInputPorts)
+        {
+            var inputValue = port.Connection.Node.GetValue(port.Connection);
+            var member = this.GetType().GetMember(port.MemberName).SingleOrDefault();
+            if (port.MemberType == MemberTypes.Property)
+            {
+                var property = member as PropertyInfo;
+                property.SetValue(this, inputValue);
+            }
+        }
+    }
+
     public virtual void Start() { }
     public virtual void Exit() { }
-    public virtual void ValueUpdate() { }
     public virtual void Update() { }
     public virtual void LateUpdate() { }
 }

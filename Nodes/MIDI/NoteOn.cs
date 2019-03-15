@@ -59,10 +59,10 @@ public class NoteOn : Node
 
     public override void OnCreateConnection(NodePort from, NodePort to)
     {
-        if (to.nodeType.GetInterfaces().Contains(typeof(ITriggeredNode)))
+        if (to.NodeType.GetInterfaces().Contains(typeof(ITriggeredNode)))
         {
             var field = typeof(ITriggeredNode).GetProperty("Trigger").GetSetMethod();
-            NodePortTriggerField.Create(field, to.node as ITriggeredNode);
+            NodePortTriggerField.Create(field, to.Node as ITriggeredNode);
 
             // Make sure trigger is part of the delegate
             MidiMaster.noteOnDelegate -= TriggerConnectedNodes;
