@@ -181,12 +181,19 @@ namespace XNodeEditor
                 case EventType.MouseDown:
                     Repaint();
 
-                    // portConnectionPoints.ToList().ForEach(kvp => Debug.Log(kvp.Value));
-                    var touchedPort = portConnectionPoints
+                    // Touch events occur on MouseDown, but can't set a 'hoveredPort'
+                    // the way Siccity did it because there is no MouseMove event
+
+                    // So, check if we've touched a port on this event
+                    hoveredPort = portConnectionPoints
                         .SingleOrDefault(kvp => GridToWindowRectNoClipped(kvp.Value)
                         .Contains(e.mousePosition)).Key;
                     
-                    if (touchedPort != null) hoveredPort = touchedPort;
+                    // and if we didn't, check if we touched a node title
+                    if (hoveredPort == default)
+                        hoveredNode = graph.nodes
+                            .SingleOrDefault(node => IsHoveringTitle(node));
+
 
                     if (e.button == 0)
                     {

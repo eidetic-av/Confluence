@@ -9,7 +9,7 @@ namespace XNodeEditor
     /// <summary> Contains GUI methods </summary>
     public partial class NodeEditorWindow
     {
-        public const int PortHitSize = 48;
+        public const int HitTargetSize = 48;
 
         public NodeGraphEditor graphEditor;
         private List<UnityEngine.Object> selectionCache;
@@ -26,13 +26,14 @@ namespace XNodeEditor
             graphEditor = NodeGraphEditor.GetEditor(graph);
             graphEditor.position = position;
 
+            DrawToolbar();
+
             Controls();
 
             DrawGrid(position, zoom, panOffset);
 
             DrawNodes();
             DrawSelectionBox();
-            DrawTooltip();
             graphEditor.OnGUI();
 
             DrawConnections();
@@ -46,6 +47,21 @@ namespace XNodeEditor
             }
 
             GUI.matrix = m;
+        }
+
+        void DrawToolbar()
+        {
+            GUILayout.BeginArea(new Rect(position.width - 50, 0, 50, position.height));
+
+            if (GUILayout.Button("Delete"))
+            {
+                UnityEditor.Selection.objects
+                    .Where(o => o.GetType().IsSubclassOf(typeof(XNode.Node)))
+                    .Cast<XNode.Node>().ToList()
+                    .ForEach(n => graphEditor.RemoveNode(n));
+            }
+            
+            GUILayout.EndArea();
         }
 
         public static void BeginZoomed(Rect rect, float zoom, float topPadding)
@@ -486,7 +502,7 @@ namespace XNodeEditor
                     {
                         Vector2 portHandlePos = kvp.Value;
                         portHandlePos += node.position;
-                        Rect rect = new Rect(portHandlePos.x - PortHitSize/2, portHandlePos.y - PortHitSize/2, PortHitSize, PortHitSize);
+                        Rect rect = new Rect(portHandlePos.x - HitTargetSize / 2, portHandlePos.y - HitTargetSize / 2, HitTargetSize, HitTargetSize);
                         if (portConnectionPoints.ContainsKey(kvp.Key)) portConnectionPoints[kvp.Key] = rect;
                         else portConnectionPoints.Add(kvp.Key, rect);
                     }
@@ -573,25 +589,6 @@ namespace XNodeEditor
                 else if (nodePos.y + size.y < 0) return true; // Top
             }
             return false;
-        }
-
-        private void DrawTooltip()
-        {
-            if (hoveredPort != null)
-            {
-                Type type = hoveredPort.ValueType;
-                GUIContent content = new GUIContent();
-                content.text = type.PrettyName();
-                if (hoveredPort.IsOutput)
-                {
-                    object obj = hoveredPort.node.GetValue(hoveredPort);
-                    content.text += " = " + (obj != null ? obj.ToString() : "null");
-                }
-                Vector2 size = NodeEditorResources.styles.tooltip.CalcSize(content);
-                Rect rect = new Rect(Event.current.mousePosition - (size), size);
-                EditorGUI.LabelField(rect, content, NodeEditorResources.styles.tooltip);
-                Repaint();
-            }
         }
     }
 }

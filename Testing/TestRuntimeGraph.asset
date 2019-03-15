@@ -1,35 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2004092119081987834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c989bb4b5265cd344a5467a5e919cc77, type: 3}
-  m_Name: Emitter
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -548, y: 61.5}
-  ports:
-    keys:
-    - Testfloat
-    values:
-    - _fieldName: Testfloat
-      _node: {fileID: -2004092119081987834}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: MultiplierCSawtooth
-        node: {fileID: 7491571186962530863}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _dynamic: 0
-  Testfloat: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,7 +15,6 @@ MonoBehaviour:
   nodes:
   - {fileID: 7491571186962530863}
   - {fileID: 2276411861755970568}
-  - {fileID: -2004092119081987834}
 --- !u!114 &2276411861755970568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,7 +28,7 @@ MonoBehaviour:
   m_Name: Texture Controller
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -456.5, y: -244}
+  position: {x: -523.5, y: -258}
   ports:
     keys:
     - ScaleX
@@ -71,10 +40,7 @@ MonoBehaviour:
       _node: {fileID: 2276411861755970568}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: MultiplierCSine
-        node: {fileID: 7491571186962530863}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 1
       _dynamic: 0
@@ -82,7 +48,10 @@ MonoBehaviour:
       _node: {fileID: 2276411861755970568}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: MultiplierCSine
+        node: {fileID: 7491571186962530863}
+        reroutePoints: []
       _direction: 0
       _connectionType: 1
       _dynamic: 0
@@ -103,8 +72,8 @@ MonoBehaviour:
       _connectionType: 1
       _dynamic: 0
   Material: {fileID: 2100000, guid: 150603c95ae82bb4a9364677de3f13c1, type: 2}
-  ScaleX: 0.48835304
-  ScaleY: 0.53
+  ScaleX: 0.29630828
+  ScaleY: 0.9600676
   OffsetX: -0.46
   OffsetY: 0
 --- !u!114 &7491571186962530863
@@ -120,7 +89,7 @@ MonoBehaviour:
   m_Name: Quad LFO
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -835, y: -317.5}
+  position: {x: -879, y: -239.5}
   ports:
     keys:
     - Clock
@@ -201,7 +170,7 @@ MonoBehaviour:
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: ScaleX
+      - fieldName: ScaleY
         node: {fileID: 2276411861755970568}
         reroutePoints: []
       _direction: 1
@@ -267,10 +236,7 @@ MonoBehaviour:
       _node: {fileID: 7491571186962530863}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Testfloat
-        node: {fileID: -2004092119081987834}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 0
       _dynamic: 0
@@ -315,7 +281,7 @@ MonoBehaviour:
     _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
       PublicKeyToken=b77a5c561934e089
     connections:
-    - fieldName: ScaleX
+    - fieldName: ScaleY
       node: {fileID: 2276411861755970568}
       reroutePoints: []
     _direction: 1
@@ -397,10 +363,7 @@ MonoBehaviour:
     _node: {fileID: 7491571186962530863}
     _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
       PublicKeyToken=b77a5c561934e089
-    connections:
-    - fieldName: Testfloat
-      node: {fileID: -2004092119081987834}
-      reroutePoints: []
+    connections: []
     _direction: 1
     _connectionType: 0
     _dynamic: 0
