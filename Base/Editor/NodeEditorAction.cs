@@ -53,7 +53,6 @@ namespace XNodeEditor
         {
             wantsMouseMove = true;
             Event e = Event.current;
-
             switch (e.type)
             {
                 case EventType.MouseMove:
@@ -321,6 +320,10 @@ namespace XNodeEditor
                         // If click node header, select it.
                         if (currentActivity == NodeActivity.HoldNode && !(e.control || e.shift))
                         {
+                            // need to check for selection on a touch event
+                            hoveredNode = graph.nodes
+                                .FirstOrDefault(node => IsHoveringTitle(node));
+
                             selectedReroutes.Clear();
                             SelectNode(hoveredNode, false);
                         }

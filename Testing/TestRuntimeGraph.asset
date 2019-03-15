@@ -28,7 +28,7 @@ MonoBehaviour:
   m_Name: Texture Controller
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -588, y: -350}
+  position: {x: -488, y: -236}
   ports:
     keys:
     - ScaleX
@@ -72,7 +72,7 @@ MonoBehaviour:
       _connectionType: 1
       _dynamic: 0
   Material: {fileID: 2100000, guid: 150603c95ae82bb4a9364677de3f13c1, type: 2}
-  ScaleX: 0.29630828
+  ScaleX: 0.05
   ScaleY: 0.30293122
   OffsetX: -0.46
   OffsetY: 0
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Name: Quad LFO
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -830, y: -346}
+  position: {x: -773, y: -210}
   ports:
     keys:
     - Clock
@@ -243,7 +243,7 @@ MonoBehaviour:
   Clock: 120
   MultiplierAPosition: 3
   MultiplierBPosition: 5
-  MultiplierCPosition: 11
+  MultiplierCPosition: 7
   MasterSine: 0
   MasterSinePort:
     _fieldName: MasterSine

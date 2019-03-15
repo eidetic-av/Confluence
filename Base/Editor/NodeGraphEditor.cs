@@ -49,6 +49,10 @@ namespace XNodeEditor {
             node.name = original.name;
             AssetDatabase.AddObjectToAsset(node, target);
             if (NodeEditorPreferences.GetSettings().autoSave) AssetDatabase.SaveAssets();
+            // move the copy out from the original
+            node.position += new Vector2(50, -50);
+            // and select the copy
+            Selection.objects = new UnityEngine.Object[] { node };
             return node;
         }
 
