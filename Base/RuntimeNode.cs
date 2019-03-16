@@ -43,10 +43,10 @@ namespace Eidetic.Confluence
             {
                 node.Start();
 
-            // Run the property setters in the dictionary
-            // with the backing field values to trigger any set behaviours
-            // that might need to be completed in play mode
-            foreach (var entry in node.Setters.ToList())
+                // Run the property setters in the dictionary
+                // with the backing field values to trigger any set behaviours
+                // that might need to be completed in play mode
+                foreach (var entry in node.Setters.ToList())
                     entry.Value(node.Getters[entry.Key]());
             });
         }
@@ -67,27 +67,20 @@ namespace Eidetic.Confluence
             Getters = new Dictionary<string, Func<object>>();
             Setters = new Dictionary<string, Action<object>>();
 
-            var nodeType = this.GetType();
-
-            var attributedFields = nodeType.GetFields()
-                .Where(field => field.GetCustomAttributes().OfType<NodePortAttribute>() != null);
-
-            foreach (var field in attributedFields)
+            foreach (var member in GetType().GetMembers().WithAttribute<NodePortAttribute>())
             {
-                // assume the field is a backing field for a PascalCased property
-                var propertyName = field.Name.ToPascal();
-                var property = nodeType.GetProperty(propertyName);
-                if (property != null)
+                if (member.MemberType == MemberTypes.Field)
                 {
-                    Getters.Add(propertyName, () => property.GetValue(this));
-                    Setters.Add(propertyName, (value) => property.SetValue(this, value));
+                    var field = member as FieldInfo;
+                    Getters.Add(field.Name, () => field.GetValue(this));
+                    Setters.Add(field.Name, (value) => field.SetValue(this, value));
                 }
-                // but if there's no corresponding property treat it like a standard field
                 else
                 {
-                    var standardField = nodeType.GetField(field.Name);
-                    Getters.Add(field.Name, () => standardField.GetValue(this));
-                    Setters.Add(field.Name, (value) => standardField.SetValue(this, value));
+                    var property = member as PropertyInfo;
+                    Getters.Add(property.Name, () => property.GetValue(this));
+                    if (property.GetSetMethod() != null)
+                        Setters.Add(property.Name, (value) => property.SetValue(this, value));
                 }
             }
 
