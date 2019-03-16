@@ -37,7 +37,16 @@ public abstract class RuntimeNode : Node
                 .WithHideFlags(HideFlags.NotEditable)
                 .InDontDestroyMode();
 
-        InstantiatedNodes.ForEachOnMain(node => node.Start());
+        InstantiatedNodes.ForEachOnMain(node =>
+        {
+            node.Start();
+            
+            // Run the property setters in the dictionary
+            // with the backing field values to trigger any set behaviours
+            // that might need to be completed in play mode
+            foreach(var entry in node.Setters.ToList())
+                entry.Value(node.Getters[entry.Key]());
+        });
     }
 
     public static void OnExit()
@@ -52,7 +61,7 @@ public abstract class RuntimeNode : Node
 
         InstantiatedNodes.Add(this);
 
-        // run and cache the getters & setters
+        // cache the getters & setters
         Getters = new Dictionary<string, Func<object>>();
         Setters = new Dictionary<string, Action<object>>();
 
