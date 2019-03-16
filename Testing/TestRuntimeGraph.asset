@@ -13,20 +13,31 @@ MonoBehaviour:
   m_Name: Emission
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -969, y: -363.5}
+  position: {x: -955, y: -343.5}
   ports:
     keys:
-    - MaxParticles
+    - Particles
+    - ParticleCount
     - EmissionRate
+    - MaxParticles
     values:
-    - memberName: MaxParticles
+    - memberName: Particles
+      memberType: 16
+      node: {fileID: -3051056013953650149}
+      typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: ParticleCount
       memberType: 16
       node: {fileID: -3051056013953650149}
       typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
-      Direction: 0
-      ConnectionType: 1
+      Direction: 1
+      ConnectionType: 0
       Dynamic: 0
     - memberName: EmissionRate
       memberType: 16
@@ -35,10 +46,19 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections: []
       Direction: 0
-      ConnectionType: 1
+      ConnectionType: 0
       Dynamic: 0
-  maxParticles: 50
-  emissionRate: 50
+    - memberName: MaxParticles
+      memberType: 16
+      node: {fileID: -3051056013953650149}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+  maxParticles: 23
+  emissionRate: 366.81
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

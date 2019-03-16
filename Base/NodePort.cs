@@ -81,18 +81,18 @@ namespace XNode
                 memberType = MemberTypes.Field;
                 ValueType = fieldInfo.FieldType;
                 Dynamic = false;
-                var attribs = fieldInfo.GetCustomAttributes(false);
-                for (int i = 0; i < attribs.Length; i++)
+                var attributes = fieldInfo.GetCustomAttributes(false);
+                for (int i = 0; i < attributes.Length; i++)
                 {
-                    if (attribs[i] is Node.InputAttribute)
+                    if (attributes[i] is Node.InputAttribute)
                     {
                         Direction = IO.Input;
-                        ConnectionType = (attribs[i] as Node.InputAttribute).connectionType;
+                        ConnectionType = (attributes[i] as Node.InputAttribute).connectionType;
                     }
-                    else if (attribs[i] is Node.OutputAttribute)
+                    else if (attributes[i] is Node.OutputAttribute)
                     {
                         Direction = IO.Output;
-                        ConnectionType = (attribs[i] as Node.OutputAttribute).connectionType;
+                        ConnectionType = (attributes[i] as Node.OutputAttribute).connectionType;
                     }
                 }
             } else if (memberInfo.MemberType == MemberTypes.Property)
@@ -108,7 +108,12 @@ namespace XNode
                     if (attributes[i] is Node.InputAttribute)
                     {
                         Direction = IO.Input;
-                        ConnectionType = Node.ConnectionType.Override;
+                        ConnectionType = (attributes[i] as Node.InputAttribute).connectionType;
+                    }
+                    else if (attributes[i] is Node.OutputAttribute)
+                    {
+                        Direction = IO.Output;
+                        ConnectionType = (attributes[i] as Node.OutputAttribute).connectionType;
                     }
                 }
             }

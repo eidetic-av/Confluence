@@ -68,25 +68,13 @@ namespace Eidetic.Confluence
             foreach(var kvp in node.Getters.Where(kvp => !displayedMembers.Contains(kvp.Key)))
             {
                 var name = kvp.Key;
-                Debug.Log(name);
-                Debug.Log(node.HasPort(name));
                 var port = node.GetPort(name);
                 NodeEditorGUILayout.DrawOutputPropertyPort(port, name, kvp.Value);
             }
         }
 
-
-        // Todo: I think there would be a better place to do this outside of
-        // the GUI calls.
-        //
         // if (Event.current.isMouse)
         // {
-        //     // if the port is assigned to a property, then we need to call the property setter manually,
-        //     // because the UI exposed to the user to manipulate with mouse drag / touch
-        //     // is the backing *field*.
-        //     // Even though Unity refer to it as a "SerializedProperty"...
-        //     //  ...  
-
         //     if (port.MemberType == MemberTypes.Property)
         //         if (port.Node.GetType().IsSubclassOf(typeof(RuntimeNode)))
         //         {

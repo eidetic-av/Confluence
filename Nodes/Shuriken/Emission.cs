@@ -57,7 +57,5 @@ namespace Eidetic.Confluence.Shuriken
             }
         }
 
-        [Output] public float TestOutput => 1.23f;
-
     }
 }

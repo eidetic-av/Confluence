@@ -124,13 +124,13 @@ namespace XNodeEditor
                 {
                     case XNode.Node.ShowBackingValue.Unconnected:
                         // Display a label if port is connected
-                        if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
+                        if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, HitTargetSizeOption);
                         // Display an editable property field if port is not connected
                         else EditorGUILayout.PropertyField(property, label, includeChildren, options);
                         break;
                     case XNode.Node.ShowBackingValue.Never:
                         // Display a label
-                        EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
+                        EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, HitTargetSizeOption);
                         break;
                     case XNode.Node.ShowBackingValue.Always:
                         // Display an editable property field
@@ -139,6 +139,32 @@ namespace XNodeEditor
                 }
             }
 
+            DrawPort(port);
+        }
+
+        public static void DrawOutputPropertyPort(XNode.NodePort port, string name, Func<object> getter)
+        {
+            // Get data from [Output] attribute
+            XNode.Node.ShowBackingValue showBacking = XNode.Node.ShowBackingValue.Unconnected;
+            switch (showBacking)
+            {
+                case XNode.Node.ShowBackingValue.Unconnected:
+                    // Display a label if port is connected
+                    if (port.IsConnected) EditorGUILayout.LabelField(new GUIContent(name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
+                    // Display a readonly text field if port is not connected
+                    // else EditorGUILayout.PropertyField(property, label,
+                    // includeChildren, options);
+                    else EditorGUILayout.TextField(new GUIContent(name), getter().ToString(), HitTargetSizeOption);
+                    break;
+                case XNode.Node.ShowBackingValue.Never:
+                    // Display a label
+                    EditorGUILayout.LabelField(new GUIContent(name), NodeEditorResources.OutputPort, HitTargetSizeOption);
+                    break;
+                case XNode.Node.ShowBackingValue.Always:
+                    // Display a readonly text field if port is not connected
+                    EditorGUILayout.TextField(new GUIContent(name), getter().ToString(), HitTargetSizeOption);
+                    break;
+            }
             DrawPort(port);
         }
 
@@ -169,32 +195,6 @@ namespace XNodeEditor
             Vector2 portPos = rect.center;
             if (NodeEditor.portPositions.ContainsKey(port)) NodeEditor.portPositions[port] = portPos;
             else NodeEditor.portPositions.Add(port, portPos);
-        }
-
-        public static void DrawOutputPropertyPort(XNode.NodePort port, string name, Func<object> getter)
-        {
-            // Get data from [Output] attribute
-            XNode.Node.ShowBackingValue showBacking = XNode.Node.ShowBackingValue.Unconnected;
-            switch (showBacking)
-            {
-                case XNode.Node.ShowBackingValue.Unconnected:
-                    // Display a label if port is connected
-                    if (port.IsConnected) EditorGUILayout.LabelField(new GUIContent(name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
-                    // Display a readonly text field if port is not connected
-                    // else EditorGUILayout.PropertyField(property, label,
-                    // includeChildren, options);
-                    else EditorGUILayout.TextField(new GUIContent(name), getter().ToString());
-                    break;
-                case XNode.Node.ShowBackingValue.Never:
-                    // Display a label
-                    EditorGUILayout.LabelField(new GUIContent(name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
-                    break;
-                case XNode.Node.ShowBackingValue.Always:
-                    // Display a readonly text field if port is not connected
-                    EditorGUILayout.TextField(new GUIContent(name), getter().ToString());
-                    break;
-            }
-            DrawPort(port);
         }
 
         private static System.Type GetType(SerializedProperty property)
