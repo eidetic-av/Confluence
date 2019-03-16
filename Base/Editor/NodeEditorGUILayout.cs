@@ -56,21 +56,19 @@ namespace XNodeEditor
 
             if (Event.current.isMouse)
             {
-                // if the port is a property, then we need to call the property setter manually,
-                // because the interface exposed to the user to manipulate with mouse dragging
-                // is the backing field
-                // Even though Unity refer to it as a property...
-                //  ...for some reason  ◔_◔
+                // if the port is assigned to a property, then we need to call the property setter manually,
+                // because the UI exposed to the user to manipulate with mouse drag / touch
+                // is the backing *field*.
+                // Even though Unity refer to it as a "SerializedProperty"...
+                //  ...  ◔_◔
 
                 if (port.MemberType == MemberTypes.Property)
-                {
                     if (port.Node.GetType().IsSubclassOf(typeof(RuntimeNode)))
                     {
                         var node = port.Node as RuntimeNode;
                         object backingFieldValue = node.Getters[port.MemberName]();
                         node.Setters[port.MemberName](backingFieldValue);
                     }
-                }
             }
 
             GUILayoutOption[] size = new GUILayoutOption[]

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using XNode;
+using Eidetic.Utility;
 using Eidetic.Unity.Utility;
 using static UnityEngine.ParticleSystem;
 
 namespace Eidetic.Confluence.Shuriken
 {
-    public class Emitter : RuntimeNode
+    public class Emission : RuntimeNode
     {
         ParticleSystem System;
         public override void Start()
@@ -54,12 +55,11 @@ namespace Eidetic.Confluence.Shuriken
             }
             set
             {
-                if (value <= 0) value = 0;
-                emissionRate = value;
+                emissionRate = value.Clamp(0, 100000);
                 if (System != null && System.isPlaying)
                 {
                     var emissionModule = System.emission;
-                    emissionModule.rateOverTime = new MinMaxCurve(value);
+                    emissionModule.rateOverTime = new MinMaxCurve(emissionRate);
                 }
             }
         }

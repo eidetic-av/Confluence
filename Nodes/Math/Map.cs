@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
-using Eidetic.Utility;
+using Eidetic.Unity.Utility;
 
 [CreateNodeMenu("Math/Map")]
 public class Map : RuntimeNode
