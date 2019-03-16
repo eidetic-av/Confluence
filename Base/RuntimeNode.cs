@@ -41,13 +41,18 @@ namespace Eidetic.Confluence
                     .WithHideFlags(HideFlags.NotEditable)
                     .InDontDestroyMode();
 
+            InstantiatedNodes.ForEachOnMain(node => node.Start());
+
+            // Run the property setters in the dictionary with the backing
+            // field value to trigger any set method side effects that might
+            // need to be run in play mode
+            RunSetters();
+        }
+
+        private static void RunSetters()
+        {
             InstantiatedNodes.ForEachOnMain(node =>
             {
-                node.Start();
-
-                // Run the property setters in the dictionary with the backing
-                // field value to trigger any set method side effects that might
-                // need to be run in play mode
                 foreach (var entry in node.Setters.ToList())
                     entry.Value(node.Getters[entry.Key]());
             });
@@ -104,7 +109,10 @@ namespace Eidetic.Confluence
                 }
             }
 
-            if (Application.isPlaying) Start();
+            if (Application.isPlaying) {
+                Awake();
+                Start();
+            }
         }
 
         void OnDestroy()
@@ -124,6 +132,15 @@ namespace Eidetic.Confluence
                     Setters[port.MemberName](port.Connection.Node.GetValue(port.Connection));
         }
 
+        public override void OnCreateConnection(NodePort from, NodePort to)
+        {
+            var toNode = to.Node as RuntimeNode;
+            if (toNode != this) return;
+            RunSetters();
+            base.OnCreateConnection(from, to);
+        }
+
+        internal virtual void Awake() { }
         internal virtual void Start() { }
         internal virtual void Exit() { }
         internal virtual void EarlyUpdate() { }

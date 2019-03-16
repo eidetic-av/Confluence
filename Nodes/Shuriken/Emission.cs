@@ -13,10 +13,11 @@ namespace Eidetic.Confluence.Shuriken
     public class Emission : ShurikenNode
     {
         
-        internal override void Start()
+        internal override void Awake()
         {
             if (System != null) return;
-            System = new GameObject("Shuriken Instance").AddComponent<ParticleSystem>();
+            System = (Instantiate(Resources.Load("Shuriken Instance")) as GameObject)
+                .GetComponent<ParticleSystem>();
             Systems.Add(this, System);
         }
         internal override void Exit()
@@ -26,7 +27,7 @@ namespace Eidetic.Confluence.Shuriken
             Systems.Remove(this);
         }
 
-        [SerializeField] public int maxParticles = 50;
+        [SerializeField] public int maxParticles = 250;
         [Input] public int MaxParticles
         {
             get

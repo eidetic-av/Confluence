@@ -11,6 +11,11 @@ namespace Eidetic.Confluence
         public void Awake()
         {
             Instance = this;
+            RuntimeNode.InstantiatedNodes.ForEachOnMain(n => n.Awake());
+        }
+        public void Start()
+        {
+            RuntimeNode.InstantiatedNodes.ForEachOnMain(n => n.Start());
         }
         public void Update()
         {
