@@ -4,13 +4,16 @@ using UnityEditor;
 using XNode;
 using XNodeEditor;
 
-[CustomNodeGraphEditor(typeof(RuntimeGraph))]
-public class RuntimeGraphEditor : NodeGraphEditor
+namespace Eidetic.Confluence
 {
-    RuntimeGraph Target;
-    public override void OnGUI()
+    [CustomNodeGraphEditor(typeof(RuntimeGraph))]
+    public class RuntimeGraphEditor : NodeGraphEditor
     {
-        if (Target == null)
-            Target = target as RuntimeGraph;
+        RuntimeGraph Target;
+        public override void OnGUI()
+        {
+            if (Target == null)
+                Target = target as RuntimeGraph;
+        }
     }
 }

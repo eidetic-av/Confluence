@@ -12,4 +12,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057c483995c5b6c4f91d19d80a02bde7, type: 3}
   m_Name: TestRuntimeGraph
   m_EditorClassIdentifier: 
-  nodes: []
+  nodes:
+  - {fileID: 2432161483102822713}
+--- !u!114 &2432161483102822713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bc15287bc054443b1511f2ee63b6c7, type: 3}
+  m_Name: Emission
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1042, y: -300.5}
+  ports:
+    keys:
+    - TestOutput
+    - MaxParticles
+    - EmissionRate
+    values:
+    - memberName: TestOutput
+      memberType: 4
+      node: {fileID: 2432161483102822713}
+      typeQualifiedName: System.Object[], mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: MaxParticles
+      memberType: 16
+      node: {fileID: 2432161483102822713}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 1
+      Dynamic: 0
+    - memberName: EmissionRate
+      memberType: 16
+      node: {fileID: 2432161483102822713}
+      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 1
+      Dynamic: 0
+  maxParticles: 50
+  emissionRate: 50

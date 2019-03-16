@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Eidetic.Utility;
+using Eidetic.Confluence;
 
 namespace XNodeEditor
 {
@@ -556,24 +557,24 @@ namespace XNodeEditor
                         if (r.Contains(mousePos)) hoveredPort = output;
                     }
                     //If the node is a GraphHolder, get the created inlets/outlets from the holder object
-                    if (hoveredNode != null && hoveredNode.GetType() == typeof(RuntimeGraphHolder))
-                    {
-                        var holder = hoveredNode as RuntimeGraphHolder;
-                        foreach (var inletPort in holder.InletPorts)
-                        {
-                            //Check if port rect is available
-                            if (!portConnectionPoints.ContainsKey(inletPort)) continue;
-                            Rect r = GridToWindowRectNoClipped(portConnectionPoints[inletPort]);
-                            if (r.Contains(mousePos)) hoveredPort = inletPort;
-                        }
-                        foreach (var outletPort in holder.OutletPorts)
-                        {
-                            //Check if port rect is available
-                            if (!portConnectionPoints.ContainsKey(outletPort)) continue;
-                            Rect r = GridToWindowRectNoClipped(portConnectionPoints[outletPort]);
-                            if (r.Contains(mousePos)) hoveredPort = outletPort;
-                        }
-                    }
+                    // if (hoveredNode != null && hoveredNode.GetType() == typeof(RuntimeGraphHolder))
+                    // {
+                    //     var holder = hoveredNode as RuntimeGraphHolder;
+                    //     foreach (var inletPort in holder.InletPorts)
+                    //     {
+                    //         //Check if port rect is available
+                    //         if (!portConnectionPoints.ContainsKey(inletPort)) continue;
+                    //         Rect r = GridToWindowRectNoClipped(portConnectionPoints[inletPort]);
+                    //         if (r.Contains(mousePos)) hoveredPort = inletPort;
+                    //     }
+                    //     foreach (var outletPort in holder.OutletPorts)
+                    //     {
+                    //         //Check if port rect is available
+                    //         if (!portConnectionPoints.ContainsKey(outletPort)) continue;
+                    //         Rect r = GridToWindowRectNoClipped(portConnectionPoints[outletPort]);
+                    //         if (r.Contains(mousePos)) hoveredPort = outletPort;
+                    //     }
+                    // }
                 }
 
                 GUILayout.EndArea();

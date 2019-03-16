@@ -4,36 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
-[CreateAssetMenu]
-public class RuntimeGraph : NodeGraph
+namespace Eidetic.Confluence
 {
-    public static bool NodeUpdaterInstantiated = false;
-
-    void Awake()
+    [CreateAssetMenu]
+    public class RuntimeGraph : NodeGraph
     {
-        InstantiateUpdater();
-    }
-    void OnEnable()
-    {
-        InstantiateUpdater();
-    }
-
-    void InstantiateUpdater()
-    {
-        // if (!NodeUpdaterInstantiated)
-        // {
-        //     GameObject heirarchyObject = new GameObject();
-        //     heirarchyObject.name = "RuntimeGraph Node Updater";
-        //     heirarchyObject.AddComponent(typeof(RuntimeNodeUpdater));
-        //     if (GameObject.Find(heirarchyObject.name) == null)
-        //         Instantiate(heirarchyObject);
-        //     NodeUpdaterInstantiated = true;
-        // }
-    }
-
-    /// <summary> Add a node to the graph by type </summary>
-    public Node AddNode(Type type)
-    {
-        return base.AddNode(type);
+        /// <summary> Add a node to the graph by type </summary>
+        public override Node AddNode(Type type)
+        {
+            return base.AddNode(type);
+        }
     }
 }

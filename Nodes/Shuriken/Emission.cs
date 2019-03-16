@@ -13,13 +13,13 @@ namespace Eidetic.Confluence.Shuriken
     public class Emission : ShurikenNode
     {
         
-        public override void Start()
+        internal override void Start()
         {
             if (System != null) return;
             System = new GameObject("Shuriken Instance").AddComponent<ParticleSystem>();
             Systems.Add(this, System);
         }
-        public override void Exit()
+        internal override void Exit()
         {
             if (System == null) return;
             System.gameObject.Destroy();
@@ -62,8 +62,6 @@ namespace Eidetic.Confluence.Shuriken
                 }
             }
         }
-
-        [Output] public int TestOut = 30;
 
     }
 }
