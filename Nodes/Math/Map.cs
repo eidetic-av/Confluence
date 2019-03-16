@@ -4,36 +4,39 @@ using UnityEngine;
 using XNode;
 using Eidetic.Unity.Utility;
 
-[CreateNodeMenu("Math/Map")]
-public class Map : RuntimeNode
+namespace Eidetic.Confluence
 {
-    [Input(ShowBackingValue.Never, ConnectionType.Override)] public float Input;
-    public Vector2 InputMinMax = new Vector2(0, 1);
-    public Vector2 OutputMinMax = new Vector2(0, 1);
-    [Output(ShowBackingValue.Always, ConnectionType.Multiple)] public float Output;
-
-    NodePort InputConnection;
-
-    protected override void Init()
+    [CreateNodeMenu("Math/Map")]
+    public class Map : RuntimeNode
     {
-        base.Init();
-        Input = InputMinMax.x;
-        Output = OutputMinMax.x;
-    }
+        [Input(ShowBackingValue.Never, ConnectionType.Override)] public float Input;
+        public Vector2 InputMinMax = new Vector2(0, 1);
+        public Vector2 OutputMinMax = new Vector2(0, 1);
+        [Output(ShowBackingValue.Always, ConnectionType.Multiple)] public float Output;
 
-    public override void Update()
-    {
-        Input = GetInputPort("Input").GetInputValue<float>();        
-        Output = Input.Map(InputMinMax, OutputMinMax);
-    }
+        NodePort InputConnection;
 
-    public float GetValue()
-    {
-        return Output;
-    }
+        protected override void Init()
+        {
+            base.Init();
+            Input = InputMinMax.x;
+            Output = OutputMinMax.x;
+        }
+        
+        internal override void Update()
+        {
+            Input = GetInputPort("Input").GetInputValue<float>();
+            Output = Input.Map(InputMinMax, OutputMinMax);
+        }
 
-    public override object GetValue(NodePort port)
-    {
-        return GetValue();
+        public float GetValue()
+        {
+            return Output;
+        }
+
+        public override object GetValue(NodePort port)
+        {
+            return GetValue();
+        }
     }
 }

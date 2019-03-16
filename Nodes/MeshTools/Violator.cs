@@ -28,7 +28,7 @@ namespace Eidetic.Confluence.MeshTools
                 OutputMesh = Instantiate(InputMesh);
         }
 
-        public override void Update()
+        internal override void Update()
         {
             if (RefreshOutput)
             {
