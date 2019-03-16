@@ -6,25 +6,24 @@ using XNode;
 using Eidetic.Utility;
 using Eidetic.Unity.Utility;
 using static UnityEngine.ParticleSystem;
+using static Eidetic.Confluence.Shuriken.SystemManager;
 
 namespace Eidetic.Confluence.Shuriken
 {
-    public class Emission : RuntimeNode
+    public class Emission : ShurikenNode
     {
-        ParticleSystem System;
+        
         public override void Start()
         {
-            if (System == null)
-            {
-                System = new GameObject("Shuriken Instance")
-                    .AddComponent<ParticleSystem>();
-                SystemManager.InstantiatedSystems.Add(System);
-            }
+            if (System != null) return;
+            System = new GameObject("Shuriken Instance").AddComponent<ParticleSystem>();
+            Systems.Add(this, System);
         }
         public override void Exit()
         {
-            SystemManager.InstantiatedSystems.Remove(System);
+            if (System == null) return;
             System.gameObject.Destroy();
+            Systems.Remove(this);
         }
 
         [SerializeField] public int maxParticles = 50;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Eidetic.Utility;
 
 namespace XNodeEditor
 {
@@ -53,8 +54,8 @@ namespace XNodeEditor
         {
 
             var selectedNodes = UnityEditor.Selection.objects
-                    .Where(o => o.GetType().IsSubclassOf(typeof(XNode.Node)))
-                    .Cast<XNode.Node>().ToList();
+                    .Where(o => o != null && o.GetType().IsSubclassOf(typeof(XNode.Node)))
+                    .ToList<XNode.Node>();
 
             GUI.enabled = selectedNodes.Count != 0;
 
