@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Eidetic.Confluence;
 
 namespace XNodeEditor
 {
@@ -439,17 +440,17 @@ namespace XNodeEditor
             return node;
         }
 
-        public XNode.Node CreateGraphHolderNode(RuntimeGraph runtimeGraph, Vector2 position)
-        {
-            var holder = graph.AddNode(typeof(RuntimeGraphHolder)) as RuntimeGraphHolder;
-            holder.position = position;
-            holder.name = UnityEditor.ObjectNames.NicifyVariableName(runtimeGraph.name);
-            holder.InitialiseTargetGraph(runtimeGraph);
-            AssetDatabase.AddObjectToAsset(holder, graph);
-            if (NodeEditorPreferences.GetSettings().autoSave) AssetDatabase.SaveAssets();
-            Repaint();
-            return holder;
-        }
+        // public XNode.Node CreateGraphHolderNode(RuntimeGraph runtimeGraph, Vector2 position)
+        // {
+        //     var holder = graph.AddNode(typeof(RuntimeGraphHolder)) as RuntimeGraphHolder;
+        //     holder.position = position;
+        //     holder.name = UnityEditor.ObjectNames.NicifyVariableName(runtimeGraph.name);
+        //     holder.InitialiseTargetGraph(runtimeGraph);
+        //     AssetDatabase.AddObjectToAsset(holder, graph);
+        //     if (NodeEditorPreferences.GetSettings().autoSave) AssetDatabase.SaveAssets();
+        //     Repaint();
+        //     return holder;
+        // }
 
         /// <summary> Remove nodes in the graph in Selection.objects</summary>
         public void RemoveSelectedNodes()

@@ -5,17 +5,20 @@ using UnityEditor;
 using XNode;
 using XNodeEditor;
 
-[CustomNodeEditor(typeof(AutoRotate))]
-public class AutoRotateEditor : NodeEditor
+namespace Eidetic.Confluence
 {
-    public override void OnBodyGUI()
+    [CustomNodeEditor(typeof(AutoRotate))]
+    public class AutoRotateEditor : NodeEditor
     {
-        base.OnBodyGUI();
+        public override void OnBodyGUI()
+        {
+            base.OnBodyGUI();
 
-        var mapNode = target as AutoRotate;
+            var mapNode = target as AutoRotate;
 
-        // object value = mapNode.GetValue();
-        // if (value != null)
-        //     EditorGUILayout.LabelField(value.ToString());
+            // object value = mapNode.GetValue();
+            // if (value != null)
+            //     EditorGUILayout.LabelField(value.ToString());
+        }
     }
 }

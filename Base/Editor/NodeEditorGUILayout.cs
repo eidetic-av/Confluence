@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using Eidetic.Utility;
+using Eidetic.Confluence;
 
 namespace XNodeEditor
 {

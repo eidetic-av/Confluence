@@ -255,7 +255,7 @@ namespace XNode
         }
 
         /// <summary> Mark a serializable field as an output port. You can access this through <see cref="GetOutputPort(string)"/> </summary>
-        [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+        [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
         public class OutputAttribute : NodePortAttribute
         {
             public ShowBackingValue backingValue;

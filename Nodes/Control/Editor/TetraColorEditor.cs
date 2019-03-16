@@ -5,15 +5,18 @@ using UnityEditor;
 using XNode;
 using XNodeEditor;
 
-[CustomNodeEditor(typeof(TetraColor))]
-public class TetraColorEditor : NodeEditor
+namespace Eidetic.Confluence
 {
-    public Color[] Colors = new Color[] {
+    [CustomNodeEditor(typeof(TetraColor))]
+    public class TetraColorEditor : NodeEditor
+    {
+        public Color[] Colors = new Color[] {
         Color.red, Color.magenta, Color.cyan, Color.yellow
     };
 
-    public override void OnBodyGUI()
-    {
-        base.OnBodyGUI();
+        public override void OnBodyGUI()
+        {
+            base.OnBodyGUI();
+        }
     }
 }

@@ -35,8 +35,9 @@ namespace XNode
         {
             get
             {
-                return NodeType.Equals(typeof(Inlet))
-                || NodeType.Equals(typeof(Outlet));
+                return false;
+                // return NodeType.Equals(typeof(Inlet))
+                // || NodeType.Equals(typeof(Outlet));
             }
         }
 

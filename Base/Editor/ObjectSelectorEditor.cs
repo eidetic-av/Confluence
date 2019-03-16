@@ -147,12 +147,12 @@ namespace Eidetic.Confluence
                 var node = Window.CreateNode(SelectedNodeType, Position);
                 Window.SelectNode(node, false);
             }
-            else if (SelectedRuntimeGraph != null)
-            {
-                // if it's a graph, create the holder node
-                var node = Window.CreateGraphHolderNode(SelectedRuntimeGraph, Position);
-                Window.SelectNode(node, false);
-            }
+            // else if (SelectedRuntimeGraph != null)
+            // {
+            //     // if it's a graph, create the holder node
+            //     var node = Window.CreateGraphHolderNode(SelectedRuntimeGraph, Position);
+            //     Window.SelectNode(node, false);
+            // }
         }
 
         int QueryOrder(string inputQuery, string typeName)

@@ -5,17 +5,20 @@ using UnityEditor;
 using XNode;
 using XNodeEditor;
 
-[CustomNodeEditor(typeof(Map))]
-public class MapEditor : NodeEditor
+namespace Eidetic.Confluence
 {
-    public override void OnBodyGUI()
+    [CustomNodeEditor(typeof(Map))]
+    public class MapEditor : NodeEditor
     {
-        base.OnBodyGUI();
+        public override void OnBodyGUI()
+        {
+            base.OnBodyGUI();
 
-        var mapNode = target as Map;
+            var mapNode = target as Map;
 
-        object value = mapNode.GetValue();
-        if (value != null)
-            EditorGUILayout.LabelField(value.ToString());
+            object value = mapNode.GetValue();
+            if (value != null)
+                EditorGUILayout.LabelField(value.ToString());
+        }
     }
 }
