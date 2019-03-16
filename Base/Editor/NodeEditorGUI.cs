@@ -13,6 +13,12 @@ namespace XNodeEditor
     {
         public const int HitTargetSize = 48;
 
+        public static GUILayoutOption[] HitTargetSizeOption => new GUILayoutOption[]
+        {
+            GUILayout.MinWidth(HitTargetSize),
+            GUILayout.MinHeight(HitTargetSize)
+        };
+
         public NodeGraphEditor graphEditor;
         private List<UnityEngine.Object> selectionCache;
         private List<XNode.Node> culledNodes;
@@ -69,12 +75,12 @@ namespace XNodeEditor
                 toolbarPadding, toolbarWidth, position.height));
 
             if (GUILayout.Button("Delete", GUILayout.Height(buttonHeight)))
-                    selectedNodes.ForEach(n => graphEditor.RemoveNode(n));
+                selectedNodes.ForEach(n => graphEditor.RemoveNode(n));
 
             GUILayout.Space(toolbarPadding);
-                    
+
             if (GUILayout.Button("Copy", GUILayout.Height(buttonHeight)))
-                    selectedNodes.ForEach(n => graphEditor.CopyNode(n));
+                selectedNodes.ForEach(n => graphEditor.CopyNode(n));
 
             GUILayout.EndArea();
             GUI.enabled = true;

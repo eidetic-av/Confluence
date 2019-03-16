@@ -9,6 +9,8 @@ using UnityEngine;
 using Eidetic.Utility;
 using Eidetic.Confluence;
 
+using static XNodeEditor.NodeEditorWindow;
+
 namespace XNodeEditor
 {
     /// <summary> xNode-specific version of <see cref="EditorGUILayout"/> </summary>
@@ -32,14 +34,11 @@ namespace XNodeEditor
             if (property == null) throw new NullReferenceException();
             XNode.Node node = property.serializedObject.targetObject as XNode.Node;
 
-            // ask for the PascalCased name
-            // treat fields in PascalCase as public fields,
-            // and fields in camelCase as backing fields to the relevant PascalCased property
-            // as per the Microsoft guidelines
+            // ask for the PascalCased name -- treat fields in PascalCase as
+            // public fields, and fields in camelCase as backing fields to the
+            // relevant PascalCased property
 
-            var portName = property.name.ToPascal();
-
-            XNode.NodePort port = node.GetPort(portName);
+            var port = node.GetPort(property.name.ToPascal());
             PropertyField(property, label, port, includeChildren);
         }
 
@@ -54,135 +53,148 @@ namespace XNodeEditor
         {
             if (property == null) throw new NullReferenceException();
 
-
-            // if (Event.current.isMouse)
-            // {
-            //     // if the port is assigned to a property, then we need to call the property setter manually,
-            //     // because the UI exposed to the user to manipulate with mouse drag / touch
-            //     // is the backing *field*.
-            //     // Even though Unity refer to it as a "SerializedProperty"...
-            //     //  ...  ◔_◔
-
-            //     if (port.MemberType == MemberTypes.Property)
-            //         if (port.Node.GetType().IsSubclassOf(typeof(RuntimeNode)))
-            //         {
-            //             var node = port.Node as RuntimeNode;
-            //             object backingFieldValue = node.Getters[port.MemberName]();
-            //             node.Setters[port.MemberName](backingFieldValue);
-            //         }
-            // }
-
-            GUILayoutOption[] size = new GUILayoutOption[]
-            {
-                GUILayout.MinWidth(NodeEditorWindow.HitTargetSize),
-                GUILayout.MinHeight(NodeEditorWindow.HitTargetSize)
-            };
-
             // If property is not a port, display a regular property field
-            if (port == null) EditorGUILayout.PropertyField(property, label, includeChildren, size);
+            if (port == null) EditorGUILayout.PropertyField(property, label, includeChildren, HitTargetSizeOption);
             else
             {
-                Rect rect = new Rect();
-
-                // If property is an input, display a regular property field and put a port handle on the left side
-                if (port.direction == XNode.NodePort.IO.Input)
-                {
-                    // Get data from [Input] attribute
-                    XNode.Node.ShowBackingValue showBacking = XNode.Node.ShowBackingValue.Unconnected;
-                    XNode.Node.InputAttribute inputAttribute;
-                    bool instancePortList = false;
-
-
-                    if (NodeEditorUtilities.GetAttribute(port.Node.GetType(), property.name, out inputAttribute))
-                    {
-                        instancePortList = inputAttribute.instancePortList;
-                        showBacking = inputAttribute.backingValue;
-                    }
-
-                    if (instancePortList)
-                    {
-                        Type type = GetType(property);
-                        XNode.Node.ConnectionType connectionType = inputAttribute != null ? inputAttribute.connectionType : XNode.Node.ConnectionType.Multiple;
-                        InstancePortList(property.name, type, property.serializedObject, port.direction, connectionType);
-                        return;
-                    }
-
-                    switch (showBacking)
-                    {
-                        case XNode.Node.ShowBackingValue.Unconnected:
-                            // Display a label if port is connected
-                            if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName));
-                            // Display an editable property field if port is not connected
-                            else EditorGUILayout.PropertyField(property, label, includeChildren, size);
-                            break;
-                        case XNode.Node.ShowBackingValue.Never:
-                            // Display a label
-                            EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName));
-                            break;
-                        case XNode.Node.ShowBackingValue.Always:
-                            // Display an editable property field
-                            EditorGUILayout.PropertyField(property, label, includeChildren, size);
-                            break;
-                    }
-
-                    rect = GUILayoutUtility.GetLastRect();
-                    rect.position = rect.position - new Vector2(18, 0);
-                    // If property is an output, display a text label and put a port handle on the right side
-                }
-                else if (port.direction == XNode.NodePort.IO.Output)
-                {
-                    // Get data from [Output] attribute
-                    XNode.Node.ShowBackingValue showBacking = XNode.Node.ShowBackingValue.Unconnected;
-                    XNode.Node.OutputAttribute outputAttribute;
-                    bool instancePortList = false;
-                    if (NodeEditorUtilities.GetAttribute(port.Node.GetType(), property.name, out outputAttribute))
-                    {
-                        instancePortList = outputAttribute.instancePortList;
-                        showBacking = outputAttribute.backingValue;
-                    }
-
-                    if (instancePortList)
-                    {
-                        Type type = GetType(property);
-                        XNode.Node.ConnectionType connectionType = outputAttribute != null ? outputAttribute.connectionType : XNode.Node.ConnectionType.Multiple;
-                        InstancePortList(property.name, type, property.serializedObject, port.direction, connectionType);
-                        return;
-                    }
-                    switch (showBacking)
-                    {
-                        case XNode.Node.ShowBackingValue.Unconnected:
-                            // Display a label if port is connected
-                            if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
-                            // Display an editable property field if port is not connected
-                            else EditorGUILayout.PropertyField(property, label, includeChildren, size);
-                            break;
-                        case XNode.Node.ShowBackingValue.Never:
-                            // Display a label
-                            EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.displayName), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
-                            break;
-                        case XNode.Node.ShowBackingValue.Always:
-                            // Display an editable property field
-                            EditorGUILayout.PropertyField(property, label, includeChildren, size);
-                            break;
-                    }
-
-                    rect = GUILayoutUtility.GetLastRect();
-                    rect.position = rect.position + new Vector2(rect.width, 0);
-                }
-
-                rect.size = new Vector2(16, 16);
-
-                Color backgroundColor = new Color32(90, 97, 105, 255);
-                Color tint;
-                if (NodeEditorWindow.nodeTint.TryGetValue(port.Node.GetType(), out tint)) backgroundColor *= tint;
-                Color col = NodeEditorWindow.current.graphEditor.GetTypeColor(port.ValueType);
-                DrawPortHandle(rect, backgroundColor, col);
-
-                // Register the handle position
-                Vector2 portPos = rect.center;
-                if (NodeEditor.portPositions.ContainsKey(port)) NodeEditor.portPositions[port] = portPos;
-                else NodeEditor.portPositions.Add(port, portPos);
+                DrawSerializedPort(property, label, port, includeChildren, HitTargetSizeOption);
             }
+        }
+
+        private static void DrawSerializedPort(SerializedProperty property, GUIContent label, XNode.NodePort port, bool includeChildren = true, params GUILayoutOption[] options)
+        {
+            // If property is an input, display a regular property field and put a port handle on the left side
+            if (port.direction == XNode.NodePort.IO.Input)
+            {
+                // Get data from [Input] attribute
+                XNode.Node.InputAttribute inputAttribute;
+                bool instancePortList = false;
+                var showBacking = XNode.Node.ShowBackingValue.Unconnected;
+
+                if (NodeEditorUtilities.GetAttribute(port.Node.GetType(), property.name, out inputAttribute))
+                {
+                    instancePortList = inputAttribute.instancePortList;
+                    showBacking = inputAttribute.backingValue;
+                }
+
+                if (instancePortList)
+                {
+                    XNode.Node.ConnectionType connectionType = inputAttribute != null ? inputAttribute.connectionType : XNode.Node.ConnectionType.Multiple;
+                    InstancePortList(property.name, GetType(property), property.serializedObject, port.direction, connectionType);
+                    return;
+                }
+
+                switch (showBacking)
+                {
+                    case XNode.Node.ShowBackingValue.Unconnected:
+                        // Display a label if port is connected
+                        if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name));
+                        // Display an editable property field if port is not connected
+                        else EditorGUILayout.PropertyField(property, label, includeChildren, options);
+                        break;
+                    case XNode.Node.ShowBackingValue.Never:
+                        // Display a label
+                        EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name));
+                        break;
+                    case XNode.Node.ShowBackingValue.Always:
+                        // Display an editable property field
+                        EditorGUILayout.PropertyField(property, label, includeChildren, options);
+                        break;
+                }
+            }
+            else if (port.direction == XNode.NodePort.IO.Output)
+            {
+                // Get data from [Output] attribute
+                XNode.Node.ShowBackingValue showBacking = XNode.Node.ShowBackingValue.Unconnected;
+                XNode.Node.OutputAttribute outputAttribute;
+                bool instancePortList = false;
+                if (NodeEditorUtilities.GetAttribute(port.Node.GetType(), property.name, out outputAttribute))
+                {
+                    instancePortList = outputAttribute.instancePortList;
+                    showBacking = outputAttribute.backingValue;
+                }
+
+                if (instancePortList)
+                {
+                    XNode.Node.ConnectionType connectionType = outputAttribute != null ? outputAttribute.connectionType : XNode.Node.ConnectionType.Multiple;
+                    InstancePortList(property.name, GetType(property), property.serializedObject, port.direction, connectionType);
+                    return;
+                }
+                switch (showBacking)
+                {
+                    case XNode.Node.ShowBackingValue.Unconnected:
+                        // Display a label if port is connected
+                        if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
+                        // Display an editable property field if port is not connected
+                        else EditorGUILayout.PropertyField(property, label, includeChildren, options);
+                        break;
+                    case XNode.Node.ShowBackingValue.Never:
+                        // Display a label
+                        EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
+                        break;
+                    case XNode.Node.ShowBackingValue.Always:
+                        // Display an editable property field
+                        EditorGUILayout.PropertyField(property, label, includeChildren, options);
+                        break;
+                }
+            }
+
+            DrawPort(port);
+        }
+
+        private static void DrawPort(XNode.NodePort port)
+        {
+            var rect = new Rect();
+
+            if (port.direction == XNode.NodePort.IO.Input)
+            {
+                rect = GUILayoutUtility.GetLastRect();
+                rect.position = rect.position - new Vector2(18, 0);
+            }
+            else if (port.direction == XNode.NodePort.IO.Output)
+            {
+                rect = GUILayoutUtility.GetLastRect();
+                rect.position = rect.position + new Vector2(rect.width, 0);
+            }
+
+            rect.size = new Vector2(16, 16);
+
+            Color backgroundColor = new Color32(90, 97, 105, 255);
+            Color tint;
+            if (NodeEditorWindow.nodeTint.TryGetValue(port.Node.GetType(), out tint)) backgroundColor *= tint;
+            Color col = NodeEditorWindow.current.graphEditor.GetTypeColor(port.ValueType);
+            DrawPortHandle(rect, backgroundColor, col);
+
+            // Register the handle position
+            Vector2 portPos = rect.center;
+            if (NodeEditor.portPositions.ContainsKey(port)) NodeEditor.portPositions[port] = portPos;
+            else NodeEditor.portPositions.Add(port, portPos);
+        }
+
+        public static void DrawOutputPropertyPort(XNode.NodePort port, string name, Func<object> getter)
+        {
+            // Get data from [Output] attribute
+            XNode.Node.ShowBackingValue showBacking = XNode.Node.ShowBackingValue.Unconnected;
+            switch (showBacking)
+            {
+                case XNode.Node.ShowBackingValue.Unconnected:
+                    // Display a label if port is connected
+                    if (port.IsConnected) EditorGUILayout.LabelField(new GUIContent(name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
+                    // Display a readonly text field if port is not connected
+                    // else EditorGUILayout.PropertyField(property, label,
+                    // includeChildren, options);
+                    else EditorGUILayout.TextField(new GUIContent(name), getter().ToString());
+                    break;
+                case XNode.Node.ShowBackingValue.Never:
+                    // Display a label
+                    EditorGUILayout.LabelField(new GUIContent(name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
+                    break;
+                case XNode.Node.ShowBackingValue.Always:
+                    // Display a readonly text field if port is not connected
+                    EditorGUILayout.TextField(new GUIContent(name), getter().ToString());
+                    break;
+            }
+            DrawPort(port);
         }
 
         private static System.Type GetType(SerializedProperty property)

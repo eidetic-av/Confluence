@@ -37,11 +37,8 @@ namespace Eidetic.Confluence.Shuriken
             {
                 if (value <= 0) value = 0;
                 maxParticles = value;
-                if (System != null && System.isPlaying)
-                {
-                    var mainModule = System.main;
-                    mainModule.maxParticles = value;
-                }
+                var mainModule = System.main;
+                mainModule.maxParticles = value;
             }
         }
 
@@ -55,11 +52,8 @@ namespace Eidetic.Confluence.Shuriken
             set
             {
                 emissionRate = value.Clamp(0, 100000);
-                if (System != null && System.isPlaying)
-                {
-                    var emissionModule = System.emission;
-                    emissionModule.rateOverTime = new MinMaxCurve(emissionRate);
-                }
+                var emissionModule = System.emission;
+                emissionModule.rateOverTime = new MinMaxCurve(emissionRate);
             }
         }
 

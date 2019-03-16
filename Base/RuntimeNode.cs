@@ -18,7 +18,9 @@ namespace Eidetic.Confluence
         public static List<RuntimeNode> InstantiatedNodes = new List<RuntimeNode>();
 
         public Dictionary<string, Func<object>> Getters { get; private set; }
-        public Dictionary<string, Action<object>> Setters { get; private set; }
+        public Dictionary<string, Func<object, object>> Setters { get; private set; }
+
+        public Dictionary<string, FieldInfo> BackingFields { get; private set; }
 
         static RuntimeNode() => EditorApplication.playModeStateChanged += (playModeStateChange) =>
         {
@@ -43,9 +45,9 @@ namespace Eidetic.Confluence
             {
                 node.Start();
 
-                // Run the property setters in the dictionary
-                // with the backing field values to trigger any set behaviours
-                // that might need to be completed in play mode
+                // Run the property setters in the dictionary with the backing
+                // field value to trigger any set method side effects that might
+                // need to be run in play mode
                 foreach (var entry in node.Setters.ToList())
                     entry.Value(node.Getters[entry.Key]());
             });
@@ -65,7 +67,11 @@ namespace Eidetic.Confluence
 
             // cache the getters & setters
             Getters = new Dictionary<string, Func<object>>();
-            Setters = new Dictionary<string, Action<object>>();
+            Setters = new Dictionary<string, Func<object, object>>();
+
+            // and store the information about backing fields so that we can
+            // serialize the node objects properly (see RuntimeNodeEditor)
+            BackingFields = new Dictionary<string, FieldInfo>();
 
             foreach (var member in GetType().GetMembers().WithAttribute<NodePortAttribute>())
             {
@@ -73,14 +79,28 @@ namespace Eidetic.Confluence
                 {
                     var field = member as FieldInfo;
                     Getters.Add(field.Name, () => field.GetValue(this));
-                    Setters.Add(field.Name, (value) => field.SetValue(this, value));
+                    Setters.Add(field.Name, (value) =>
+                    {
+                        field.SetValue(this, value);
+                        return value;
+                    });
                 }
                 else
                 {
                     var property = member as PropertyInfo;
                     Getters.Add(property.Name, () => property.GetValue(this));
-                    if (property.GetSetMethod() != null)
-                        Setters.Add(property.Name, (value) => property.SetValue(this, value));
+
+                    if (property.GetSetMethod() == null) continue;
+                    Setters.Add(property.Name, (value) =>
+                    {
+                        property.SetValue(this, value);
+                        return property.GetValue(this);
+                    });
+
+                    var backingField = GetType().GetField(property.Name.ToCamel());
+                    if (backingField == null) continue;
+                    BackingFields.Add(property.Name, backingField);
+
                 }
             }
 
@@ -95,16 +115,13 @@ namespace Eidetic.Confluence
 
         public override object GetValue(NodePort port) => Getters[port.MemberName]();
 
-        // Todo:
-        // All input ports are updated every frame
-        // Is that necessary if the values don't update?
         internal void ValueUpdate()
         {
-            foreach (var port in Ports.Where(port => port.IsInput && port.IsConnected))
-            {
-                var inputValue = port.Connection.Node.GetValue(port.Connection);
-                Setters[port.MemberName](inputValue);
-            }
+            // If an input port is connected, update it's value with
+            // the output value of the node it's connected to.
+            foreach (var port in Ports.Where(port => port.IsInput))
+                if (port.IsConnected)
+                    Setters[port.MemberName](port.Connection.Node.GetValue(port.Connection));
         }
 
         internal virtual void Start() { }
