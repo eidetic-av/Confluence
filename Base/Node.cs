@@ -232,9 +232,12 @@ namespace XNode
             return JsonUtility.ToJson(this).GetHashCode();
         }
 
+        /// <summary> A parent type for checking if a custom attribute is one of InputAttribute or OutputAttribute </summary>
+        public class NodePortAttribute : Attribute { }
+
         /// <summary> Mark a field or property as an input port. You can access this through <see cref="GetInputPort(string)"/> </summary>
         [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-        public class InputAttribute : Attribute
+        public class InputAttribute : NodePortAttribute
         {
             public ShowBackingValue backingValue;
             public ConnectionType connectionType;
@@ -253,7 +256,7 @@ namespace XNode
 
         /// <summary> Mark a serializable field as an output port. You can access this through <see cref="GetOutputPort(string)"/> </summary>
         [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-        public class OutputAttribute : Attribute
+        public class OutputAttribute : NodePortAttribute
         {
             public ShowBackingValue backingValue;
             public ConnectionType connectionType;

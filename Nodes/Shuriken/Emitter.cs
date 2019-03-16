@@ -26,8 +26,6 @@ namespace Eidetic.Confluence.Shuriken
             System.gameObject.Destroy();
         }
 
-        // Todo: is there a way to make this backing value private?
-        // Need to get the value in NodeEditorGUILayout
         [SerializeField] public int maxParticles = 50;
         [Input] public int MaxParticles
         {
@@ -43,6 +41,25 @@ namespace Eidetic.Confluence.Shuriken
                 {
                     var mainModule = System.main;
                     mainModule.maxParticles = value;
+                }
+            }
+        }
+
+        [SerializeField] public float emissionRate = 50;
+        [Input] public float EmissionRate
+        {
+            get
+            {
+                return emissionRate;
+            }
+            set
+            {
+                if (value <= 0) value = 0;
+                emissionRate = value;
+                if (System != null && System.isPlaying)
+                {
+                    var emissionModule = System.emission;
+                    emissionModule.rateOverTime = new MinMaxCurve(value);
                 }
             }
         }

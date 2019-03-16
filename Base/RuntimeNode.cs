@@ -7,12 +7,16 @@ using UnityEngine;
 using UnityEditor;
 using XNode;
 using Eidetic.Unity.Utility;
+using Eidetic.Utility;
 
 [InitializeOnLoad]
 public abstract class RuntimeNode : Node
 {
     public static GameObject Updater { get; protected set; }
     public static List<RuntimeNode> InstantiatedNodes = new List<RuntimeNode>();
+
+    public Dictionary<string, Func<object>> Getters { get; private set; }
+    public Dictionary<string, Action<object>> Setters { get; private set; }
 
     static RuntimeNode() => EditorApplication.playModeStateChanged += (playModeStateChange) =>
     {
@@ -32,11 +36,8 @@ public abstract class RuntimeNode : Node
                 .WithComponent<RuntimeNodeUpdater>()
                 .WithHideFlags(HideFlags.NotEditable)
                 .InDontDestroyMode();
-        InstantiatedNodes.ForEachOnMain(n => n.Start());
 
-        // Todo:
-        // need to figure out a way to run all property setters for
-        // backing fields that could have been updated outside of play mode
+        InstantiatedNodes.ForEachOnMain(node => node.Start());
     }
 
     public static void OnExit()
@@ -48,7 +49,37 @@ public abstract class RuntimeNode : Node
     new void OnEnable()
     {
         base.OnEnable();
+
         InstantiatedNodes.Add(this);
+
+        // run and cache the getters & setters
+        Getters = new Dictionary<string, Func<object>>();
+        Setters = new Dictionary<string, Action<object>>();
+
+        var nodeType = this.GetType();
+
+        var attributedFields = nodeType.GetFields()
+            .Where(field => field.GetCustomAttributes().OfType<NodePortAttribute>() != null);
+
+        foreach (var field in attributedFields)
+        {
+            // assume the field is a backing field for a PascalCased property
+            var propertyName = field.Name.ToPascal();
+            var property = nodeType.GetProperty(propertyName);
+            if (property != null)
+            {
+                Getters.Add(propertyName, () => property.GetValue(this));
+                Setters.Add(propertyName, (value) => property.SetValue(this, value));
+            }
+            // but if there's no corresponding property treat it like a standard field
+            else
+            {
+                var standardField = nodeType.GetField(field.Name);
+                Getters.Add(field.Name, () => standardField.GetValue(this));
+                Setters.Add(field.Name, (value) => standardField.SetValue(this, value));
+            }
+        }
+
         if (Application.isPlaying) Start();
     }
 
@@ -59,37 +90,18 @@ public abstract class RuntimeNode : Node
     }
 
     // Todo:
-    // All connected ports are updated every frame
+    // All input ports are updated every frame
     // Is that necessary if the values don't update?
     public void ValueUpdate()
     {
-        // Todo:
-        // I guess these property setters should be cached so there is no Runtime reflection?
-
-        // Same with the GetValue() method
-
-        var connectedInputPorts = Ports.Where(port => port.IsInput && port.IsConnected);
-        foreach (var port in connectedInputPorts)
+        foreach (var port in Ports.Where(port => port.IsInput && port.IsConnected))
         {
             var inputValue = port.Connection.Node.GetValue(port.Connection);
-            var member = this.GetType().GetMember(port.MemberName).Single();
-
-            if (port.MemberType == MemberTypes.Property)
-                (member as PropertyInfo).SetValue(this, inputValue);
-            else
-                (member as FieldInfo).SetValue(this, inputValue);
+            Setters[port.MemberName](inputValue);
         }
     }
 
-    public override object GetValue(NodePort port)
-    {
-        var member = this.GetType().GetMember(port.MemberName).Single();
-
-        if (port.MemberType == MemberTypes.Property)
-            return (member as PropertyInfo).GetValue(this);
-        else
-            return (member as FieldInfo).GetValue(this);
-    }
+    public override object GetValue(NodePort port) => Getters[port.MemberName]();
 
     public virtual void Start() { }
     public virtual void Exit() { }
