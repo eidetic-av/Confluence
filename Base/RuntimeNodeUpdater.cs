@@ -1,34 +1,30 @@
+using MidiJack;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using MidiJack;
+using Eidetic.Unity.Utility;
 
 namespace Eidetic.Confluence
 {
     public class RuntimeNodeUpdater : MonoBehaviour
     {
-        public static RuntimeNodeUpdater Instance;
-
-        public void Awake()
+        public static RuntimeNodeUpdater Instance { get; private set; }
+        public static RuntimeNodeUpdater Instantiate()
         {
-            Instance = this;
-            RuntimeNode.InstantiatedNodes.ForEachOnMain(n => n.Awake());
+            MainThreadDispatcher.Instantiate();
+            if (Instance != null) return Instance;
+            else return Instance = new GameObject("RuntimeNodeUpdater")
+                .WithHideFlags(HideFlags.NotEditable)
+                .InDontDestroyMode()
+                .AddComponent<RuntimeNodeUpdater>();
         }
-        public void Start()
-        {
-            RuntimeNode.InstantiatedNodes.ForEachOnMain(n => n.Start());
-        }
+        public void Awake() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Awake());
+        public void Start() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Start());
         public void Update()
         {
-            // Todo:
-            // Investigate the sync nature of this queing...
-            // Make sure it all occurs in this order
-            RuntimeNode.InstantiatedNodes.ForEachOnMain(n => n.ValueUpdate());
-            RuntimeNode.InstantiatedNodes.ForEachOnMain(n => n.EarlyUpdate());
-            RuntimeNode.InstantiatedNodes.ForEachOnMain(n => n.Update());
+            RuntimeNode.ActiveNodes.ForEachOnMain(n => n.ValueUpdate());
+            RuntimeNode.ActiveNodes.ForEachOnMain(n => n.EarlyUpdate());
+            RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Update());
         }
-        public void LateUpdate()
-        {
-            RuntimeNode.InstantiatedNodes.ForEachOnMain(n => n.LateUpdate());
-        }
+        public void LateUpdate() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.LateUpdate());
     }
 }

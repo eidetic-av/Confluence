@@ -1,64 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3051056013953650149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96bc15287bc054443b1511f2ee63b6c7, type: 3}
-  m_Name: Emission
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -1073, y: -359.5}
-  ports:
-    keys:
-    - Particles
-    - ParticleCount
-    - EmissionRate
-    - MaxParticles
-    values:
-    - memberName: Particles
-      memberType: 16
-      node: {fileID: -3051056013953650149}
-      typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: ParticleCount
-      memberType: 16
-      node: {fileID: -3051056013953650149}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: EmissionRate
-      memberType: 16
-      node: {fileID: -3051056013953650149}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MaxParticles
-      memberType: 16
-      node: {fileID: -3051056013953650149}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-  maxParticles: 424
-  emissionRate: 46.18
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,9 +13,8 @@ MonoBehaviour:
   m_Name: TestRuntimeGraph
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: -3051056013953650149}
-  - {fileID: 2873524502219362741}
---- !u!114 &2873524502219362741
+  - {fileID: 1943793122325920930}
+--- !u!114 &1943793122325920930
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -83,29 +23,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efc12c5e9de62214d925434e0f72c646, type: 3}
-  m_Name: Motion
+  m_Script: {fileID: 11500000, guid: 96bc15287bc054443b1511f2ee63b6c7, type: 3}
+  m_Name: Emission
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -755, y: -219.5}
+  position: {x: -156.90771, y: -183.26157}
   ports:
     keys:
-    - Particles
-    - NoiseIntensity
+    - MaxParticles
+    - EmissionRate
     - ParticleCount
+    - Particles
     values:
-    - memberName: Particles
+    - memberName: MaxParticles
       memberType: 16
-      node: {fileID: 2873524502219362741}
-      typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      node: {fileID: 1943793122325920930}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
       connections: []
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
-    - memberName: NoiseIntensity
+    - memberName: EmissionRate
       memberType: 16
-      node: {fileID: 2873524502219362741}
+      node: {fileID: 1943793122325920930}
       typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
@@ -114,11 +55,21 @@ MonoBehaviour:
       Dynamic: 0
     - memberName: ParticleCount
       memberType: 16
-      node: {fileID: 2873524502219362741}
+      node: {fileID: 1943793122325920930}
       typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
       Direction: 1
       ConnectionType: 0
       Dynamic: 0
-  noiseIntensity: 0
+    - memberName: Particles
+      memberType: 16
+      node: {fileID: 1943793122325920930}
+      typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+  maxParticles: 250
+  emissionRate: 50

@@ -1,29 +1,62 @@
-using UnityEngine;
-using Eidetic.Unity.Utility;
-using XNode;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
-
-using static Eidetic.Confluence.Shuriken.SystemManager;
+using Eidetic.Unity.Utility;
+using UnityEngine;
+using XNode;
+using static System.Collections.Specialized.NotifyCollectionChangedAction;
 using static UnityEngine.ParticleSystem;
 
 namespace Eidetic.Confluence.Shuriken
 {
     public abstract class ShurikenNode : RuntimeNode
     {
-        public ParticleSystem System { get; protected set; }
+        public static ObservableCollection<ShurikenNode> Nodes { get; private set; } = new ObservableCollection<ShurikenNode>();
+        public static List<ParticleSystem> Systems { get; private set; } = new List<ParticleSystem>();
+        public static Dictionary<ShurikenNode, ParticleSystem> SystemFromNode { get; private set; } = new Dictionary<ShurikenNode, ParticleSystem>();
+        public static Dictionary<ParticleSystem, List<ShurikenNode>> NodesFromSystem { get; private set; } = new Dictionary<ParticleSystem, List<ShurikenNode>>();
 
-        internal override void Start()
+        public ParticleSystem System { get; private set; }
+        public List<ShurikenNode> ConnectedNodes { get; private set; }
+
+        static ShurikenNode()
         {
-            if (GetType() == typeof(Emission)) return;
-
-            // Todo: Instantiating this system with any connected node this has an instantiated system
-            // Probably just use the system manager instead?
-            System = Ports.Where(port => port.IsConnected)
-                .Select(port => port.Node)
-                .OfType<ShurikenNode>()?
-                .FirstOrDefault(node => node.System != null)?
-                .System;
+            Nodes.CollectionChanged += UpdateCollections;
         }
+        static void UpdateCollections(object sender, NotifyCollectionChangedEventArgs eventArgs)
+        {
+            if (eventArgs.Action == Add)
+            {
+                var newNodes = eventArgs.NewItems as List<ShurikenNode>;
+                List<Emission> newEmissionNodes = new List<Emission>();
+                foreach (var node in newNodes)
+                {
+                    ParticleSystem system = null;
+                    if (node.GetType() == typeof(Emission))
+                    {
+                        var shurikenInstance = Resources.Load("Shuriken Instance") as GameObject;
+                        system = shurikenInstance.GetComponent<ParticleSystem>();
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+                // update systems
+                // update system from node
+                // update nodes from system
+                // update connected nodes
+            }
+            else if (eventArgs.Action == Remove)
+            {
+
+            }
+        }
+
+        internal override void Start() => Nodes.Add(this);
+        internal override void Destroy() => Nodes.Remove(this);
 
         public override void OnCreateConnection(NodePort from, NodePort to)
         {
@@ -36,18 +69,15 @@ namespace Eidetic.Confluence.Shuriken
             }
             base.OnCreateConnection(from, to);
         }
-        
-        public override void OnRemoveConnection(NodePort removedPort) 
-        { 
+        public override void OnRemoveConnection(NodePort removedPort)
+        {
             if (removedPort.Node != this || GetType() == typeof(Emission)) return;
             if (!Ports.Where(port => port.IsConnected && port.Node.GetType() == typeof(Emission)).Any())
                 System = null;
             base.OnRemoveConnection(removedPort);
         }
-        
+
         [Output] public int ParticleCount => System == null ? 0 : System.particleCount;
-
-
         // This is the internal array used within all nodes connected to the system.
         internal Particle[] particles = null;
         // This outputs the corresponding ParticleSystem's Particle array.

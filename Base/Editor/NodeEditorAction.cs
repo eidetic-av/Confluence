@@ -191,8 +191,7 @@ namespace XNodeEditor
                     
                     // and if we didn't, check if we touched a node title
                     if (hoveredPort == default)
-                        hoveredNode = graph.nodes
-                            .FirstOrDefault(node => IsHoveringTitle(node));
+                        hoveredNode = graph.nodes.FirstOrDefault(node => IsHoveringTitle(node));
 
 
                     if (e.button == 0)
