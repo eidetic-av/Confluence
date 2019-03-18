@@ -8,7 +8,7 @@ using XNodeEditor;
 
 namespace Eidetic.Confluence
 {
-    [CustomNodeEditor(typeof(ObjectSelector))]
+    [CustomNodeEditor(typeof(NodeSelector))]
     public class ObjectSelectorEditor : NodeEditor
     {
         public static Vector2 Position;
@@ -21,7 +21,7 @@ namespace Eidetic.Confluence
         public Dictionary<string, RuntimeGraph> RuntimeGraphs = new Dictionary<string, RuntimeGraph>();
 
         public NodeEditorWindow Window;
-        public ObjectSelector Target;
+        public NodeSelector Target;
 
         bool Initialised;
         int SelectedListIndex = 0;
@@ -31,7 +31,7 @@ namespace Eidetic.Confluence
         {
             if (!Initialised)
             {
-                Target = target as ObjectSelector;
+                Target = target as NodeSelector;
                 Window = NodeEditorWindow.GetWindow(typeof(NodeEditorWindow)) as NodeEditorWindow;
                 Window.SelectNode(Target, false);
 

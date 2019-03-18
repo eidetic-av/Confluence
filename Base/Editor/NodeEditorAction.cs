@@ -268,7 +268,7 @@ namespace XNodeEditor
                                 var pos = WindowToGridPosition(Event.current.mousePosition);
                                 var offset = new Vector2(-110, -30);
                                 ObjectSelectorEditor.Position = pos + offset;
-                                CreateNode(typeof(ObjectSelector), pos + offset);
+                                CreateNode(typeof(NodeSelector), pos + offset);
                                 e.Use();
                             }
                         }

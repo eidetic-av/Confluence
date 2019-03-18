@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using Eidetic.Unity.Utility;
+using Eidetic.Utility;
 using UnityEngine;
 using XNode;
 using static System.Collections.Specialized.NotifyCollectionChangedAction;
@@ -12,74 +11,71 @@ namespace Eidetic.Confluence.Shuriken
 {
     public abstract class ShurikenNode : RuntimeNode
     {
-        public static ObservableCollection<ShurikenNode> Nodes { get; private set; } = new ObservableCollection<ShurikenNode>();
+        public static List<ShurikenNode> Nodes { get; private set; } = new List<ShurikenNode>();
         public static List<ParticleSystem> Systems { get; private set; } = new List<ParticleSystem>();
         public static Dictionary<ShurikenNode, ParticleSystem> SystemFromNode { get; private set; } = new Dictionary<ShurikenNode, ParticleSystem>();
         public static Dictionary<ParticleSystem, List<ShurikenNode>> NodesFromSystem { get; private set; } = new Dictionary<ParticleSystem, List<ShurikenNode>>();
 
         public ParticleSystem System { get; private set; }
-        public List<ShurikenNode> ConnectedNodes { get; private set; }
+        public List<ShurikenNode> ConnectedShurikenNodes { get; private set; }
 
-        static ShurikenNode()
+        internal override void Awake()
         {
-            Nodes.CollectionChanged += UpdateCollections;
+            base.Awake();
+            Nodes.Add(this);
+            UpdateCollections();
         }
-        static void UpdateCollections(object sender, NotifyCollectionChangedEventArgs eventArgs)
+        internal override void Destroy()
         {
-            if (eventArgs.Action == Add)
-            {
-                var newNodes = eventArgs.NewItems as List<ShurikenNode>;
-                List<Emission> newEmissionNodes = new List<Emission>();
-                foreach (var node in newNodes)
-                {
-                    ParticleSystem system = null;
-                    if (node.GetType() == typeof(Emission))
-                    {
-                        var shurikenInstance = Resources.Load("Shuriken Instance") as GameObject;
-                        system = shurikenInstance.GetComponent<ParticleSystem>();
-                    }
-                    else
-                    {
-
-                    }
-                }
-
-                // update systems
-                // update system from node
-                // update nodes from system
-                // update connected nodes
-            }
-            else if (eventArgs.Action == Remove)
-            {
-
-            }
+            base.Destroy();
+            Nodes.Remove(this);
         }
 
-        internal override void Start() => Nodes.Add(this);
-        internal override void Destroy() => Nodes.Remove(this);
+        private void UpdateCollections()
+        {
+            ConnectedShurikenNodes = Ports
+                .Where(port => port.IsConnected)
+                .Select(port => port.Connection.Node)
+                .OfType<ShurikenNode>().ToList();
+
+            if (System == null)
+            {
+                // If it's an Emission node, instantiate a new system.
+                if (GetType() == typeof(Emission))
+                    System = (Instantiate(Resources.Load("Shuriken Instance")) as GameObject)
+                    .GetComponent<ParticleSystem>();
+                // Otherwise set the system to the Emission node it's connected to
+                else System = ConnectedShurikenNodes
+                    .OfType<Emission>()
+                    .SingleOrDefault() ?
+                    .System;
+            }
+
+            if (System != null)
+            {
+                SystemFromNode[this] = System;
+
+                if (NodesFromSystem.ContainsKey(System))
+                    NodesFromSystem[System].Add(this);
+                else
+                    NodesFromSystem[System] = new List<ShurikenNode>().With(this);
+            }
+        }
 
         public override void OnCreateConnection(NodePort from, NodePort to)
         {
-            var toNode = to.Node as ShurikenNode;
-            if (toNode == this && System == null)
-            {
-                var fromNode = from.Node as ShurikenNode;
-                if (fromNode.GetType() == typeof(Emission))
-                    System = fromNode.System;
-            }
             base.OnCreateConnection(from, to);
+            UpdateCollections();
         }
         public override void OnRemoveConnection(NodePort removedPort)
         {
-            if (removedPort.Node != this || GetType() == typeof(Emission)) return;
-            if (!Ports.Where(port => port.IsConnected && port.Node.GetType() == typeof(Emission)).Any())
-                System = null;
             base.OnRemoveConnection(removedPort);
+            UpdateCollections();
         }
 
-        [Output] public int ParticleCount => System == null ? 0 : System.particleCount;
         // This is the internal array used within all nodes connected to the system.
-        internal Particle[] particles = null;
+        private Particle[] particles = null;
+
         // This outputs the corresponding ParticleSystem's Particle array.
         // If the particle array for this frame is unset, get the particles and
         // set the backing field.
@@ -91,8 +87,8 @@ namespace Eidetic.Confluence.Shuriken
                 if (System == null) return new Particle[0];
                 if (particles == null)
                 {
-                    particles = new Particle[ParticleCount];
-                    System.GetParticles(particles, ParticleCount);
+                    particles = new Particle[System.particleCount];
+                    System.GetParticles(particles, System.particleCount);
                 }
                 return particles;
             }

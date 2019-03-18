@@ -38,7 +38,7 @@ namespace XNodeEditor
             // public fields, and fields in camelCase as backing fields to the
             // relevant PascalCased property
 
-            var port = node.GetPort(property.name.ToPascal());
+            var port = node.GetPort(property.name.ToPascalCase());
             PropertyField(property, label, port, includeChildren);
         }
 
@@ -142,9 +142,8 @@ namespace XNodeEditor
             DrawPort(port);
         }
 
-        public static void DrawOutputPropertyPort(XNode.NodePort port, string name, Func<object> getter)
+        public static void DrawPropertyPort(XNode.NodePort port, string name, Func<object> getter)
         {
-            // Get data from [Output] attribute
             XNode.Node.ShowBackingValue showBacking = XNode.Node.ShowBackingValue.Unconnected;
             switch (showBacking)
             {

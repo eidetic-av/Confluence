@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Eidetic.Unity.Utility;
+using Eidetic.Utility;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
-using Eidetic.Utility;
-using Eidetic.Unity.Utility;
 
 namespace Eidetic.Confluence
 {
@@ -18,13 +18,13 @@ namespace Eidetic.Confluence
             var node = this.target as RuntimeNode;
 
             serializedObject.Update();
+
             string[] excludes = { "m_Script", "graph", "position", "ports" };
             portPositions = new Dictionary<XNode.NodePort, Vector2>();
 
             // Draw the serializable ports
 
-            // Store the property names we've accounted for in this list
-            var displayedMembers = new List<string>();
+            var drawnPorts = new List<string>();
 
             SerializedProperty iterator = serializedObject.GetIterator();
             bool enterChildren = true;
@@ -33,55 +33,37 @@ namespace Eidetic.Confluence
             {
                 enterChildren = false;
                 if (excludes.Contains(iterator.name)) continue;
+
                 NodeEditorGUILayout.PropertyField(iterator, true);
 
-                displayedMembers.Add(iterator.name.ToPascal());
-
-                // Come on Unity, why do you call these things
-                // 'SerializedProperties' when they're actually fields...
-                // And "PropertyField"...are you serious? ◔_◔
-
-                if (!serializedObject.hasModifiedProperties || !Application.isPlaying) continue;
-                // if the "PropertyFields" have been updated at runtime,
-                // we need to check if they are backing fields for real
-                // properties, and if they are, run the appropriate setter
-                var propertyName = iterator.name.ToPascal();
-                FieldInfo backingField;
-                if (node.BackingFields.TryGetValue(propertyName, out backingField))
+                if (serializedObject.hasModifiedProperties && Application.isPlaying)
                 {
-                    node.Setters[propertyName](backingField.GetValue(node));
-                    // and set the serialized value to the one from the property
-                    // Getter because validation may have just been run on the
-                    // input
-
-                    // Todo: can't get the value to update this way...
-                    // iterator.SetValue();
+                    // check if the updated field is a backing value for a property
+                    var propertyName = iterator.name.ToPascalCase();
+                    FieldInfo backingField;
+                    if (node.BackingFields.TryGetValue(propertyName, out backingField))
+                    {
+                        // if it is, run the setter method
+                        node.Setters[propertyName].Invoke(backingField.GetValue(node));
+                        // Todo:
+                        // and set the iterator to the correct value since the
+                        // setter could have performed validation
+                        // iterator.SetValue(node.Getters[propertyName]());
+                    }
                 }
-            }
 
+                drawnPorts.Add(iterator.name.ToPascalCase());
+            }
             serializedObject.ApplyModifiedProperties();
 
-            // Draw the ports that are expressions or properties without
-            // backing fields -- these aren't serialized in the object, and thus
-            // haven't yet been added to the displayedMembers list
-
-            foreach(var kvp in node.Getters.Where(kvp => !displayedMembers.Contains(kvp.Key)))
+            // Draw the ports that are properties without backing fields
+            // e.g. expressions
+            foreach (var getterEntry in node.Getters.Where(entry => !drawnPorts.Contains(entry.Key)))
             {
-                var name = kvp.Key;
+                var name = getterEntry.Key;
                 var port = node.GetPort(name);
-                NodeEditorGUILayout.DrawOutputPropertyPort(port, name, kvp.Value);
+                NodeEditorGUILayout.DrawPropertyPort(port, name, getterEntry.Value);
             }
         }
-
-        // if (Event.current.isMouse)
-        // {
-        //     if (port.MemberType == MemberTypes.Property)
-        //         if (port.Node.GetType().IsSubclassOf(typeof(RuntimeNode)))
-        //         {
-        //             var node = port.Node as RuntimeNode;
-        //             object backingFieldValue = node.Getters[port.MemberName]();
-        //             node.Setters[port.MemberName](backingFieldValue);
-        //         }
-        // }
     }
 }

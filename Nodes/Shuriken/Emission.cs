@@ -10,7 +10,7 @@ namespace Eidetic.Confluence.Shuriken
 {
     public class Emission : ShurikenNode
     {
-        [SerializeField] public int maxParticles = 250;
+        [SerializeField] int maxParticles = 250;
         [Input] public int MaxParticles
         {
             get
@@ -19,13 +19,14 @@ namespace Eidetic.Confluence.Shuriken
             }
             set
             {
-                if (value <= 0)value = 0;
+                if (value <= 0) value = 0;
                 maxParticles = value;
                 var mainModule = System.main;
                 mainModule.maxParticles = value;
             }
         }
-        [SerializeField] public float emissionRate = 50;
+
+        [SerializeField] float emissionRate = 50;
         [Input] public float EmissionRate
         {
             get
