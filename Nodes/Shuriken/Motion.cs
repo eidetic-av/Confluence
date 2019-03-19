@@ -6,35 +6,38 @@ namespace Eidetic.Confluence.Shuriken
 {
     public class Motion : ShurikenNode
     {
-        [Input] public Particle[] ParticlesInput = new Particle[0];
-
         [SerializeField] float noiseIntensity = 0f;
         [Input] public float NoiseIntensity
         {
-            get
-            {
-                return noiseIntensity;
-            }
+            get => noiseIntensity;
             set
             {
                 noiseIntensity = value;
-                var noiseModule = System.noise;
+                if (ParticleSystem == null) return;
+                var noiseModule = ParticleSystem.noise;
                 noiseModule.strength = noiseIntensity;
+                noiseModule.enabled = noiseIntensity != 0;
             }
         }
 
-        public override void OnCreateConnection(NodePort from, NodePort to)
+        [SerializeField] float scrollSpeed = 0f;
+        [Input] public float ScrollSpeed
         {
-            var noiseModule = System.noise;
-            noiseModule.enabled = true;
-            base.OnCreateConnection(from, to);
+            get => scrollSpeed;
+            set
+            {
+                scrollSpeed = value;
+                if (ParticleSystem == null) return;
+                var noiseModule = ParticleSystem.noise;
+                noiseModule.scrollSpeed = scrollSpeed;
+            }
         }
 
-        public override void OnRemoveConnection(NodePort removedPort)
+        internal override void OnParticleSystemDisconnected() 
         {
-            var noiseModule = System.noise;
+            var noiseModule = ParticleSystem.noise;
             noiseModule.enabled = false;
-            base.OnRemoveConnection(removedPort);
         }
+
     }
 }

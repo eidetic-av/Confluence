@@ -16,65 +16,44 @@ namespace Eidetic.Confluence
         public static List<RuntimeNode> ActiveNodes { get; protected set; }
         static RuntimeNode()
         {
+            ActiveNodes = new List<RuntimeNode>();
             EditorApplication.playModeStateChanged += (stateChange) =>
             {
                 if (stateChange == PlayModeStateChange.EnteredPlayMode) OnPlay();
                 else if (stateChange == PlayModeStateChange.ExitingPlayMode) OnExit();
             };
-
-            ActiveNodes = new List<RuntimeNode>();
         }
         private static void OnPlay() => RuntimeNodeUpdater.Instantiate();
         private static void OnExit() => ActiveNodes.ForEachOnMain(n => n.Exit());
 
         public Dictionary<string, Func<object>> Getters { get; private set; }
-        public Dictionary<string, Func<object, object>> Setters { get; private set; }
+        public Dictionary<string, Action<object>> Setters { get; private set; }
         public Dictionary<string, FieldInfo> BackingFields { get; private set; }
 
-        // OnEnable runs when the node is created
-        // and also when play mode is activated
         new void OnEnable()
         {
             base.OnEnable();
             if (GetType() == typeof(NodeSelector)) return;
+            if (ActiveNodes.Contains(this)) return;
+            
+            ActiveNodes.Add(this);
 
-            if (!ActiveNodes.Contains(this))
+            Getters = new Dictionary<string, Func<object>>();
+            Setters = new Dictionary<string, Action<object>>();
+            BackingFields = new Dictionary<string, FieldInfo>();
+
+            foreach (var member in GetType().GetMembers().WithAttribute<NodePortAttribute>())
             {
-                ActiveNodes.Add(this);
-                // cache the getters & setters
-                Getters = new Dictionary<string, Func<object>>();
-                Setters = new Dictionary<string, Func<object, object>>();
-                // and store the information about backing fields so that we can
-                // serialize the node objects properly (see RuntimeNodeEditor)
-                BackingFields = new Dictionary<string, FieldInfo>();
-                foreach (var member in GetType().GetMembers().WithAttribute<NodePortAttribute>())
+                if (member is FieldInfo field)
                 {
-                    if (member.MemberType == MemberTypes.Field)
-                    {
-                        var field = member as FieldInfo;
-                        Getters.Add(field.Name, () => field.GetValue(this));
-                        Setters.Add(field.Name, (value) =>
-                        {
-                            field.SetValue(this, value);
-                            return value;
-                        });
-                    }
-                    else
-                    {
-                        var property = member as PropertyInfo;
-                        Getters.Add(property.Name, () => property.GetValue(this));
-                        if (property.GetSetMethod() == null) continue;
-                        Setters.Add(property.Name, (value) =>
-                        {
-                            property.SetValue(this, value);
-                            return property.GetValue(this);
-                        });
-                        // the backing field must have the same name as the
-                        // property in camelCase
-                        var backingField = GetType().GetField(property.Name.ToCamelCase(), BindingFlags.NonPublic | BindingFlags.Instance);
-                        if (backingField == null) continue;
-                        BackingFields.Add(property.Name, backingField);
-                    }
+                    Getters.Add(field.Name, () => field.GetValue(this));
+                    Setters.Add(field.Name, (value) => field.SetValue(this, value));
+                }
+                else if (member is PropertyInfo property)
+                {
+                    Getters.Add(property.Name, () => property.GetValue(this));
+                    Setters.Add(property.Name, (value) => property.SetValue(this, value), false);
+                    BackingFields.Add(property.Name, GetType().GetBackingField(property), false);
                 }
             }
         }
@@ -97,15 +76,20 @@ namespace Eidetic.Confluence
             RunSetters();
         }
 
-        public void RunSetters() => Setters.ForEachOnMain((key, setter) => setter.Invoke(BackingFields[key].GetValue(this)));
+        public void RunSetters()
+        {
+            BackingFields.ForEachOnMain((key, backingField) =>
+            {
+                if (!Setters.ContainsKey(key)) return;
+                Setters[key].Invoke(backingField.GetValue(this));
+            });
+        }
 
         public override object GetValue(NodePort port) => Getters[port.MemberName]();
         internal void ValueUpdate()
         {
-            // If an input port is connected, update it's value with
-            // the output value of the node it's connected to.
             foreach (var port in Ports.Where(port => port.IsInput && port.IsConnected))
-                Setters[port.MemberName](port.Connection.Node.GetValue(port.Connection));
+                Setters[port.MemberName].Invoke(port.Connection.Node.GetValue(port.Connection));
         }
         internal virtual void Awake() { }
         internal virtual void Start()

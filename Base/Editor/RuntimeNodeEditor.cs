@@ -13,14 +13,14 @@ namespace Eidetic.Confluence
     [CustomNodeEditor(typeof(RuntimeNode))]
     public class RuntimeNodeEditor : NodeEditor
     {
+        public static readonly string[] PortTypeExclusions = { "m_Script", "graph", "position", "ports" };
         public override void OnBodyGUI()
         {
-            var node = this.target as RuntimeNode;
+            var node = target as RuntimeNode;
+
+            portPositions = new Dictionary<XNode.NodePort, Vector2>();
 
             serializedObject.Update();
-
-            string[] excludes = { "m_Script", "graph", "position", "ports" };
-            portPositions = new Dictionary<XNode.NodePort, Vector2>();
 
             // Draw the serializable ports
 
@@ -32,31 +32,18 @@ namespace Eidetic.Confluence
             while (iterator.NextVisible(enterChildren))
             {
                 enterChildren = false;
-                if (excludes.Contains(iterator.name)) continue;
+                if (PortTypeExclusions.Contains(iterator.name)) continue;
 
                 NodeEditorGUILayout.PropertyField(iterator, true);
 
                 if (serializedObject.hasModifiedProperties && Application.isPlaying)
-                {
-                    // check if the updated field is a backing value for a property
-                    var propertyName = iterator.name.ToPascalCase();
-                    FieldInfo backingField;
-                    if (node.BackingFields.TryGetValue(propertyName, out backingField))
-                    {
-                        // if it is, run the setter method
-                        node.Setters[propertyName].Invoke(backingField.GetValue(node));
-                        // Todo:
-                        // and set the iterator to the correct value since the
-                        // setter could have performed validation
-                        // iterator.SetValue(node.Getters[propertyName]());
-                    }
-                }
+                    node.RunSetters();
 
                 drawnPorts.Add(iterator.name.ToPascalCase());
             }
             serializedObject.ApplyModifiedProperties();
 
-            // Draw the ports that are properties without backing fields
+            // Draw the output ports that are properties without backing fields
             // e.g. expressions
             foreach (var getterEntry in node.Getters.Where(entry => !drawnPorts.Contains(entry.Key)))
             {
