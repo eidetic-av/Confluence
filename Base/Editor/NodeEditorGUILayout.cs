@@ -88,13 +88,13 @@ namespace XNodeEditor
                 {
                     case XNode.Node.ShowBackingValue.Unconnected:
                         // Display a label if port is connected
-                        if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name));
+                        if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), options);
                         // Display an editable property field if port is not connected
                         else EditorGUILayout.PropertyField(property, label, includeChildren, options);
                         break;
                     case XNode.Node.ShowBackingValue.Never:
                         // Display a label
-                        EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name));
+                        EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), options);
                         break;
                     case XNode.Node.ShowBackingValue.Always:
                         // Display an editable property field
@@ -124,13 +124,13 @@ namespace XNodeEditor
                 {
                     case XNode.Node.ShowBackingValue.Unconnected:
                         // Display a label if port is connected
-                        if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, HitTargetSizeOption);
+                        if (port.IsConnected) EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, options);
                         // Display an editable property field if port is not connected
                         else EditorGUILayout.PropertyField(property, label, includeChildren, options);
                         break;
                     case XNode.Node.ShowBackingValue.Never:
                         // Display a label
-                        EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, HitTargetSizeOption);
+                        EditorGUILayout.LabelField(label != null ? label : new GUIContent(property.name), NodeEditorResources.OutputPort, options);
                         break;
                     case XNode.Node.ShowBackingValue.Always:
                         // Display an editable property field
@@ -149,7 +149,7 @@ namespace XNodeEditor
             {
                 case XNode.Node.ShowBackingValue.Unconnected:
                     // Display a label if port is connected
-                    if (port.IsConnected) EditorGUILayout.LabelField(new GUIContent(name), NodeEditorResources.OutputPort, GUILayout.MinWidth(30));
+                    if (port.IsConnected) EditorGUILayout.LabelField(new GUIContent(name), NodeEditorResources.OutputPort, HitTargetSizeOption);
                     // Display a readonly text field if port is not connected
                     // else EditorGUILayout.PropertyField(property, label,
                     // includeChildren, options);

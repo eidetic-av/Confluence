@@ -23,13 +23,13 @@ namespace Eidetic.Confluence.Shuriken
             }
         }
 
-        [SerializeField] float emissionRate = 50;
-        [Input] public float EmissionRate
+        [SerializeField] int emissionRate = 50;
+        [Input] public int EmissionRate
         {
             get => emissionRate;
             set
             {
-                emissionRate = value.Clamp(0, 100000);
+                emissionRate = value.Clamp(0, 1000);
                 var emissionModule = ParticleSystem.emission;
                 emissionModule.rateOverTime = new MinMaxCurve(emissionRate);
             }
@@ -40,6 +40,19 @@ namespace Eidetic.Confluence.Shuriken
         {
             get => manualEmissionCount;
             set => manualEmissionCount = value.Clamp(0, 1000);
+        }
+
+        [SerializeField] bool clear = false;
+        [Input] public bool Clear
+        {
+            set
+            {
+                if (value)
+                {
+                    ParticleSystem.Clear();
+                    clear = false;
+                }
+            }
         }
 
         [SerializeField] bool emit = false;

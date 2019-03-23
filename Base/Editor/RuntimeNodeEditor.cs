@@ -16,19 +16,29 @@ namespace Eidetic.Confluence
         public static readonly string[] PortTypeExclusions = { "m_Script", "graph", "position", "ports" };
         public override void OnBodyGUI()
         {
+            EditorGUIUtility.labelWidth = 84;
+
             var node = target as RuntimeNode;
 
             portPositions = new Dictionary<XNode.NodePort, Vector2>();
 
             serializedObject.Update();
 
+            DrawPanel(node);
+
+            if (serializedObject.hasModifiedProperties && Application.isPlaying) node.RunSetters();
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        public virtual void DrawPanel(RuntimeNode node)
+        {
             // Draw the serializable ports
 
             var drawnPorts = new List<string>();
 
             SerializedProperty iterator = serializedObject.GetIterator();
             bool enterChildren = true;
-            EditorGUIUtility.labelWidth = 84;
             while (iterator.NextVisible(enterChildren))
             {
                 enterChildren = false;
@@ -36,13 +46,11 @@ namespace Eidetic.Confluence
 
                 NodeEditorGUILayout.PropertyField(iterator, true);
 
-                if (serializedObject.hasModifiedProperties && Application.isPlaying)
-                    node.RunSetters();
-
                 drawnPorts.Add(iterator.name.ToPascalCase());
             }
-            serializedObject.ApplyModifiedProperties();
 
+            if (node.Getters == null) return;
+            
             // Draw the output ports that are properties without backing fields
             // e.g. expressions
             foreach (var getterEntry in node.Getters.Where(entry => !drawnPorts.Contains(entry.Key)))

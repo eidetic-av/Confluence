@@ -1,5 +1,241 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6554514776349562829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bc15287bc054443b1511f2ee63b6c7, type: 3}
+  m_Name: Emission
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -110, y: -232.5}
+  ports:
+    keys:
+    - Input
+    - MaxParticles
+    - EmissionRate
+    - ManualEmissionCount
+    - Emit
+    - Particles
+    - Clear
+    values:
+    - memberName: Input
+      memberType: 4
+      node: {fileID: -6554514776349562829}
+      typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: MaxParticles
+      memberType: 16
+      node: {fileID: -6554514776349562829}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: EmissionRate
+      memberType: 16
+      node: {fileID: -6554514776349562829}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: ManualEmissionCount
+      memberType: 16
+      node: {fileID: -6554514776349562829}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - MemberName: Integer
+        MemberType: 4
+        node: {fileID: -3579692101853290104}
+        reroutePoints: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Emit
+      memberType: 16
+      node: {fileID: -6554514776349562829}
+      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - MemberName: Trigger
+        MemberType: 16
+        node: {fileID: -3579692101853290104}
+        reroutePoints: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Particles
+      memberType: 16
+      node: {fileID: -6554514776349562829}
+      typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - MemberName: Input
+        MemberType: 4
+        node: {fileID: 1191911141553428306}
+        reroutePoints: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Clear
+      memberType: 16
+      node: {fileID: -6554514776349562829}
+      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+  maxParticles: 5000
+  emissionRate: 0
+  manualEmissionCount: 1000
+  clear: 0
+  emit: 0
+--- !u!114 &-4093071188290909872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f695cea44b331684098694955670f602, type: 3}
+  m_Name: Osc Receiver
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 176.578, y: -326.1895}
+  ports:
+    keys:
+    - Integer
+    - Float
+    - Boolean
+    - Trigger
+    values:
+    - memberName: Integer
+      memberType: 4
+      node: {fileID: -4093071188290909872}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Float
+      memberType: 4
+      node: {fileID: -4093071188290909872}
+      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Boolean
+      memberType: 4
+      node: {fileID: -4093071188290909872}
+      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Trigger
+      memberType: 16
+      node: {fileID: -4093071188290909872}
+      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+  Port: 9000
+  MessageAddress: test/particles/noise
+  Integer: 5000
+  Float: 5000
+  Boolean: 1
+--- !u!114 &-3579692101853290104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f695cea44b331684098694955670f602, type: 3}
+  m_Name: Osc Receiver
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -368, y: -194.5}
+  ports:
+    keys:
+    - Integer
+    - Float
+    - Boolean
+    - Trigger
+    values:
+    - memberName: Integer
+      memberType: 4
+      node: {fileID: -3579692101853290104}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - MemberName: ManualEmissionCount
+        MemberType: 16
+        node: {fileID: -6554514776349562829}
+        reroutePoints: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Float
+      memberType: 4
+      node: {fileID: -3579692101853290104}
+      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Boolean
+      memberType: 4
+      node: {fileID: -3579692101853290104}
+      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Trigger
+      memberType: 16
+      node: {fileID: -3579692101853290104}
+      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - MemberName: Emit
+        MemberType: 16
+        node: {fileID: -6554514776349562829}
+        reroutePoints: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+  Port: 9000
+  MessageAddress: test/particles/trigger
+  Integer: 5000
+  Float: 5000
+  Boolean: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,40 +249,56 @@ MonoBehaviour:
   m_Name: TestRuntimeGraph
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: 4025962704864281392}
---- !u!114 &4025962704864281392
+  - {fileID: -6554514776349562829}
+  - {fileID: -3579692101853290104}
+  - {fileID: 1191911141553428306}
+  - {fileID: -4093071188290909872}
+--- !u!114 &1191911141553428306
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: efc12c5e9de62214d925434e0f72c646, type: 3}
   m_Name: Motion
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -126, y: -130}
+  position: {x: 198.23502, y: 64.36701}
   ports:
     keys:
     - Input
     - NoiseIntensity
-    - Particles
     - ScrollSpeed
+    - Particles
     values:
     - memberName: Input
       memberType: 4
-      node: {fileID: 4025962704864281392}
+      node: {fileID: 1191911141553428306}
       typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - MemberName: Particles
+        MemberType: 16
+        node: {fileID: -6554514776349562829}
+        reroutePoints: []
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
     - memberName: NoiseIntensity
       memberType: 16
-      node: {fileID: 4025962704864281392}
+      node: {fileID: 1191911141553428306}
+      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: ScrollSpeed
+      memberType: 16
+      node: {fileID: 1191911141553428306}
       typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
@@ -55,21 +307,12 @@ MonoBehaviour:
       Dynamic: 0
     - memberName: Particles
       memberType: 16
-      node: {fileID: 4025962704864281392}
+      node: {fileID: 1191911141553428306}
       typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections: []
       Direction: 1
       ConnectionType: 0
       Dynamic: 0
-    - memberName: ScrollSpeed
-      memberType: 16
-      node: {fileID: 4025962704864281392}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-  noiseIntensity: 0.93
-  scrollSpeed: 20.16
+  noiseIntensity: 5
+  scrollSpeed: 0

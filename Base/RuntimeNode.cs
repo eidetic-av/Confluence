@@ -30,12 +30,12 @@ namespace Eidetic.Confluence
         public Dictionary<string, Action<object>> Setters { get; private set; }
         public Dictionary<string, FieldInfo> BackingFields { get; private set; }
 
-        new void OnEnable()
+        new public void OnEnable()
         {
             base.OnEnable();
             if (GetType() == typeof(NodeSelector)) return;
             if (ActiveNodes.Contains(this)) return;
-            
+
             ActiveNodes.Add(this);
 
             Getters = new Dictionary<string, Func<object>>();
@@ -52,7 +52,8 @@ namespace Eidetic.Confluence
                 else if (member is PropertyInfo property)
                 {
                     Getters.Add(property.Name, () => property.GetValue(this));
-                    Setters.Add(property.Name, (value) => property.SetValue(this, value), false);
+                    if (property.GetSetMethod() != null)
+                        Setters.Add(property.Name, (value) => property.SetValue(this, value));
                     BackingFields.Add(property.Name, GetType().GetBackingField(property), false);
                 }
             }

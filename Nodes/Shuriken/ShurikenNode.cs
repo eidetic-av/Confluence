@@ -26,8 +26,9 @@ namespace Eidetic.Confluence.Shuriken
             }
         }
 
+        // Dummy input, only used to connect ShurikenNodes together
         [Input] public Particle[] Input = new Particle[0];
-        
+
         [Output] public Particle[] Particles
         {
             get
@@ -52,7 +53,11 @@ namespace Eidetic.Confluence.Shuriken
         public override void OnRemoveConnection(NodePort removedPort)
         {
             base.OnRemoveConnection(removedPort);
-            if (removedPort.MemberName == "Input") OnParticleSystemDisconnected();
+            if (removedPort.MemberName == "Input")
+            {
+                OnParticleSystemDisconnected();
+                particleSystem = null;
+            }
         }
 
         internal override void Exit()
