@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace Eidetic.Confluence.Networking
 {
+    [CreateNodeMenu("Networking/OscReceiver"), NodeTint(Colors.ExternalInputTint)]
     public class OscReceiver : RuntimeNode
     {
         internal static Dictionary<int, OscServer> Servers = new Dictionary<int, OscServer>();

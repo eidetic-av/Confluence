@@ -42,19 +42,6 @@ namespace Eidetic.Confluence.Shuriken
             set => manualEmissionCount = value.Clamp(0, 1000);
         }
 
-        [SerializeField] bool clear = false;
-        [Input] public bool Clear
-        {
-            set
-            {
-                if (value)
-                {
-                    ParticleSystem.Clear();
-                    clear = false;
-                }
-            }
-        }
-
         [SerializeField] bool emit = false;
         [Input] public bool Emit
         {
@@ -64,6 +51,19 @@ namespace Eidetic.Confluence.Shuriken
                 {
                     ParticleSystem.Emit(ManualEmissionCount);
                     emit = false;
+                }
+            }
+        }
+
+        [SerializeField] bool clear = false;
+        [Input] public bool Clear
+        {
+            set
+            {
+                if (value)
+                {
+                    ParticleSystem.Clear();
+                    clear = false;
                 }
             }
         }

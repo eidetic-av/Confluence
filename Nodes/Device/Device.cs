@@ -42,7 +42,7 @@ namespace Eidetic.Confluence
             {
                 var attributes = CustomAttributeData.GetCustomAttributes(portField);
                 var ccNumber = (int)attributes.First().ConstructorArguments.First().Value;
-                MidiMaster.knobDelegate += CreateControlChangeDelegate(ccNumber, portField);
+                MidiDriver.Instance.knobDelegate += CreateControlChangeDelegate(ccNumber, portField);
             });
         }
 
@@ -66,7 +66,7 @@ namespace Eidetic.Confluence
         void OnDestroy()
         {
             // Remove the delegates from the MidiMaster
-            ControlChangeDelegates.ForEach(del => MidiMaster.knobDelegate -= del);
+            ControlChangeDelegates.ForEach(del => MidiDriver.Instance.knobDelegate -= del);
         }
 
         public class DevicePanel

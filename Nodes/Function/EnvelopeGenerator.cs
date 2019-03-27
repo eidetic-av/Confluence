@@ -7,22 +7,32 @@ using XNode;
 namespace Eidetic.Confluence
 {
     [CreateNodeMenu("Function/EnvelopeGenerator"),
-        NodeTint(Colors.FunctionTint)]
-    public class EnvelopeGenerator : Node, NoteOn.ITriggeredNode
+        NodeTint(Colors.FunctionTint)
+    ]
+    public class EnvelopeGenerator : RuntimeNode
     {
         public Stopwatch EnvelopeTimer { get; private set; } = new Stopwatch();
 
-        [TriggerInput] public bool _trigger;
-        public bool Trigger { set { if (value) EnvelopeTimer.Restart(); } }
+        bool trigger;
+        [Input] public bool Trigger
+        {
+            get => trigger;
+            set
+            {
+                trigger = value;
+                if (value) EnvelopeTimer.Restart();
+            }
+        }
+
         [Input] public float Length = 1f;
         [Input] public AnimationCurve Shape = AnimationCurve.EaseInOut(1, 1, 0, 0);
 
-        [Output] public float _value = 0f;
-        float Value { get { return Shape.Evaluate(Position); } }
-        [Output] public bool _running;
-        bool Running { get { return EnvelopeTimer.IsRunning; } }
-        [Output] public float _position;
-        float Position
+        float value = 0f;
+        [Output] float Value => Shape.Evaluate(EnvelopePosition);
+        bool running;
+        [Output] bool Running => EnvelopeTimer.IsRunning;
+        float envelopePosition;
+        [Output] float EnvelopePosition
         {
             get
             {
@@ -32,18 +42,7 @@ namespace Eidetic.Confluence
                     EnvelopeTimer.Reset();
                     position = 0;
                 }
-                return (float)position;
-            }
-        }
-
-        public override object GetValue(NodePort port)
-        {
-            switch (port.MemberName)
-            {
-                case "Value":
-                    return Value;
-                default:
-                    return 0f;
+                return (float) position;
             }
         }
     }
