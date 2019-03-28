@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6885717977541013572
+--- !u!114 &-2608134540315252368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,60 +9,101 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efc12c5e9de62214d925434e0f72c646, type: 3}
-  m_Name: Motion
+  m_Script: {fileID: 11500000, guid: 96bc15287bc054443b1511f2ee63b6c7, type: 3}
+  m_Name: Emission
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -14.5, y: -258}
+  position: {x: -419.14618, y: -498.27682}
   ports:
     keys:
     - Input
-    - NoiseIntensity
-    - ScrollSpeed
+    - MaxParticles
+    - EmissionRate
+    - ManualEmissionCount
+    - Emit
+    - Clear
     - Particles
     values:
     - memberName: Input
       memberType: 4
-      node: {fileID: -6885717977541013572}
+      node: {fileID: -2608134540315252368}
       typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: MaxParticles
+      memberType: 16
+      node: {fileID: -2608134540315252368}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: EmissionRate
+      memberType: 16
+      node: {fileID: -2608134540315252368}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: ManualEmissionCount
+      memberType: 16
+      node: {fileID: -2608134540315252368}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: Emit
+      memberType: 16
+      node: {fileID: -2608134540315252368}
+      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
       connections:
-      - MemberName: Particles
+      - MemberName: NoteOnTrigger
         MemberType: 16
-        node: {fileID: 4623831412052386150}
+        node: {fileID: 8683149054582967719}
         reroutePoints: []
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
-    - memberName: NoiseIntensity
+    - memberName: Clear
       memberType: 16
-      node: {fileID: -6885717977541013572}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+      node: {fileID: -2608134540315252368}
+      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: ScrollSpeed
-      memberType: 16
-      node: {fileID: -6885717977541013572}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - MemberName: NoteOffTrigger
+        MemberType: 16
+        node: {fileID: 8683149054582967719}
+        reroutePoints: []
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
     - memberName: Particles
       memberType: 16
-      node: {fileID: -6885717977541013572}
+      node: {fileID: -2608134540315252368}
       typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - MemberName: Input
+        MemberType: 4
+        node: {fileID: 1617219781111769866}
+        reroutePoints: []
       Direction: 1
       ConnectionType: 0
       Dynamic: 0
-  noiseIntensity: 4.32
-  scrollSpeed: 0
+  maxParticles: 5000
+  emissionRate: 0
+  manualEmissionCount: 500
+  emit: 0
+  clear: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,10 +117,10 @@ MonoBehaviour:
   m_Name: TestRuntimeGraph
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: 4970911389844143370}
-  - {fileID: 4623831412052386150}
-  - {fileID: -6885717977541013572}
---- !u!114 &4623831412052386150
+  - {fileID: 8683149054582967719}
+  - {fileID: -2608134540315252368}
+  - {fileID: 1617219781111769866}
+--- !u!114 &1617219781111769866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,102 +129,61 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96bc15287bc054443b1511f2ee63b6c7, type: 3}
-  m_Name: Emission
+  m_Script: {fileID: 11500000, guid: efc12c5e9de62214d925434e0f72c646, type: 3}
+  m_Name: Motion
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -309.5, y: -219}
+  position: {x: -163.9721, y: -456.92175}
   ports:
     keys:
     - Input
-    - MaxParticles
-    - EmissionRate
-    - ManualEmissionCount
-    - Clear
-    - Emit
+    - NoiseIntensity
+    - ScrollSpeed
     - Particles
     values:
     - memberName: Input
       memberType: 4
-      node: {fileID: 4623831412052386150}
+      node: {fileID: 1617219781111769866}
       typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MaxParticles
-      memberType: 16
-      node: {fileID: 4623831412052386150}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: EmissionRate
-      memberType: 16
-      node: {fileID: 4623831412052386150}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: ManualEmissionCount
-      memberType: 16
-      node: {fileID: 4623831412052386150}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: Clear
-      memberType: 16
-      node: {fileID: 4623831412052386150}
-      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
       connections:
-      - MemberName: NoteOffTrigger
+      - MemberName: Particles
         MemberType: 16
-        node: {fileID: 4970911389844143370}
+        node: {fileID: -2608134540315252368}
         reroutePoints: []
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
-    - memberName: Emit
+    - memberName: NoiseIntensity
       memberType: 16
-      node: {fileID: 4623831412052386150}
-      typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+      node: {fileID: 1617219781111769866}
+      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - MemberName: NoteOnTrigger
-        MemberType: 16
-        node: {fileID: 4970911389844143370}
-        reroutePoints: []
+      connections: []
+      Direction: 0
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: ScrollSpeed
+      memberType: 16
+      node: {fileID: 1617219781111769866}
+      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
     - memberName: Particles
       memberType: 16
-      node: {fileID: 4623831412052386150}
+      node: {fileID: 1617219781111769866}
       typeQualifiedName: UnityEngine.ParticleSystem+Particle[], UnityEngine.ParticleSystemModule,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - MemberName: Input
-        MemberType: 4
-        node: {fileID: -6885717977541013572}
-        reroutePoints: []
+      connections: []
       Direction: 1
       ConnectionType: 0
       Dynamic: 0
-  maxParticles: 250
-  emissionRate: 0
-  manualEmissionCount: 603
-  emit: 0
-  clear: 0
---- !u!114 &4970911389844143370
+  noiseIntensity: 1
+  scrollSpeed: 0.1
+--- !u!114 &8683149054582967719
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,21 +192,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3297243b450f8844a969bbb765161378, type: 3}
-  m_Name: Single Note
+  m_Script: {fileID: 11500000, guid: a0cae302eea966a41b5ac6a68a6399b7, type: 3}
+  m_Name: Note On
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -574.5, y: -307}
+  position: {x: -681.01685, y: -494.20264}
   ports:
     keys:
+    - NoteNumber
     - Velocity
     - NoteOnTrigger
     - NoteOffTrigger
+    - NotePosition
     - NoteIsOn
     values:
+    - memberName: NoteNumber
+      memberType: 4
+      node: {fileID: 8683149054582967719}
+      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
     - memberName: Velocity
       memberType: 4
-      node: {fileID: 4970911389844143370}
+      node: {fileID: 8683149054582967719}
       typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
@@ -215,33 +226,42 @@ MonoBehaviour:
       Dynamic: 0
     - memberName: NoteOnTrigger
       memberType: 16
-      node: {fileID: 4970911389844143370}
+      node: {fileID: 8683149054582967719}
       typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
       - MemberName: Emit
         MemberType: 16
-        node: {fileID: 4623831412052386150}
+        node: {fileID: -2608134540315252368}
         reroutePoints: []
       Direction: 1
       ConnectionType: 0
       Dynamic: 0
     - memberName: NoteOffTrigger
       memberType: 16
-      node: {fileID: 4970911389844143370}
+      node: {fileID: 8683149054582967719}
       typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
       - MemberName: Clear
         MemberType: 16
-        node: {fileID: 4623831412052386150}
+        node: {fileID: -2608134540315252368}
         reroutePoints: []
+      Direction: 1
+      ConnectionType: 0
+      Dynamic: 0
+    - memberName: NotePosition
+      memberType: 16
+      node: {fileID: 8683149054582967719}
+      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
       Direction: 1
       ConnectionType: 0
       Dynamic: 0
     - memberName: NoteIsOn
       memberType: 16
-      node: {fileID: 4970911389844143370}
+      node: {fileID: 8683149054582967719}
       typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
@@ -249,5 +269,7 @@ MonoBehaviour:
       ConnectionType: 0
       Dynamic: 0
   Channel: 4
-  NoteNumber: 60
+  MinNoteNumber: 0
+  MaxNoteNumber: 127
+  NoteNumber: 39
   Velocity: 0

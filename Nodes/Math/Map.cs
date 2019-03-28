@@ -1,42 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using XNode;
-using Eidetic.Unity.Utility;
+using Eidetic.Utility;
 
 namespace Eidetic.Confluence
 {
     [CreateNodeMenu("Math/Map")]
     public class Map : RuntimeNode
     {
-        [Input(ShowBackingValue.Never, ConnectionType.Override)] public float Input;
-        public Vector2 InputMinMax = new Vector2(0, 1);
-        public Vector2 OutputMinMax = new Vector2(0, 1);
-        [Output(ShowBackingValue.Always, ConnectionType.Multiple)] public float Output;
-
-        NodePort InputConnection;
-
-        protected override void Init()
-        {
-            base.Init();
-            Input = InputMinMax.x;
-            Output = OutputMinMax.x;
-        }
+        [Input] public float Input;
         
-        internal override void Update()
-        {
-            Input = GetInputPort("Input").GetInputValue<float>();
-            Output = Input.Map(InputMinMax, OutputMinMax);
-        }
+        [Input] public float InputMinimum = 0f;
+        [Input] public float InputMaximum = 1f;
+        [Input] public float OutputMinimum = 0f;
+        [Input] public float OutputMaximum = 1f;
 
-        public float GetValue()
-        {
-            return Output;
-        }
-
-        public override object GetValue(NodePort port)
-        {
-            return GetValue();
-        }
+        [Output] public float Output => Input.Map(InputMinimum, InputMaximum, OutputMinimum, OutputMaximum);
+        [Output] public int RoundedOutput => Output.RoundToInt();
     }
 }

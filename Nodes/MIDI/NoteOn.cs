@@ -12,10 +12,11 @@ using XNode;
 namespace Eidetic.Confluence.Midi
 {
     [CreateNodeMenu("MIDI/NoteOn"), NodeTint(Colors.ExternalInputTint)]
-    public class SingleNote : RuntimeNode
+    public class NoteOn : RuntimeNode
     {
-        public MidiChannel Channel;
-        public int NoteNumber;
+        [SerializeField] public MidiChannel Channel;
+        [SerializeField] public int MinNoteNumber = 0;
+        [SerializeField] public int MaxNoteNumber = 127;
 
         bool noteOnTrigger = false;
         [Output] public bool NoteOnTrigger
@@ -45,6 +46,8 @@ namespace Eidetic.Confluence.Midi
             }
         }
 
+        [Output] public int NoteNumber = 0;
+        [Output] public float NotePosition => NoteNumber.Map(MinNoteNumber, MaxNoteNumber, 0f, 1f);
         [Output] public float Velocity = 0f;
         [Output] public bool NoteIsOn => Velocity != 0;
 
@@ -68,10 +71,11 @@ namespace Eidetic.Confluence.Midi
 
         void OnNoteOnReceived(MidiChannel channel, int note, float velocity)
         {
-            if (channel == Channel && note == NoteNumber)
+            if (channel == Channel && note >= MinNoteNumber && note <= MaxNoteNumber)
             {
                 if (velocity != 0)
                 {
+                    NoteNumber = note;
                     Velocity = velocity;
                     noteOnTrigger = true;
                 }
@@ -81,8 +85,9 @@ namespace Eidetic.Confluence.Midi
 
         void OnNoteOffReceived(MidiChannel channel, int note)
         {
-            if (channel == Channel && note == NoteNumber)
+            if (channel == Channel && note >= MinNoteNumber && note <= MaxNoteNumber)
             {
+                NoteNumber = note;
                 Velocity = 0f;
                 noteOffTrigger = true;
             }

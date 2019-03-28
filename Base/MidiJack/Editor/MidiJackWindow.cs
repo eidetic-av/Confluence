@@ -63,7 +63,7 @@ namespace MidiJack
                 {
                     case MidiDriver.StatusCode.NoteOn:
                         logMessage = String.Format("{0} - CH{1} - {2}.{3}:{4}",
-                             Time.time, channelNumber, message.data1 ,statusCode, message.data2);
+                             Time.time, channelNumber + 1, message.data1 ,statusCode, message.data2);
                         break;
                 }
                 temp += "\n" + logMessage;
