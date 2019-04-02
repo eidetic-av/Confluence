@@ -8,6 +8,7 @@ using Eidetic.Utility;
 using UnityEditor;
 using UnityEngine;
 using XNode;
+
 namespace Eidetic.Confluence
 {
     [InitializeOnLoad]
