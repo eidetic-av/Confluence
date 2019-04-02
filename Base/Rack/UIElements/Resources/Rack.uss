@@ -1,0 +1,13 @@
+.RackContainer 
+{
+    background-color: #000000;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.RackRow
+{
+    background-color: #cccccc;
+    flex-direction: row;
+    height: 400;
+}

@@ -1,0 +1,28 @@
+.ModuleElement
+{
+    min-width: 100;
+    min-height: 400;
+    background-color: #ff00ff;
+    border-width: 5;
+    border-color: #00ff00;
+}
+
+.ModuleElement.MouseDown
+{
+    background-color: #00ffff;
+}
+
+.ModuleElement.Dragging
+{
+    background-color: #ffffff;
+    opacity: .66;
+}
+
+.WideTest {
+    min-width: 300;
+    background-color: #ffff00;
+}
+
+.InsertBlank {
+    background-color: #ff0000;
+}
