@@ -22,7 +22,7 @@ namespace Eidetic.Confluence.Base
         RackRow ParentRow;
         RackContainer Container;
 
-        static VisualElement InsertBlank;
+        VisualElement InsertBlank;
 
         public ModuleElement(RackRow parentRow) : base(parentRow.Container)
         {
@@ -48,10 +48,12 @@ namespace Eidetic.Confluence.Base
                 StartDragModuleIndex = ParentRow.IndexOf(this);
 
                 this.style.position = Position.Absolute;
-                this.BringToFront();
+                BringToFront();
 
                 InsertBlank.style.width = this.layout.width;
                 InsertBlank.style.height = this.layout.height;
+
+                ParentRow.Insert(StartDragModuleIndex, InsertBlank);
 
                 MovingModule = true;
             }
@@ -63,22 +65,24 @@ namespace Eidetic.Confluence.Base
 
             // see if we are overlapping the edges of other modules to initiate
             // add a dummy spacer and initiate a move
-
-            if (ParentRow.Contains(InsertBlank) && InsertBlank.layout.Contains(CurrentDragMousePosition))
+            foreach (var module in ParentRow.Children())
             {
-                NewModuleIndex = ParentRow.IndexOf(InsertBlank);
-            }
-            else
-            {
-                foreach (var module in ParentRow.Children())
+                var leftCatchZone = new Rect(module.layout.x - 50, module.layout.y, 100, 400);
+                if (leftCatchZone.Contains(CurrentDragMousePosition) && module != InsertBlank)
                 {
-                    var leftCatchZone = new Rect(module.layout.x - 50, module.layout.y,
-                        100, ParentRow.layout.height);
-                    if (leftCatchZone.Contains(CurrentDragMousePosition) && module != InsertBlank)
+                    ParentRow.Remove(InsertBlank);
+                    ParentRow.Insert(ParentRow.IndexOf(module), InsertBlank);
+                    NewModuleIndex = ParentRow.IndexOf(InsertBlank);
+                    break;
+                }
+                if (ParentRow.IndexOf(module) == ParentRow.childCount - 1)
+                {
+                    var rightCatchZone = new Rect(module.layout.xMax - 50, module.layout.y, 100, 400);
+                    if (rightCatchZone.Contains(CurrentDragMousePosition) && module != InsertBlank)
                     {
-                        if (ParentRow.Contains(InsertBlank))
-                            ParentRow.Remove(InsertBlank);
-                        ParentRow.Insert(ParentRow.IndexOf(module), InsertBlank);
+                        ParentRow.Remove(InsertBlank);
+                        ParentRow.Add(InsertBlank);
+                        NewModuleIndex = ParentRow.IndexOf(InsertBlank);
                         break;
                     }
                 }

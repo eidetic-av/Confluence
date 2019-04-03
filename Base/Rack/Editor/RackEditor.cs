@@ -35,7 +35,7 @@ namespace Eidetic.Confluence.Base
             var styleSheet = Resources.Load<StyleSheet>("Rack");
             if (styleSheet != null) rootVisualElement.styleSheets.Add(styleSheet);
             
-            var container = new RackContainer();
+            var container = new RackContainer(rootVisualElement);
             rootVisualElement.Add(container);
         }
 

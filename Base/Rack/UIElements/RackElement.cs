@@ -9,43 +9,32 @@ namespace Eidetic.Confluence.Base
 {
     public abstract class RackElement : VisualElement
     {
-        static List<RackElement> InstantiatedElements;
-        static RackElement()
-        {
-            InstantiatedElements = new List<RackElement>();
-        }
-
         public Action<MouseDownEvent> OnMouseDown;
         public Action<MouseUpEvent> OnMouseUp;
         public Action<MouseMoveEvent> OnMouseDrag;
 
-        public bool MouseDown {get; private set;}
-        public bool MouseDragging {get; private set;}
+        public bool MouseDown { get; private set; } = false;
+        public bool MouseDragging { get; private set; } = false;
 
-        void Initialise()
+        VisualElement Container;
+
+        public RackElement(VisualElement parentContainer)
         {
-            // Stylesheets
-            InstantiatedElements.Add(this);
             if (styleSheets != null) styleSheets.Clear();
             ClearClassList();
             LoadStyleSheets(this, this.GetType());
 
-            // Actions
-            OnMouseDown = mouseDownEvent => DefaultMouseDown(mouseDownEvent);
-            OnMouseUp = mouseUpEvent => DefaultMouseUp(mouseUpEvent);
-            OnMouseDrag = mouseMoveEvent => DefaultMouseDrag(mouseMoveEvent);
-            
+            Container = parentContainer;
+            if (Container is RackElement)
+                ((RackElement) Container).OnMouseUp += DefaultMouseUp;
+
+            OnMouseDown = e => DefaultMouseDown(e);
+            OnMouseUp = e => DefaultMouseUp(e);
+            OnMouseDrag = e => DefaultMouseDrag(e);
+
             RegisterCallback<MouseDownEvent>(e => OnMouseDown.Invoke(e));
             RegisterCallback<MouseUpEvent>(e => OnMouseUp.Invoke(e));
             RegisterCallback<MouseMoveEvent>(e => OnMouseDrag.Invoke(e));
-        }
-
-        public RackElement() => Initialise();
-
-        public RackElement(RackContainer parentContainer)
-        {
-            Initialise();
-            parentContainer.OnMouseUp += DefaultMouseUp;
         }
 
         public static void LoadStyleSheets(RackElement element, Type elementType)
@@ -63,20 +52,21 @@ namespace Eidetic.Confluence.Base
         void DefaultMouseDown(MouseDownEvent mouseDownEvent)
         {
             MouseDown = true;
-            this.AddToClassList("MouseDown");
+            AddToClassList("MouseDown");
         }
         void DefaultMouseUp(MouseUpEvent mouseUpEvent)
         {
             MouseDown = false;
             MouseDragging = false;
-            this.RemoveFromClassList("MouseDown");
-            this.RemoveFromClassList("Dragging");
+            RemoveFromClassList("MouseDown");
+            RemoveFromClassList("Dragging");
         }
         void DefaultMouseDrag(MouseMoveEvent mouseMoveEvent)
         {
-            if (MouseDown) {
+            if (MouseDown)
+            {
                 MouseDragging = true;
-                this.AddToClassList("Dragging");
+                AddToClassList("Dragging");
             }
         }
     }

@@ -13,6 +13,30 @@ namespace Eidetic.Confluence.Base
         public RackRow(RackContainer parentContainer) : base(parentContainer)
         {
             Container = parentContainer;
+            Add(new NewModuleBlank(this));
+        }
+
+        class NewModuleBlank : RackElement
+        {
+            RackRow ParentRow;
+
+            public NewModuleBlank(RackRow parentRow) : base(parentRow.Container)
+            {
+                ParentRow = parentRow;
+                AddToClassList("NewModuleBlank");
+                style.top = ParentRow.layout.y;
+                style.height = 400;
+                var text = new TextElement();
+                text.text = "Add Module";
+                Add(text);
+
+                OnMouseDown += OpenModuleMenu;
+            }
+
+            void OpenModuleMenu(MouseDownEvent e)
+            {
+                
+            }
         }
     }
 }

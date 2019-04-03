@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: Map
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 608.1034, y: -705.4597}
+  position: {x: 654.1034, y: -638.4597}
   ports:
     keys:
     - Input
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_Name: Emission
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -376, y: -296}
+  position: {x: -338, y: -633}
   ports:
     keys:
     - Input
@@ -366,7 +366,7 @@ MonoBehaviour:
       ConnectionType: 0
       Dynamic: 0
   maxParticles: 197
-  emissionRate: 0
+  emissionRate: -36
   manualEmissionCount: 500
   emit: 0
   clear: 0
@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Name: Motion
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 72, y: -152}
+  position: {x: 392, y: -180}
   ports:
     keys:
     - Input
@@ -453,7 +453,7 @@ MonoBehaviour:
       ConnectionType: 0
       Dynamic: 0
   noiseIntensity: 9
-  scrollSpeed: 50
+  scrollSpeed: 65
 --- !u!114 &2603099714790117703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,7 +467,7 @@ MonoBehaviour:
   m_Name: Map
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -154, y: -249}
+  position: {x: 64, y: -269}
   ports:
     keys:
     - Input
@@ -559,7 +559,7 @@ MonoBehaviour:
   m_Name: Quad LFO
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 384.1016, y: -684.3342}
+  position: {x: 383.1016, y: -619.3342}
   ports:
     keys:
     - Clock
@@ -896,7 +896,7 @@ MonoBehaviour:
   m_Name: Note On
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -616, y: -552}
+  position: {x: -556, y: -540}
   ports:
     keys:
     - NoteNumber

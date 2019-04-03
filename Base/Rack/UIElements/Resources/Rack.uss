@@ -1,13 +1,63 @@
 .RackContainer 
 {
-    background-color: #000000;
+    background-color: #ffffff;
     flex-direction: column;
     flex-grow: 1;
 }
 
 .RackRow
 {
-    background-color: #cccccc;
+    background-color: #ffffff;
     flex-direction: row;
     height: 400;
+}
+
+.ModuleElement
+{
+    min-width: 100;
+    min-height: 400;
+    background-color: #0000ff;
+    border-width: 2;
+    border-color: #000000;
+}
+
+.ModuleElement.MouseDown
+{
+    background-color: #00ffff;
+}
+
+.ModuleElement.Dragging
+{
+    background-color: #ffffff;
+    border-width: 4;
+    opacity: .66;
+}
+
+.WideTest {
+    min-width: 300;
+    background-color: #ff0000;
+}
+
+.InsertBlank {
+    border-width: 2;
+    border-color: #000000;
+}
+
+.NewModuleBlank
+{
+    position: absolute;
+    right: 0;
+    width: 150;
+    background-color: #fafafa;
+    margin: 5;
+    border-width: 4;
+    border-color: #cecece;
+    color: #aaa;
+    font-size: 24;
+}
+
+.NewModuleBlank:hover
+{
+    background-color: #f0f0f0;
+    border-color: #cccccc;
 }
