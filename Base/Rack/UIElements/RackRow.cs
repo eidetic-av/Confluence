@@ -8,11 +8,8 @@ namespace Eidetic.Confluence.Base
 {
     public class RackRow : RackElement
     {
-        public RackContainer Container {get; private set;}
-
-        public RackRow(RackContainer parentContainer) : base(parentContainer)
+        public RackRow() : base()
         {
-            Container = parentContainer;
             Add(new NewModuleBlank(this));
         }
 
@@ -20,7 +17,7 @@ namespace Eidetic.Confluence.Base
         {
             RackRow ParentRow;
 
-            public NewModuleBlank(RackRow parentRow) : base(parentRow.Container)
+            public NewModuleBlank(RackRow parentRow) : base()
             {
                 ParentRow = parentRow;
                 AddToClassList("NewModuleBlank");

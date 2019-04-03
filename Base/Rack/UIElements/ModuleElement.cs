@@ -17,31 +17,49 @@ namespace Eidetic.Confluence.Base
 
         public Vector2 StartDragElementPosition { get; private set; }
         public int StartDragModuleIndex { get; private set; }
-        public int NewModuleIndex { get; private set; } = -1;
+        public int ModuleDropIndex { get; private set; } = -1;
 
         RackRow ParentRow;
-        RackContainer Container;
 
         VisualElement InsertBlank;
 
-        public ModuleElement(RackRow parentRow) : base(parentRow.Container)
-        {
-            ParentRow = parentRow;
-            Container = ParentRow.Container;
-            Container.OnMouseDrag += DragModule;
-            Container.OnMouseUp += DropModule;
+        ModuleHeader Header;
 
+        public ModuleElement() : base()
+        {
             InsertBlank = new VisualElement();
             InsertBlank.AddToClassList("InsertBlank");
+
+            RackContainer.Instance.OnMouseDrag += DragModule;
+            RackContainer.Instance.OnMouseUp += DropModule;
+
+            Header = new ModuleHeader(this);
+            Add(Header);
+        }
+
+        class ModuleHeader : RackElement
+        {
+            public bool DragActive;
+            ModuleElement Module;
+            public ModuleHeader(ModuleElement parentModule) : base()
+            {
+                Module = parentModule;
+                var header = new TextElement();
+                header.text = Module.GetType().Name;
+                Add(header);
+
+                OnMouseDown += e => DragActive = true;
+            }
         }
 
         void DragModule(MouseMoveEvent mouseMoveEvent)
         {
-            if (this.MouseDragging == false) return;
+            if (!Header.DragActive || !this.MouseDragging) return;
 
             if (MovingModule == false)
             {
                 CurrentMovingModule = this;
+                ParentRow = this.parent as RackRow;
                 StartDragMousePosition = mouseMoveEvent.localMousePosition;
                 CurrentDragMousePosition = StartDragMousePosition;
                 StartDragElementPosition = new Vector2(layout.x, layout.y);
@@ -55,6 +73,7 @@ namespace Eidetic.Confluence.Base
 
                 ParentRow.Insert(StartDragModuleIndex, InsertBlank);
 
+                AddToClassList("Moving");
                 MovingModule = true;
             }
 
@@ -63,28 +82,26 @@ namespace Eidetic.Confluence.Base
             this.style.left = StartDragElementPosition.x + (CurrentDragMousePosition.x - StartDragMousePosition.x);
             this.style.top = StartDragElementPosition.y + (CurrentDragMousePosition.y - StartDragMousePosition.y);
 
-            // see if we are overlapping the edges of other modules to initiate
-            // add a dummy spacer and initiate a move
+            // see if we are overlapping the edges of other modules to
+            // add the insert blank in between and update the drop index
             foreach (var module in ParentRow.Children())
             {
+                if (module == InsertBlank) continue;
                 var leftCatchZone = new Rect(module.layout.x - 50, module.layout.y, 100, 400);
-                if (leftCatchZone.Contains(CurrentDragMousePosition) && module != InsertBlank)
+                if (leftCatchZone.Contains(CurrentDragMousePosition))
                 {
                     ParentRow.Remove(InsertBlank);
                     ParentRow.Insert(ParentRow.IndexOf(module), InsertBlank);
-                    NewModuleIndex = ParentRow.IndexOf(InsertBlank);
+                    ModuleDropIndex = ParentRow.IndexOf(InsertBlank);
                     break;
                 }
-                if (ParentRow.IndexOf(module) == ParentRow.childCount - 1)
+                var rightCatchZone = new Rect(module.layout.xMax - 50, module.layout.y, 100, 400);
+                if (rightCatchZone.Contains(CurrentDragMousePosition))
                 {
-                    var rightCatchZone = new Rect(module.layout.xMax - 50, module.layout.y, 100, 400);
-                    if (rightCatchZone.Contains(CurrentDragMousePosition) && module != InsertBlank)
-                    {
-                        ParentRow.Remove(InsertBlank);
-                        ParentRow.Add(InsertBlank);
-                        NewModuleIndex = ParentRow.IndexOf(InsertBlank);
-                        break;
-                    }
+                    ParentRow.Remove(InsertBlank);
+                    ParentRow.Insert(ParentRow.IndexOf(module) + 1, InsertBlank);
+                    ModuleDropIndex = ParentRow.IndexOf(InsertBlank);
+                    break;
                 }
             }
         }
@@ -99,22 +116,20 @@ namespace Eidetic.Confluence.Base
             this.style.left = 0;
             this.style.top = 0;
 
-            var rowIndex = NewModuleIndex != -1 ? NewModuleIndex : StartDragModuleIndex;
-
-            if (CurrentDragMousePosition.x > ParentRow.ElementAt(ParentRow.childCount - 1).layout.x)
-                rowIndex = ParentRow.childCount;
+            var rowIndex = ModuleDropIndex != -1 ? ModuleDropIndex : StartDragModuleIndex;
 
             ParentRow.Insert(rowIndex, this);
 
-            if (ParentRow.Contains(InsertBlank))
-                ParentRow.Remove(InsertBlank);
+            ParentRow.Remove(InsertBlank);
 
             CurrentMovingModule = null;
             MovingModule = false;
             StartDragMousePosition = Vector2.zero;
             CurrentDragMousePosition = Vector2.zero;
             StartDragModuleIndex = -1;
-            NewModuleIndex = -1;
+            ModuleDropIndex = -1;
+            Header.DragActive = false;
+            RemoveFromClassList("Moving");
         }
     }
 }

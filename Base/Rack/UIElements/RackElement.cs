@@ -16,17 +16,14 @@ namespace Eidetic.Confluence.Base
         public bool MouseDown { get; private set; } = false;
         public bool MouseDragging { get; private set; } = false;
 
-        VisualElement Container;
-
-        public RackElement(VisualElement parentContainer)
+        public RackElement()
         {
             if (styleSheets != null) styleSheets.Clear();
             ClearClassList();
             LoadStyleSheets(this, this.GetType());
 
-            Container = parentContainer;
-            if (Container is RackElement)
-                ((RackElement) Container).OnMouseUp += DefaultMouseUp;
+            if (this.GetType() != typeof(RackContainer))
+                RackContainer.Instance.OnMouseUp += DefaultMouseUp;
 
             OnMouseDown = e => DefaultMouseDown(e);
             OnMouseUp = e => DefaultMouseUp(e);
