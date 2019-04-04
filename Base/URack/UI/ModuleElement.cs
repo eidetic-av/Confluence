@@ -8,7 +8,7 @@ namespace Eidetic.URack.UI
 {
     public class ModuleElement : DraggableElement
     {
-        public static ModuleElement CurrentMovingModule { get; private set; }
+        public static ModuleElement CurrentDraggingModule { get; private set; }
 
         public bool MovingModule { get; private set; }
 
@@ -58,7 +58,9 @@ namespace Eidetic.URack.UI
 
             if (MovingModule == false)
             {
-                CurrentMovingModule = this;
+                CurrentDraggingModule = this;
+                this.name = "Dragging";
+
                 ParentRow = this.parent as RackRow;
                 StartDragMousePosition = mouseMoveEvent.localMousePosition;
                 CurrentDragMousePosition = StartDragMousePosition;
@@ -122,12 +124,13 @@ namespace Eidetic.URack.UI
 
             ParentRow.Remove(InsertBlank);
 
-            CurrentMovingModule = null;
+            CurrentDraggingModule = null;
             MovingModule = false;
             StartDragMousePosition = Vector2.zero;
             CurrentDragMousePosition = Vector2.zero;
             StartDragModuleIndex = -1;
             ModuleDropIndex = -1;
+            this.name = "";
         }
     }
 }

@@ -10,7 +10,7 @@ ModuleElement
     border-color: #000000;
 }
 
-ModuleElement.Dragging
+ModuleElement#Dragging
 {
     border-width: 4;
     opacity: .66;

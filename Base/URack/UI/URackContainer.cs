@@ -9,54 +9,27 @@ namespace Eidetic.URack.UI
 {
     public class URackContainer : DraggableElement
     {
-        static URackContainer instance;
-        public static URackContainer Instance
+        public static URackContainer Instance {get; private set;}
+        public static URackContainer Instantiate(Rack rack)
         {
-            get
-            {
-                if (instance == null) new URackContainer();
-                return instance;
-            }
-            private set
-            {
-                instance = value;
-            }
+            Instance = new URackContainer(rack);
+            return Instance;
         }
 
         public static List<URackElement> AttachedElements { get; private set; } = new List<URackElement>();
 
-        public URackContainer() : base()
+        public Rack Rack { get; private set; }
+
+        public URackContainer(Rack rack) : base()
         {
             Instance = this;
+            Rack = rack;
+
             var firstRow = new RackRow();
             firstRow.Add(new ModuleElement());
-            var wide = new ModuleElement();
-            wide.AddToClassList("WideTest");
-            firstRow.Add(wide);
-            firstRow.Add(new ModuleElement());
-            firstRow.Add(new ModuleElement());
-
-            var mid = new ModuleElement();
-            mid.AddToClassList("MidTest");
-            firstRow.Add(mid);
 
             Add(firstRow);
-
-            var secondRow = new RackRow();
-            var wide2 = new ModuleElement();
-            wide2.AddToClassList("WideTest");
-            secondRow.Add(wide2);
-            secondRow.Add(new ModuleElement());
-            secondRow.Add(new ModuleElement());
-            var wide3 = new ModuleElement();
-            wide3.AddToClassList("WideTest");
-            secondRow.Add(wide3);
-            var wide4 = new ModuleElement();
-            wide4.AddToClassList("WideTest");
-            secondRow.Add(wide4);
-
-            Add(secondRow);
-
+            
             Add(new NewModuleButton());
         }
 
@@ -90,8 +63,7 @@ namespace Eidetic.URack.UI
     internal class RackRow : StyledElement
     {
         public RackRow() : base()
-        {
-        }
+        { }
     }
 
     internal class NewModuleButton : TouchElement
