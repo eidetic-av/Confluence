@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Eidetic.URack.UI
 {
-    public class TouchElement : StyledElement
+    public class    TouchElement : StyledElement
     {
         public Action<MouseDownEvent> OnTouch;
         public Action<MouseUpEvent> OnRelease;

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Eidetic.URack.UI
 {
-    public class ModuleElement : DraggableElement
+    public partial class ModuleElement : DraggableElement
     {
         public static ModuleElement CurrentDraggingModule { get; private set; }
 
@@ -30,22 +30,22 @@ namespace Eidetic.URack.UI
             InsertBlank = new VisualElement();
             InsertBlank.AddToClassList("InsertBlank");
 
-            URackContainer.Instance.OnDrag += DragModule;
-            URackContainer.Instance.OnRelease += DropModule;
+            RackContainer.Instance.OnDrag += DragModule;
+            RackContainer.Instance.OnRelease += DropModule;
 
             Header = new ModuleHeader(this);
-            Add(Header);    
+            Add(Header);
         }
 
         class ModuleHeader : TouchElement
         {
             public bool DragActive;
-            ModuleElement Module;
+            ModuleElement ModuleElement;
             public ModuleHeader(ModuleElement parentModule) : base()
             {
-                Module = parentModule;
+                ModuleElement = parentModule;
                 var header = new TextElement();
-                header.text = Module.GetType().Name;
+                header.text = ModuleElement.GetType().Name;
                 Add(header);
 
                 OnTouch += e => DragActive = true;
@@ -59,7 +59,6 @@ namespace Eidetic.URack.UI
             if (MovingModule == false)
             {
                 CurrentDraggingModule = this;
-                this.name = "Dragging";
 
                 ParentRow = this.parent as RackRow;
                 StartDragMousePosition = mouseMoveEvent.localMousePosition;
@@ -76,6 +75,8 @@ namespace Eidetic.URack.UI
                 ParentRow.Insert(StartDragModuleIndex, InsertBlank);
 
                 MovingModule = true;
+
+                AddToClassList("Drag");
             }
 
             CurrentDragMousePosition = mouseMoveEvent.localMousePosition;
@@ -130,7 +131,8 @@ namespace Eidetic.URack.UI
             CurrentDragMousePosition = Vector2.zero;
             StartDragModuleIndex = -1;
             ModuleDropIndex = -1;
-            this.name = "";
+
+            RemoveFromClassList("Drag");
         }
     }
 }

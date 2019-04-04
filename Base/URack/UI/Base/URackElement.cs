@@ -11,12 +11,12 @@ namespace Eidetic.URack.UI
     {
         public static List<URackElement> Elements {get; private set;} = new List<URackElement>();
 
-        public bool Attached => URackContainer.AttachedElements.Contains(this);
+        public bool Attached => RackContainer.AttachedElements.Contains(this);
 
         public URackElement() : base()
         {
             Elements.Add(this);
-            URackContainer.AttachElement(this);
+            RackContainer.AttachElement(this);
         }
 
         virtual public void OnAttach() { }

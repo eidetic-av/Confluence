@@ -7,12 +7,12 @@ using UnityEngine.UIElements;
 
 namespace Eidetic.URack.UI
 {
-    public class URackContainer : DraggableElement
+    public class RackContainer : DraggableElement
     {
-        public static URackContainer Instance {get; private set;}
-        public static URackContainer Instantiate(Rack rack)
+        public static RackContainer Instance { get; private set; }
+        public static RackContainer Instantiate(Rack rack)
         {
-            Instance = new URackContainer(rack);
+            Instance = new RackContainer(rack);
             return Instance;
         }
 
@@ -20,17 +20,24 @@ namespace Eidetic.URack.UI
 
         public Rack Rack { get; private set; }
 
-        public URackContainer(Rack rack) : base()
+        public RackContainer(Rack rack) : base()
         {
             Instance = this;
             Rack = rack;
+            LoadModuleElements();
+        }
+
+        public void LoadModuleElements()
+        {
+            Clear();
 
             var firstRow = new RackRow();
-            firstRow.Add(new ModuleElement());
-
             Add(firstRow);
-            
-            Add(new NewModuleButton());
+
+            var module = new Map();
+
+            var moduleTemplate = Resources.Load<VisualTreeAsset>(module.GetType().Name);            
+            moduleTemplate.CloneTree(firstRow);
         }
 
         public static void Attach()
@@ -62,8 +69,7 @@ namespace Eidetic.URack.UI
 
     internal class RackRow : StyledElement
     {
-        public RackRow() : base()
-        { }
+        public RackRow() : base() { }
     }
 
     internal class NewModuleButton : TouchElement

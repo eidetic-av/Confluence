@@ -18,7 +18,7 @@ namespace Eidetic.URack.UI
         /// <param name="elementType"></param>
         static public void LoadStyleSheets(StyledElement element, Type elementType)
         {
-            if (elementType.BaseType != null && elementType.BaseType != typeof(URackElement))
+            if (elementType.BaseType != null && elementType.BaseType != typeof(StyledElement))
                 LoadStyleSheets(element, elementType.BaseType);
             element.AddToClassList(elementType.Name);
             var styleSheet = Resources.Load<StyleSheet>(elementType.Name);

@@ -26,7 +26,7 @@ namespace Eidetic.URack.Editor
         [MenuItem("Window/URack")]
         public static void OpenRack(Rack rackAsset)
         {
-            UI.URackContainer.Instantiate(rackAsset);
+            UI.RackContainer.Instantiate(rackAsset);
             GetWindow();
         }
 
@@ -34,19 +34,19 @@ namespace Eidetic.URack.Editor
         {
             var window = GetWindow<RackEditor>(true, "URack");
             window.rootVisualElement.Clear();
-            window.rootVisualElement.Add(UI.URackContainer.Instance);
+            window.rootVisualElement.Add(UI.RackContainer.Instance);
             return window;
         }
 
         public void OnEnable()
         {
             GetWindow();
-            UI.URackContainer.Attach();
+            UI.RackContainer.Attach();
         }
 
         public void OnDisable()
         {
-            UI.URackContainer.Detach();
+            UI.RackContainer.Detach();
         }
     }
 }

@@ -16,8 +16,8 @@ namespace Eidetic.URack.UI
         {
             OnDrag = e => BaseDragCallback(this, e);
             OnRelease += e => DragReleaseCallback(this, e);
-            if (this.GetType() != typeof(URackContainer))
-                URackContainer.Instance.OnRelease += e => DragReleaseCallback(this, e);
+            if (this.GetType() != typeof(RackContainer))
+                RackContainer.Instance.OnRelease += e => DragReleaseCallback(this, e);
 
             RegisterCallback<MouseMoveEvent>(e => OnDrag.Invoke(e));
 
