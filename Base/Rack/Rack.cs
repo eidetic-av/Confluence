@@ -5,13 +5,13 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Eidetic.Confluence.Base
+namespace Eidetic.URack
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu, Serializable]
     public class Rack : ScriptableObject
     {
-        public Rack()
-        {
-        }
+        /// <summary> All modules in the rack. <para/>
+        /// See: <see cref="AddModule{T}"/> </summary>
+        [SerializeField] public List<Module> modules = new List<Module>();
     }
 }

@@ -3,8 +3,9 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Eidetic.URack.UI;
 
-namespace Eidetic.Confluence.Base
+namespace Eidetic.URack.Editor
 {
     [CustomEditor(typeof(Rack))]
     public class RackEditor : EditorWindow
@@ -27,21 +28,20 @@ namespace Eidetic.Confluence.Base
         public static void ShowWindow(Rack rackAsset)
         {
             ActiveRack = rackAsset;
-            var window = GetWindow<RackEditor>();
         }
 
         public void OnEnable()
         {
-            var styleSheet = Resources.Load<StyleSheet>("Rack");
-            if (styleSheet != null) rootVisualElement.styleSheets.Add(styleSheet);
-            
-            var container = new RackContainer();
-            rootVisualElement.Add(container);
+            var window = GetWindow<RackEditor>();
+            if (!window.rootVisualElement.Contains(UI.URackContainer.Instance))
+                window.rootVisualElement.Add(UI.URackContainer.Instance);  
+
+            UI.URackContainer.Attach();
         }
 
         public void OnDisable()
         {
-
+            UI.URackContainer.Detach();
         }
     }
 }

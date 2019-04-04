@@ -1,0 +1,29 @@
+ModuleElement
+{
+    min-width: 100;
+    min-height: 400;
+    background-color: #0000ff;
+    border-top: 0;
+    border-bottom: 4;
+    border-left: 0;
+    border-right: 4;
+    border-color: #000000;
+}
+
+ModuleElement.Dragging
+{
+    border-width: 4;
+    opacity: .66;
+}
+
+ModuleHeader
+{
+    background-color: rgba(255, 255, 255, .45);
+    color: #ffffff;
+    height: 30;
+    font-size: 12;
+    -unity-font-style: bold;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}

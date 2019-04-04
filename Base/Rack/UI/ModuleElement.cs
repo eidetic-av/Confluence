@@ -4,9 +4,9 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Eidetic.Confluence.Base
+namespace Eidetic.URack.UI
 {
-    public class ModuleElement : RackElement
+    public class ModuleElement : DraggableElement
     {
         public static ModuleElement CurrentMovingModule { get; private set; }
 
@@ -30,14 +30,14 @@ namespace Eidetic.Confluence.Base
             InsertBlank = new VisualElement();
             InsertBlank.AddToClassList("InsertBlank");
 
-            RackContainer.Instance.OnMouseDrag += DragModule;
-            RackContainer.Instance.OnMouseUp += DropModule;
+            URackContainer.Instance.OnDrag += DragModule;
+            URackContainer.Instance.OnRelease += DropModule;
 
             Header = new ModuleHeader(this);
-            Add(Header);
+            Add(Header);    
         }
 
-        class ModuleHeader : RackElement
+        class ModuleHeader : TouchElement
         {
             public bool DragActive;
             ModuleElement Module;
@@ -48,13 +48,13 @@ namespace Eidetic.Confluence.Base
                 header.text = Module.GetType().Name;
                 Add(header);
 
-                OnMouseDown += e => DragActive = true;
+                OnTouch += e => DragActive = true;
             }
         }
 
         void DragModule(MouseMoveEvent mouseMoveEvent)
         {
-            if (!Header.DragActive || !this.MouseDragging) return;
+            if (!Header.DragActive || !this.Dragging) return;
 
             if (MovingModule == false)
             {
@@ -73,7 +73,6 @@ namespace Eidetic.Confluence.Base
 
                 ParentRow.Insert(StartDragModuleIndex, InsertBlank);
 
-                AddToClassList("Moving");
                 MovingModule = true;
             }
 
@@ -87,7 +86,7 @@ namespace Eidetic.Confluence.Base
             foreach (var module in ParentRow.Children())
             {
                 if (module == InsertBlank) continue;
-                var leftCatchZone = new Rect(module.layout.x - 50, module.layout.y, 100, 400);
+                var leftCatchZone = new Rect(module.layout.x - 50, ParentRow.layout.y, 100, 400);
                 if (leftCatchZone.Contains(CurrentDragMousePosition))
                 {
                     ParentRow.Remove(InsertBlank);
@@ -95,7 +94,7 @@ namespace Eidetic.Confluence.Base
                     ModuleDropIndex = ParentRow.IndexOf(InsertBlank);
                     break;
                 }
-                var rightCatchZone = new Rect(module.layout.xMax - 50, module.layout.y, 100, 400);
+                var rightCatchZone = new Rect(module.layout.xMax - 50, ParentRow.layout.y, 100, 400);
                 if (rightCatchZone.Contains(CurrentDragMousePosition))
                 {
                     ParentRow.Remove(InsertBlank);
@@ -108,6 +107,7 @@ namespace Eidetic.Confluence.Base
 
         void DropModule(MouseUpEvent mouseUpEvent)
         {
+            Header.DragActive = false;
             if (!MovingModule) return;
 
             ParentRow.Remove(this);
@@ -128,8 +128,6 @@ namespace Eidetic.Confluence.Base
             CurrentDragMousePosition = Vector2.zero;
             StartDragModuleIndex = -1;
             ModuleDropIndex = -1;
-            Header.DragActive = false;
-            RemoveFromClassList("Moving");
         }
     }
 }
