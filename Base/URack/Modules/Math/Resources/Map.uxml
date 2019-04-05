@@ -6,7 +6,6 @@
     xsi:noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd"
     xsi:schemaLocation="UnityEngine.UIElements ../UIElementsSchema/UnityEngine.UIElements.xsd">
 
-    <URack:ModuleElement>
-    </URack:ModuleElement>
+    <URack:PortElement />
 
 </UXML>

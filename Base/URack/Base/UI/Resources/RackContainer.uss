@@ -16,12 +16,7 @@ RackRow
     border-top: 4;
 }
 
-.WideTest {
-    min-width: 300;
-    background-color: #ff0000;
-}
-
-.InsertBlank {
+#InsertBlank {
     border-top: 0;
     border-bottom: 4;
     border-left: 0;

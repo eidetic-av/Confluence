@@ -1,6 +1,6 @@
 using Eidetic.Utility;
 
-namespace Eidetic.URack
+namespace Eidetic.URack.Math
 {
     public class Map : Module
     {

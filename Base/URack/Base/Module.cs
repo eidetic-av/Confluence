@@ -25,9 +25,8 @@ namespace Eidetic.URack
         }
         private static void OnPlay() => RackRuntimeUpdater.Instantiate();
         private static void OnExit() => ActiveModules.ForEachOnMain(n => n.Exit());
-        
-        
-         [SerializeField] private PortDictionary ports = new PortDictionary();
+
+        [SerializeField] private PortDictionary ports = new PortDictionary();
         public IEnumerable<Port> Ports { get { foreach (Port port in ports.Values) yield return port; } }
         public IEnumerable<Port> Outputs { get { foreach (Port port in Ports) { if (port.IsOutput) yield return port; } } }
         public IEnumerable<Port> Inputs { get { foreach (Port port in Ports) { if (port.IsInput) yield return port; } } }
@@ -45,6 +44,8 @@ namespace Eidetic.URack
         public Dictionary<string, Func<object>> Getters { get; private set; }
         public Dictionary<string, Action<object>> Setters { get; private set; }
         public Dictionary<string, FieldInfo> BackingFields { get; private set; }
+
+        public String Name => GetType().PrettyName();
 
         public void OnEnable()
         {
@@ -120,7 +121,6 @@ namespace Eidetic.URack
         internal virtual void Destroy() { }
         internal virtual void Exit() { }
 
-        
         /// <summary> Update static ports to reflect class fields. This happens automatically on enable. </summary>
         public void UpdateStaticPorts()
         {

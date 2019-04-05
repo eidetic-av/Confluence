@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Eidetic.Unity.UI.Utility;
 
 namespace Eidetic.URack.UI
 {
@@ -19,37 +20,35 @@ namespace Eidetic.URack.UI
         public int StartDragModuleIndex { get; private set; }
         public int ModuleDropIndex { get; private set; } = -1;
 
+        public Module Module {get; private set;}
+
         RackRow ParentRow;
 
-        VisualElement InsertBlank;
+        VisualElement InsertBlank = new Box().WithName("InsertBlank");
 
         ModuleHeader Header;
 
-        public ModuleElement() : base()
+        ModuleElement(Module module) : base()
         {
-            InsertBlank = new VisualElement();
-            InsertBlank.AddToClassList("InsertBlank");
-
-            RackContainer.Instance.OnDrag += DragModule;
-            RackContainer.Instance.OnRelease += DropModule;
+            Module = module;
 
             Header = new ModuleHeader(this);
             Add(Header);
+
+            RackContainer.Instance.OnDrag += DragModule;
+            RackContainer.Instance.OnRelease += DropModule;
         }
 
-        class ModuleHeader : TouchElement
+        public static ModuleElement Create(Module module)
         {
-            public bool DragActive;
-            ModuleElement ModuleElement;
-            public ModuleHeader(ModuleElement parentModule) : base()
-            {
-                ModuleElement = parentModule;
-                var header = new TextElement();
-                header.text = ModuleElement.GetType().Name;
-                Add(header);
+            var element = new ModuleElement(module);
+            
+            var moduleTemplate = Resources.Load<VisualTreeAsset>(module.GetType().Name);           
+            moduleTemplate.CloneTree(element);
+            
+            LoadStyleSheets(element, module.GetType());
 
-                OnTouch += e => DragActive = true;
-            }
+            return element;
         }
 
         void DragModule(MouseMoveEvent mouseMoveEvent)
@@ -133,6 +132,18 @@ namespace Eidetic.URack.UI
             ModuleDropIndex = -1;
 
             RemoveFromClassList("Drag");
+        }
+
+        class ModuleHeader : TouchElement
+        {
+            public bool DragActive;
+            ModuleElement ModuleElement;
+            public ModuleHeader(ModuleElement parentModule) : base()
+            {
+                ModuleElement = parentModule;
+                Add(new TextElement().WithText(parentModule.Module.Name));
+                OnTouch += e => DragActive = true;
+            }
         }
     }
 }

@@ -1,0 +1,8 @@
+.QuadLFO {
+    width: 400;
+    background-color: #ff0000;
+}
+
+.QuadLFO ModuleHeader {
+    background-color: rgba(0, 0, 0, .5);
+}

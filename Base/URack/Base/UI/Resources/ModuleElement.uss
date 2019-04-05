@@ -27,3 +27,19 @@ ModuleHeader
     align-content: center;
     justify-content: center;
 }
+
+PortElement, PortElement #Inner
+{
+    height: 25;
+    width: 25;
+}
+
+PortElement
+{
+    background-image: url("PortOuter.png");
+}
+
+PortElement #Inner
+{
+    background-image: url("PortInner.png");
+}

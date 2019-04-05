@@ -34,10 +34,8 @@ namespace Eidetic.URack.UI
             var firstRow = new RackRow();
             Add(firstRow);
 
-            var module = new Map();
-
-            var moduleTemplate = Resources.Load<VisualTreeAsset>(module.GetType().Name);            
-            moduleTemplate.CloneTree(firstRow);
+            firstRow.Add(ModuleElement.Create(new Math.Map()));
+            firstRow.Add(ModuleElement.Create(new Function.QuadLFO()));
         }
 
         public static void Attach()

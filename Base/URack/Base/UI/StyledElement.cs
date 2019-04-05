@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -18,17 +19,28 @@ namespace Eidetic.URack.UI
         /// <param name="elementType"></param>
         static public void LoadStyleSheets(StyledElement element, Type elementType)
         {
-            if (elementType.BaseType != null && elementType.BaseType != typeof(StyledElement))
+            if (elementType.BaseType != null && elementType.BaseType != typeof(StyledElement) && elementType.BaseType != typeof(Module))
                 LoadStyleSheets(element, elementType.BaseType);
+
             element.AddToClassList(elementType.Name);
-            var styleSheet = Resources.Load<StyleSheet>(elementType.Name);
-            if (styleSheet != null) element.styleSheets.Add(styleSheet);
+
+            var styleSheet = Resources.Load(elementType.Name);
+
+            // Bug in Unity resource loading sometimes loads a VisualTreeAsset
+            // as a StyleSheet
+            if (styleSheet is VisualTreeAsset)
+                styleSheet = Resources.FindObjectsOfTypeAll<StyleSheet>().SingleOrDefault(r => r.name == elementType.Name);
+
+            if (styleSheet != null) {
+                element.styleSheets.Add(styleSheet as StyleSheet);
+            }
+
         }
 
         static public void ClearStyleSheets(StyledElement element)
         {
             if (element.styleSheets != null) element.styleSheets.Clear();
-            element.ClearClassList();   
+            element.ClearClassList();
         }
 
         override public void OnAttach() => LoadStyleSheets(this, this.GetType());
