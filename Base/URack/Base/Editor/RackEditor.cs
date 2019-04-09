@@ -23,10 +23,11 @@ namespace Eidetic.URack.Editor
             return false;
         }
 
+        RackElement Element;
         [MenuItem("Window/URack")]
         public static void OpenRack(Rack rackAsset)
         {
-            UI.RackContainer.Instantiate(rackAsset);
+            UI.RackElement.Instantiate(rackAsset);
             GetWindow();
         }
 
@@ -34,19 +35,19 @@ namespace Eidetic.URack.Editor
         {
             var window = GetWindow<RackEditor>(true, "URack");
             window.rootVisualElement.Clear();
-            window.rootVisualElement.Add(UI.RackContainer.Instance);
+            window.rootVisualElement.Add(UI.RackElement.Instance);
             return window;
         }
 
         public void OnEnable()
         {
             GetWindow();
-            UI.RackContainer.Attach();
+            UI.RackElement.Instance.Attach();
         }
 
         public void OnDisable()
         {
-            UI.RackContainer.Detach();
+            UI.RackElement.Instance.Detach();
         }
     }
 }

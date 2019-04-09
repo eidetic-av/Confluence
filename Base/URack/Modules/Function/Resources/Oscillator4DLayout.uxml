@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="UnityEngine.UIElements"
+    xmlns:URack="Eidetic.URack.UI"
+    xsi:noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd"
+xsi:schemaLocation="UnityEngine.UIElements
+../UIElementsSchema/UnityEngine.UIElements.xsd">
+    
+    <Box name="Container">
+
+        <Box class="Column">
+            <URack:PortElement name="ClockSlider" />
+            <!-- <URack:SliderElement name="Clock" /> -->
+            <URack:PortElement name="Sine" />
+            <URack:PortElement name="Triangle" />
+            <URack:PortElement name="Sawtooth" />
+            <URack:PortElement name="Ramp" />
+        </Box>
+
+        <Box class="Column">
+            <URack:PortElement name="MultipleIndexX" />
+            <!-- <URack:SliderElement name="Clock" /> -->
+            <URack:PortElement name="SineX" />
+            <URack:PortElement name="TriangleX" />
+            <URack:PortElement name="SawtoothX" />
+            <URack:PortElement name="RampX" />
+        </Box>
+
+        <Box class="Column">
+            <URack:PortElement name="MultipleIndexY" />
+            <!-- <URack:SliderElement name="Clock" /> -->
+            <URack:PortElement name="SineY" />
+            <URack:PortElement name="TriangleY" />
+            <URack:PortElement name="SawtoothY" />
+            <URack:PortElement name="RampY" />
+        </Box>
+
+        <Box class="Column">
+            <URack:PortElement name="MultipleIndexZ" />
+            <!-- <URack:SliderElement name="Clock" /> -->
+            <URack:PortElement name="SineZ" />
+            <URack:PortElement name="TriangleZ" />
+            <URack:PortElement name="SawtoothZ" />
+            <URack:PortElement name="RampZ" />
+        </Box>
+
+    </Box>
+
+</UXML>

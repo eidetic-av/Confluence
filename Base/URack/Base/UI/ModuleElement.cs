@@ -1,15 +1,14 @@
 using System;
+using Eidetic.Unity.UI.Utility;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Eidetic.Unity.UI.Utility;
 
 namespace Eidetic.URack.UI
 {
     public partial class ModuleElement : DraggableElement
     {
-        public static ModuleElement CurrentDraggingModule { get; private set; }
 
         public bool MovingModule { get; private set; }
 
@@ -20,35 +19,62 @@ namespace Eidetic.URack.UI
         public int StartDragModuleIndex { get; private set; }
         public int ModuleDropIndex { get; private set; } = -1;
 
-        public Module Module {get; private set;}
-
-        RackRow ParentRow;
-
-        VisualElement InsertBlank = new Box().WithName("InsertBlank");
+        public Module Module { get; set; }
 
         ModuleHeader Header;
-
-        ModuleElement(Module module) : base()
+        class ModuleHeader : TouchElement
         {
-            Module = module;
-
-            Header = new ModuleHeader(this);
-            Add(Header);
-
-            RackContainer.Instance.OnDrag += DragModule;
-            RackContainer.Instance.OnRelease += DropModule;
+            public bool DragActive;
+            ModuleElement ModuleElement;
+            public ModuleHeader(ModuleElement parentModule) : base()
+            {
+                ModuleElement = parentModule;
+                Add(new TextElement().WithText(parentModule.Module.Name));
+                OnTouch += e => DragActive = true;
+            }
         }
+
+        static BlankPanel blank;
+        static BlankPanel Blank
+        {
+            get
+            {
+                if (blank == null)
+                    blank = new BlankPanel();
+                return blank;
+            }
+        }
+        class BlankPanel : ModuleElement
+        {
+            public BlankPanel()
+            {
+                name = "BlankPanel";
+            }
+        }
+
+        ModuleElement() : base() { }
 
         public static ModuleElement Create(Module module)
         {
-            var element = new ModuleElement(module);
-            
-            var moduleTemplate = Resources.Load<VisualTreeAsset>(module.GetType().Name);           
-            moduleTemplate.CloneTree(element);
-            
-            LoadStyleSheets(element, module.GetType());
+            if (module != null)
+            {
+                var element = new ModuleElement();
+                module.BindElement(element);
 
-            return element;
+                element.Header = new ModuleHeader(element);
+                element.Add(element.Header);
+
+                var moduleTemplate = Resources.Load<VisualTreeAsset>(module.GetType().Name + "Layout");
+                moduleTemplate.CloneTree(element);
+
+                LoadStyleSheets(element, module.GetType());
+
+                RackElement.Instance.OnDrag += element.DragModule;
+                RackElement.Instance.OnRelease += element.DropModule;
+
+                return element;
+            }
+            else return null;
         }
 
         void DragModule(MouseMoveEvent mouseMoveEvent)
@@ -57,21 +83,18 @@ namespace Eidetic.URack.UI
 
             if (MovingModule == false)
             {
-                CurrentDraggingModule = this;
-
-                ParentRow = this.parent as RackRow;
                 StartDragMousePosition = mouseMoveEvent.localMousePosition;
                 CurrentDragMousePosition = StartDragMousePosition;
                 StartDragElementPosition = new Vector2(layout.x, layout.y);
-                StartDragModuleIndex = ParentRow.IndexOf(this);
+                StartDragModuleIndex = RackElement.Instance.IndexOf(this);
 
                 this.style.position = Position.Absolute;
                 BringToFront();
 
-                InsertBlank.style.width = this.layout.width;
-                InsertBlank.style.height = this.layout.height;
+                Blank.style.width = this.layout.width;
+                Blank.style.height = this.layout.height;
 
-                ParentRow.Insert(StartDragModuleIndex, InsertBlank);
+                RackElement.Instance.Insert(StartDragModuleIndex, Blank);
 
                 MovingModule = true;
 
@@ -85,23 +108,23 @@ namespace Eidetic.URack.UI
 
             // see if we are overlapping the edges of other modules to
             // add the insert blank in between and update the drop index
-            foreach (var module in ParentRow.Children())
+            foreach (var module in RackElement.Instance.Children())
             {
-                if (module == InsertBlank) continue;
-                var leftCatchZone = new Rect(module.layout.x - 50, ParentRow.layout.y, 100, 400);
+                if (module == Blank) continue;
+                var leftCatchZone = new Rect(module.layout.x - 50, 0, 100, 400);
                 if (leftCatchZone.Contains(CurrentDragMousePosition))
                 {
-                    ParentRow.Remove(InsertBlank);
-                    ParentRow.Insert(ParentRow.IndexOf(module), InsertBlank);
-                    ModuleDropIndex = ParentRow.IndexOf(InsertBlank);
+                    RackElement.Instance.Remove(Blank);
+                    RackElement.Instance.Insert(RackElement.Instance.IndexOf(module), Blank);
+                    ModuleDropIndex = RackElement.Instance.IndexOf(Blank);
                     break;
                 }
-                var rightCatchZone = new Rect(module.layout.xMax - 50, ParentRow.layout.y, 100, 400);
+                var rightCatchZone = new Rect(module.layout.xMax - 50, 0, 100, 400);
                 if (rightCatchZone.Contains(CurrentDragMousePosition))
                 {
-                    ParentRow.Remove(InsertBlank);
-                    ParentRow.Insert(ParentRow.IndexOf(module) + 1, InsertBlank);
-                    ModuleDropIndex = ParentRow.IndexOf(InsertBlank);
+                    RackElement.Instance.Remove(Blank);
+                    RackElement.Instance.Insert(RackElement.Instance.IndexOf(module) + 1, Blank);
+                    ModuleDropIndex = RackElement.Instance.IndexOf(Blank);
                     break;
                 }
             }
@@ -112,7 +135,7 @@ namespace Eidetic.URack.UI
             Header.DragActive = false;
             if (!MovingModule) return;
 
-            ParentRow.Remove(this);
+            RackElement.Instance.Remove(this);
 
             this.style.position = Position.Relative;
             this.style.left = 0;
@@ -120,11 +143,10 @@ namespace Eidetic.URack.UI
 
             var rowIndex = ModuleDropIndex != -1 ? ModuleDropIndex : StartDragModuleIndex;
 
-            ParentRow.Insert(rowIndex, this);
+            RackElement.Instance.Insert(rowIndex, this);
 
-            ParentRow.Remove(InsertBlank);
+            RackElement.Instance.Remove(Blank);
 
-            CurrentDraggingModule = null;
             MovingModule = false;
             StartDragMousePosition = Vector2.zero;
             CurrentDragMousePosition = Vector2.zero;
@@ -132,18 +154,6 @@ namespace Eidetic.URack.UI
             ModuleDropIndex = -1;
 
             RemoveFromClassList("Drag");
-        }
-
-        class ModuleHeader : TouchElement
-        {
-            public bool DragActive;
-            ModuleElement ModuleElement;
-            public ModuleHeader(ModuleElement parentModule) : base()
-            {
-                ModuleElement = parentModule;
-                Add(new TextElement().WithText(parentModule.Module.Name));
-                OnTouch += e => DragActive = true;
-            }
         }
     }
 }

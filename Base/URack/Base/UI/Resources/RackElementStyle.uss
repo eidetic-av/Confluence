@@ -1,0 +1,71 @@
+RackElement {
+    background-color: #ffffff;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    border-color: #000000;
+    border-left: 4;
+}
+
+ModuleElement {
+    width: 150;
+    height: 500;
+    background-color: #0000ff;
+    border-top: 0;
+    border-bottom: 4;
+    border-left: 0;
+    border-right: 4;
+    border-color: #000000;
+}
+
+ModuleElement.Drag {
+    border-width: 4;
+    opacity: .66;
+}
+
+ModuleHeader {
+    background-color: rgba(255, 255, 255, .45);
+    color: #ffffff;
+    height: 30;
+    font-size: 12;
+    -unity-font-style: bold;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+PortElement {
+    height: 25;
+    width: 25;
+}
+
+PortElement {
+    background-image: url("Port.png");
+}
+
+#BlankPanel {
+    border-top: 0;
+    border-bottom: 4;
+    border-left: 0;
+    border-right: 4;
+    border-color: #000000;
+    height: 400;
+}
+
+NewModuleButton {
+    position: absolute;
+    right: 0;
+    width: 150;
+    background-color: #fafafa;
+    margin: 5;
+    border-width: 4;
+    border-color: #cecece;
+    color: #aaa;
+    font-size: 24;
+    height: 400;
+}
+
+NewModuleButton:hover {
+    background-color: #f0f0f0;
+    border-color: #cccccc;
+}

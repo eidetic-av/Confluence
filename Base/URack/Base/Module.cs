@@ -30,16 +30,21 @@ namespace Eidetic.URack
         public IEnumerable<Port> Ports { get { foreach (Port port in ports.Values) yield return port; } }
         public IEnumerable<Port> Outputs { get { foreach (Port port in Ports) { if (port.IsOutput) yield return port; } } }
         public IEnumerable<Port> Inputs { get { foreach (Port port in Ports) { if (port.IsInput) yield return port; } } }
-        public IEnumerable<Port> InstancePorts { get { foreach (Port port in Ports) { if (port.IsDynamic) yield return port; } } }
-        /// <summary> Iterate over all instance outputs on this node. </summary>
-        public IEnumerable<Port> InstanceOutputs { get { foreach (Port port in Ports) { if (port.IsDynamic && port.IsOutput) yield return port; } } }
-        public IEnumerable<Port> InstanceInputs { get { foreach (Port port in Ports) { if (port.IsDynamic && port.IsInput) yield return port; } } }
 
         /// <summary> Parent rack <see cref="Rack"/> </summary>
         [SerializeField] public Rack Rack;
 
         /// <summary> Position of the module on the <see cref="Rack"/> </summary>
         [SerializeField] public Vector2Int Position;
+
+        /// <summary> The <see cref="UI.ModuleElement"/> instance that is
+        /// currently bound to this Module. </summary>
+        public UI.ModuleElement Element { get; private set; }
+        public void BindElement(UI.ModuleElement moduleElement)
+        {
+            Element = moduleElement;
+            moduleElement.Module = this;
+        }
 
         public Dictionary<string, Func<object>> Getters { get; private set; }
         public Dictionary<string, Action<object>> Setters { get; private set; }
@@ -50,7 +55,7 @@ namespace Eidetic.URack
         public void OnEnable()
         {
             UpdateStaticPorts();
-            Init();
+            Initialise();
             if (ActiveModules.Contains(this)) return;
 
             ActiveModules.Add(this);
@@ -128,68 +133,12 @@ namespace Eidetic.URack
         }
 
         /// <summary> Initialize node. Called on creation. </summary>
-        protected virtual void Init() { }
+        protected virtual void Initialise() { }
 
         /// <summary> Checks all connections for invalid references, and removes them. </summary>
         public void VerifyConnections()
         {
             foreach (Port port in Ports) port.VerifyConnections();
-        }
-
-        public Port AddInstanceInput(Type type, Module.ConnectionType connectionType = Module.ConnectionType.Multiple, string fieldName = null)
-        {
-            return AddInstancePort(type, Port.IO.Input, connectionType, fieldName);
-        }
-        public Port AddInstanceOutput(Type type, Module.ConnectionType connectionType = Module.ConnectionType.Multiple, string fieldName = null)
-        {
-            return AddInstancePort(type, Port.IO.Output, connectionType, fieldName);
-        }
-
-        /// <summary> Add a dynamic, serialized port to this Module. </summary>
-        /// <seealso cref="AddInstanceInput"/>
-        /// <seealso cref="AddInstanceOutput"/>
-        private Port AddInstancePort(Type type, Port.IO direction, Module.ConnectionType connectionType = Module.ConnectionType.Multiple, string fieldName = null)
-        {
-            if (fieldName == null)
-            {
-                fieldName = "instanceInput_0";
-                int i = 0;
-                while (HasPort(fieldName)) fieldName = "instanceInput_" + (++i);
-            }
-            else if (HasPort(fieldName))
-            {
-                Debug.LogWarning("Port '" + fieldName + "' already exists in " + name, this);
-                return ports[fieldName];
-            }
-            Port port = new Port(fieldName, type, direction, connectionType, this);
-            ports.Add(fieldName, port);
-            return port;
-        }
-
-        /// <summary> Remove an instance port from the Module </summary>
-        public void RemoveInstancePort(string fieldName)
-        {
-            RemoveInstancePort(GetPort(fieldName));
-        }
-
-        /// <summary> Remove an instance port from the Module </summary>
-        public void RemoveInstancePort(Port port)
-        {
-            if (port == null) throw new ArgumentNullException("port");
-            else if (port.IsStatic) throw new ArgumentException("cannot remove static port");
-            port.ClearConnections();
-            ports.Remove(port.MemberName);
-        }
-
-        /// <summary> Removes all instance ports from the Module </summary>
-        [ContextMenu("Clear Instance Ports")]
-        public void ClearInstancePorts()
-        {
-            List<Port> instancePorts = new List<Port>(InstancePorts);
-            foreach (Port port in instancePorts)
-            {
-                RemoveInstancePort(port);
-            }
         }
 
         #region Ports

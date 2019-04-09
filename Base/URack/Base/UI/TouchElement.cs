@@ -16,7 +16,7 @@ namespace Eidetic.URack.UI
         public bool TouchActive { get; private set; } = false;
         public bool TouchMoving { get; private set; } = false;
 
-        public TouchElement()
+        public TouchElement() : base()
         {
 
             OnTouch = e => BaseTouchCallback(this, e);
@@ -31,19 +31,17 @@ namespace Eidetic.URack.UI
         static void BaseTouchCallback(TouchElement element, MouseDownEvent mouseDownEvent)
         {
             element.TouchActive = true;
-            element.AddToClassList("TouchActive");
+            element.AddToClassList("Touch");
         }
         static void BaseReleaseCallback(TouchElement element, MouseUpEvent mouseUpEvent)
         {
             element.TouchActive = false;
             element.TouchMoving = false;
-            element.RemoveFromClassList("MouseDown");
-            element.RemoveFromClassList("Moving");
+            element.RemoveFromClassList("Touch");
         }
         static void BaseMoveCallback(TouchElement element, MouseMoveEvent mouseMoveEvent)
         {
             element.TouchMoving = true;
-            element.AddToClassList("Moving");
         }
     }
 }
