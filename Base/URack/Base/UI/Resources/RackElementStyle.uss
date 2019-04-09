@@ -33,21 +33,24 @@ ModuleHeader {
 }
 
 PortElement {
+    margin: 5px;
     width: 70px;
-    padding: 10px;
     align-items: center;
 }
 
 PortElement #Label {
-    margin-top: 5px;
     -unity-text-align: middle-center;
     white-space: nowrap;
 }
 
 JackElement {
-    height: 25;
-    width: 25;
+    width: 45;
+    height: 40;
     background-image: url("Port.png");
+}
+
+JackElement.Touch {
+    background-color: #f00;
 }
 
 #BlankPanel {
