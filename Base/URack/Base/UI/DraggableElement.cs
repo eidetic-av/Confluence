@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Eidetic.Utility;
 
 namespace Eidetic.URack.UI
 {
@@ -14,30 +15,29 @@ namespace Eidetic.URack.UI
 
         public DraggableElement() : base()
         {
-            OnDrag = e => BaseDragCallback(this, e);
-            OnRelease += e => DragReleaseCallback(this, e);
-            if (this.GetType() != typeof(RackElement))
-                RackElement.Instance.OnRelease += e => DragReleaseCallback(this, e);
+            // Drag occurs on entire Rack
+            OnDrag = BaseDragCallback;
+            if (this is RackElement)
+                RegisterCallback<MouseMoveEvent>(e => OnDrag.Invoke(e));
+            else RackElement.Instance.OnDrag += OnDrag;
 
-            RegisterCallback<MouseMoveEvent>(e => OnDrag.Invoke(e));
-
+            OnTouch += e => {
+                RackElement.Instance.OnRelease += DragReleaseCallback;
+            };
         }
-        static void BaseDragCallback(DraggableElement element, MouseMoveEvent mouseMoveEvent)
+        void BaseDragCallback(MouseMoveEvent mouseMoveEvent)
         {
-            if (element.TouchActive)
+            if (TouchActive)
             {
-                element.Dragging = true;
-                element.AddToClassList("Dragging");
+                Dragging = true;
+                AddToClassList("Dragging");
             }
         }
-
-        static void DragReleaseCallback(DraggableElement element, MouseUpEvent mouseUpEvent)
+        void DragReleaseCallback(MouseUpEvent mouseUpEvent)
         {
-            if (element.Dragging)
-            {
-                element.RemoveFromClassList("Dragging");
-                element.Dragging = false;
-            }
+            Dragging = false;
+            RemoveFromClassList("Dragging");
+            RackElement.Instance.OnRelease -= DragReleaseCallback;
         }
     }
 }

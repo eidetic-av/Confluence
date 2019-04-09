@@ -9,10 +9,16 @@ using UnityEngine.UIElements;
 
 namespace Eidetic.URack.UI
 {
-    public class PortElement : BindableElement
+    public class PortElement : DraggableElement
     {
 
-        public PortElement() : base() { }
+        public PortElement() : base() {
+            OnDrag += Drag;
+        }
+
+        void Drag(MouseMoveEvent mouseMoveEvent) {
+            Debug.Log(this.name);
+        }
 
         public class Factory : UxmlFactory<PortElement, Traits>
         {

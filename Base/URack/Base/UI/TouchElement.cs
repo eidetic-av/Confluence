@@ -4,44 +4,39 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Eidetic.Utility;
 
 namespace Eidetic.URack.UI
 {
-    public class    TouchElement : StyledElement
+    public class TouchElement : StyledElement
     {
         public Action<MouseDownEvent> OnTouch;
         public Action<MouseUpEvent> OnRelease;
-        public Action<MouseMoveEvent> OnMove;
 
         public bool TouchActive { get; private set; } = false;
-        public bool TouchMoving { get; private set; } = false;
 
         public TouchElement() : base()
         {
-
-            OnTouch = e => BaseTouchCallback(this, e);
-            OnRelease = e => BaseReleaseCallback(this, e);
-            OnMove = e => BaseMoveCallback(this, e);
-
+            OnTouch = BaseTouchCallback;
             RegisterCallback<MouseDownEvent>(e => OnTouch.Invoke(e));
-            RegisterCallback<MouseUpEvent>(e => OnRelease.Invoke(e));
-            RegisterCallback<MouseMoveEvent>(e => OnMove.Invoke(e));
+
+            // Release occurs on the whole rack
+            OnRelease = e => { };
+            if (this is RackElement)
+                RegisterCallback<MouseUpEvent>(e => OnRelease.Invoke(e));
         }
 
-        static void BaseTouchCallback(TouchElement element, MouseDownEvent mouseDownEvent)
+        void BaseTouchCallback(MouseDownEvent mouseDownEvent)
         {
-            element.TouchActive = true;
-            element.AddToClassList("Touch");
+            TouchActive = true;
+            AddToClassList("Touch");
+            RackElement.Instance.OnRelease += BaseReleaseCallback;
         }
-        static void BaseReleaseCallback(TouchElement element, MouseUpEvent mouseUpEvent)
+        void BaseReleaseCallback(MouseUpEvent mouseUpEvent)
         {
-            element.TouchActive = false;
-            element.TouchMoving = false;
-            element.RemoveFromClassList("Touch");
-        }
-        static void BaseMoveCallback(TouchElement element, MouseMoveEvent mouseMoveEvent)
-        {
-            element.TouchMoving = true;
+            TouchActive = false;
+            RemoveFromClassList("Touch");
+            RackElement.Instance.OnRelease -= BaseReleaseCallback;
         }
     }
 }
