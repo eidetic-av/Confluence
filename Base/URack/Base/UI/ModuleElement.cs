@@ -9,7 +9,6 @@ namespace Eidetic.URack.UI
 {
     public partial class ModuleElement : DraggableElement
     {
-
         public bool MovingModule { get; private set; }
 
         public Vector2 StartDragMousePosition { get; private set; }

@@ -1,21 +1,12 @@
-.Oscillator4D {
-    width: 400;
-    background-color: #ff0000;
-}
-
-.Oscillator4D ModuleHeader {
-    background-color: rgba(0, 0, 0, .5);
-}
-
 #Container {
     flex-direction: row;
     flex-grow: 1;
+    background-color: #a00;
 }
 
 .Column {
-    background-color: #f04def;
     flex-direction: column;
-    flex-grow: .25;
-    border-width: 10px;
+    align-items: center;
     border-color: #ffffff;
+    border-width: 1px;
 }
