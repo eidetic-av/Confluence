@@ -20,7 +20,7 @@ namespace Eidetic.URack.UI
             OnTouch = BaseTouchCallback;
             RegisterCallback<MouseDownEvent>(e => OnTouch.Invoke(e));
 
-            // Release occurs on the whole rack
+            // Release occurs on the whole rack only
             OnRelease = e => { };
             if (this is RackElement)
                 RegisterCallback<MouseUpEvent>(e => OnRelease.Invoke(e));

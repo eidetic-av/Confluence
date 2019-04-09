@@ -44,7 +44,7 @@ PortElement #Label {
     white-space: nowrap;
 }
 
-PortElement #Port {
+JackElement {
     height: 25;
     width: 25;
     background-image: url("Port.png");

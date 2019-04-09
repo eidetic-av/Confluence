@@ -68,7 +68,7 @@ namespace Eidetic.URack.UI
 
                 LoadStyleSheets(element, module.GetType());
 
-                RackElement.Instance.OnDrag += element.DragModule;
+                RackElement.Instance.AddDragAction(element, element.DragModule);
                 RackElement.Instance.OnRelease += element.DropModule;
 
                 return element;
