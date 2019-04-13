@@ -1,3 +1,7 @@
+.Oscillator4D {
+    height: 600;
+}
+
 #Container {
     flex-direction: row;
     flex-grow: 1;
