@@ -7,24 +7,12 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using XNode;
+using Eidetic.Buddah.Midi;
 
 namespace Eidetic.Confluence.Midi
 {
     public class MidiClock : RuntimeNode
     {
-        [Output(ShowBackingValue.Always)]
-        public float BeatsPerMinute;
-        [Output(ShowBackingValue.Always)]
-        public float SecondsPerBeat;
-
-        public override object GetValue(NodePort port)
-        {
-            if (port.MemberName == "BeatsPerMinute")
-                return BeatsPerMinute;
-            else if (port.MemberName == "SecondsPerBeat")
-                return SecondsPerBeat;
-            else
-                return null;
-        }
+        [Output] public float BeatsPerMinute => MidiManager.ActiveInputDevices["Engine MIDI"].BPM;
     }
 }

@@ -21,7 +21,12 @@ namespace Eidetic.Confluence
             (1f),
             (4/3f),
             (2f),
-            (4f)
+            (4f),
+            (8f),
+            (12f),
+            (16f),
+            (24),
+            (32)
         };
         public static readonly string[] MultiplierRateLabels = new string[] {
             "1/32",
@@ -36,7 +41,12 @@ namespace Eidetic.Confluence
             "1",
             "4/3",
             "2",
-            "4"
+            "4",
+            "8",
+            "12",
+            "16",
+            "24",
+            "32",
         };
         
         public static int ClockMin { get; } = 40;
@@ -110,6 +120,11 @@ namespace Eidetic.Confluence
             MultiplierCSawtoothPort = GetOutputPort("MultiplierCSawtooth");
         }
 
+        internal override void Update()
+        {
+            Oscillator.Speed = Clock;
+        }
+
         public override object GetValue(NodePort port)
         {
             switch(port.MemberName)
@@ -152,7 +167,7 @@ namespace Eidetic.Confluence
                 {
                     var elapsedTime = Time.time - LastPhaseUpdateTime;
                     var elapsedPhase = elapsedTime / Length;
-                    var phase = (LastPhase + elapsedPhase) % 1;
+                    var phase = LastPhase + elapsedPhase;
                     LastPhaseUpdateTime = Time.time;
                     return LastPhase = phase;
                 }
