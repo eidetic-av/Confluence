@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Map
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -280, y: -1096}
+  position: {x: -536, y: -632}
   ports:
     keys:
     - Input
@@ -80,7 +80,7 @@ MonoBehaviour:
       typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - MemberName: ZRotation
+      - MemberName: YRotation
         MemberType: 4
         node: {fileID: 2381889257288441575}
         reroutePoints: []
@@ -105,11 +105,11 @@ MonoBehaviour:
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
-  Input: -0.07874016
+  Input: -0.503937
   InputMinimum: -0.5
   InputMaximum: 0.5
-  OutputMinimum: 210
-  OutputMaximum: 360
+  OutputMinimum: 30
+  OutputMaximum: -30
   Power: 1
 --- !u!114 &-6487281146736656645
 MonoBehaviour:
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: Translation Controller
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 24, y: -104}
+  position: {x: 408, y: -616}
   ports:
     keys:
     - DampingRate
@@ -176,7 +176,7 @@ MonoBehaviour:
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
-  _targetName: Points
+  _targetName: SceneTransform
   X: 0
   Y: 0
   Z: 0
@@ -289,8 +289,8 @@ MonoBehaviour:
   Input: 0
   InputMinimum: 0
   InputMaximum: 1
-  OutputMinimum: 90
-  OutputMaximum: 30
+  OutputMinimum: 0
+  OutputMaximum: -60
   Power: 1
 --- !u!114 &-1156043749025165254
 MonoBehaviour:
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Name: Control Change
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -520, y: -616}
+  position: {x: -296, y: -936}
   ports:
     keys:
     - Int
@@ -357,10 +357,7 @@ MonoBehaviour:
   m_Name: TestRuntimeGraph
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: 8552187284543198019}
   - {fileID: 2381889257288441575}
-  - {fileID: 2977876037634775103}
-  - {fileID: 1595438687648998627}
   - {fileID: 6233845149679084410}
   - {fileID: -9116908224176254430}
   - {fileID: -1156043749025165254}
@@ -368,34 +365,6 @@ MonoBehaviour:
   - {fileID: -6487281146736656645}
   - {fileID: 5932452775803656303}
   - {fileID: 3398902732335253094}
---- !u!114 &1595438687648998627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52466055d09f9844a9f8515618d3f73e, type: 3}
-  m_Name: Midi Clock
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -1064, y: -1112}
-  ports:
-    keys:
-    - BeatsPerMinute
-    values:
-    - memberName: BeatsPerMinute
-      memberType: 4
-      node: {fileID: 1595438687648998627}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-  DeviceName: 
 --- !u!114 &2381889257288441575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,12 +378,13 @@ MonoBehaviour:
   m_Name: Rotation Controller
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -40, y: -712}
+  position: {x: -56, y: -936}
   ports:
     keys:
     - XRotation
     - YRotation
     - ZRotation
+    - DampingRate
     values:
     - memberName: XRotation
       memberType: 4
@@ -434,15 +404,6 @@ MonoBehaviour:
       node: {fileID: 2381889257288441575}
       typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: ZRotation
-      memberType: 4
-      node: {fileID: 2381889257288441575}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
       connections:
       - MemberName: Output
         MemberType: 16
@@ -451,117 +412,29 @@ MonoBehaviour:
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
-  _targetName: Points
-  XRotation: 90
-  YRotation: 0
-  ZRotation: 273.18896
---- !u!114 &2977876037634775103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69aa19cd8876fc946a76cb5d43c02f06, type: 3}
-  m_Name: Map
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -760, y: -1000}
-  ports:
-    keys:
-    - Input
-    - InputMinimum
-    - InputMaximum
-    - OutputMinimum
-    - OutputMaximum
-    - Output
-    - RoundedOutput
-    - Power
-    values:
-    - memberName: Input
+    - memberName: ZRotation
       memberType: 4
-      node: {fileID: 2977876037634775103}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - MemberName: MultiplierCSine
-        MemberType: 4
-        node: {fileID: 8552187284543198019}
-        reroutePoints: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: InputMinimum
-      memberType: 4
-      node: {fileID: 2977876037634775103}
+      node: {fileID: 2381889257288441575}
       typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
-    - memberName: InputMaximum
+    - memberName: DampingRate
       memberType: 4
-      node: {fileID: 2977876037634775103}
+      node: {fileID: 2381889257288441575}
       typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections: []
       Direction: 0
       ConnectionType: 0
       Dynamic: 0
-    - memberName: OutputMinimum
-      memberType: 4
-      node: {fileID: 2977876037634775103}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: OutputMaximum
-      memberType: 4
-      node: {fileID: 2977876037634775103}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: Output
-      memberType: 16
-      node: {fileID: 2977876037634775103}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: RoundedOutput
-      memberType: 16
-      node: {fileID: 2977876037634775103}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: Power
-      memberType: 4
-      node: {fileID: 2977876037634775103}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-  Input: -0.94513685
-  InputMinimum: -4
-  InputMaximum: 1
-  OutputMinimum: 66.6
-  OutputMaximum: 120
-  Power: 1
+  _targetName: SceneTransform
+  XRotation: 0
+  YRotation: 30.236221
+  ZRotation: 0
+  DampingRate: 3
 --- !u!114 &3398902732335253094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -575,7 +448,7 @@ MonoBehaviour:
   m_Name: Map
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -216, y: -152}
+  position: {x: 168, y: -616}
   ports:
     keys:
     - Input
@@ -672,7 +545,7 @@ MonoBehaviour:
   InputMaximum: 1
   OutputMinimum: 0
   OutputMaximum: -1.5
-  Power: 2
+  Power: 1
 --- !u!114 &5932452775803656303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -686,7 +559,7 @@ MonoBehaviour:
   m_Name: Map
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -440, y: -152}
+  position: {x: -56, y: -616}
   ports:
     keys:
     - Input
@@ -783,7 +656,7 @@ MonoBehaviour:
   InputMaximum: 1
   OutputMinimum: 0
   OutputMaximum: 3
-  Power: 0.75
+  Power: 0.5
 --- !u!114 &6233845149679084410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,7 +670,7 @@ MonoBehaviour:
   m_Name: Control Change
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -504, y: -1096}
+  position: {x: -536, y: -936}
   ports:
     keys:
     - Int
@@ -828,324 +701,3 @@ MonoBehaviour:
   DeviceName: Engine MIDI
   Number: 1
   BiDirectional: 1
---- !u!114 &8552187284543198019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70f0e61983420b344828e572435cbeeb, type: 3}
-  m_Name: Quad LFO
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -952, y: -984}
-  ports:
-    keys:
-    - Clock
-    - MultiplierAPosition
-    - MultiplierBPosition
-    - MultiplierCPosition
-    - MasterSine
-    - MultiplierASine
-    - MultiplierBSine
-    - MultiplierCSine
-    - MasterTriangle
-    - MultiplierATriangle
-    - MultiplierBTriangle
-    - MultiplierCTriangle
-    - MasterSawtooth
-    - MultiplierASawtooth
-    - MultiplierBSawtooth
-    - MultiplierCSawtooth
-    values:
-    - memberName: Clock
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierAPosition
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierBPosition
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierCPosition
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 0
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MasterSine
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierASine
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierBSine
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierCSine
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - MemberName: Input
-        MemberType: 4
-        node: {fileID: 2977876037634775103}
-        reroutePoints: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MasterTriangle
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierATriangle
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierBTriangle
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierCTriangle
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MasterSawtooth
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierASawtooth
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierBSawtooth
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-    - memberName: MultiplierCSawtooth
-      memberType: 4
-      node: {fileID: 8552187284543198019}
-      typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      Direction: 1
-      ConnectionType: 0
-      Dynamic: 0
-  Clock: 107.8
-  MultiplierAPosition: 11
-  MultiplierBPosition: 12
-  MultiplierCPosition: 13
-  MasterSine: 0
-  MasterSinePort:
-    memberName: MasterSine
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MultiplierASine: 0
-  MultiplierASinePort:
-    memberName: MultiplierASine
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MultiplierBSine: 0
-  MultiplierBSinePort:
-    memberName: MultiplierBSine
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MultiplierCSine: 0
-  MultiplierCSinePort:
-    memberName: MultiplierCSine
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections:
-    - MemberName: Input
-      MemberType: 4
-      node: {fileID: 2977876037634775103}
-      reroutePoints: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MasterTriangle: 0
-  MasterTrianglePort:
-    memberName: MasterTriangle
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MultiplierATriangle: 0
-  MultiplierATrianglePort:
-    memberName: MultiplierATriangle
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MultiplierBTriangle: 0
-  MultiplierBTrianglePort:
-    memberName: MultiplierBTriangle
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MultiplierCTriangle: 0
-  MultiplierCTrianglePort:
-    memberName: MultiplierCTriangle
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MasterSawtooth: 0
-  MasterSawtoothPort:
-    memberName: MasterSawtooth
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MultiplierASawtooth: 0
-  MultiplierASawtoothPort:
-    memberName: MultiplierASawtooth
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MultiplierBSawtooth: 0
-  MultiplierBSawtoothPort:
-    memberName: MultiplierBSawtooth
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
-  MultiplierCSawtooth: 0
-  MultiplierCSawtoothPort:
-    memberName: MultiplierCSawtooth
-    memberType: 4
-    node: {fileID: 8552187284543198019}
-    typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    connections: []
-    Direction: 1
-    ConnectionType: 0
-    Dynamic: 0
