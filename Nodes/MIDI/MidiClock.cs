@@ -13,6 +13,7 @@ namespace Eidetic.Confluence.Midi
 {
     public class MidiClock : RuntimeNode
     {
-        [Output] public float BeatsPerMinute => MidiManager.ActiveInputDevices["Engine MIDI"].BPM;
+        [SerializeField] string DeviceName = "";
+        [Output] public float BeatsPerMinute => DeviceName != "" ? MidiManager.ActiveInputDevices[DeviceName].BPM : 120f;
     }
 }

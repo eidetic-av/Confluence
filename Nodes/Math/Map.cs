@@ -13,7 +13,9 @@ namespace Eidetic.Confluence
         [Input] public float OutputMinimum = 0f;
         [Input] public float OutputMaximum = 1f;
 
-        [Output] public float Output => Input.Map(InputMinimum, InputMaximum, OutputMinimum, OutputMaximum);
+        [Input] public float Power = 1f;
+
+        [Output] public float Output => UnityEngine.Mathf.Pow(Input.Map(InputMinimum, InputMaximum, OutputMinimum, OutputMaximum), Power);
         [Output] public int RoundedOutput => Output.RoundToInt();
     }
 }

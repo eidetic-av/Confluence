@@ -4,10 +4,11 @@ using System.Linq;
 using UnityEngine;
 using XNode;
 
-namespace Eidetic.Confluence {
-    [CreateNodeMenu("Transform/RotationController"),
+namespace Eidetic.Confluence
+{
+    [CreateNodeMenu("Transform/TranslationController"),
         NodeTint(Colors.ControllerTint)]
-    public class RotationController : RuntimeNode
+    public class TranslationController : RuntimeNode
     {
         public static readonly float ValidationInterval = .5f;
         public float LastValidatedTime { get; private set; }
@@ -17,11 +18,14 @@ namespace Eidetic.Confluence {
         string TargetName { set { Target = GameObject.Find(_targetName); } }
         string LastTargetName;
 
-        [Input(ShowBackingValue.Always)]
-        public float XRotation, YRotation, ZRotation;
+        [Input] public float X;
+        [Input] public float Y;
+        [Input] public float Z;
 
         float currentX, currentY, currentZ;
-        
+
+        Vector3 Translation => new Vector3(X, Y, Z);
+
         [Input] public float DampingRate = 3f;
 
         public GameObject Target
@@ -47,17 +51,23 @@ namespace Eidetic.Confluence {
         {
             if (Target == null) return;
 
-            if (Mathf.Abs(currentX - XRotation) > 0.005f)
-                currentX = currentX + (XRotation - currentX) / DampingRate;
-            else currentX = XRotation;
-            if (Mathf.Abs(currentY - YRotation) > 0.005f)
-                currentY = currentY + (YRotation - currentY) / DampingRate;
-            else currentY = YRotation;
-            if (Mathf.Abs(currentZ - ZRotation) > 0.005f)
-                currentZ = currentZ + (ZRotation - currentZ) / DampingRate;
-            else currentZ = ZRotation;
+            if (Mathf.Abs(currentX - X) > 0.005f)
+                currentX = currentX + (X - currentX) / DampingRate;
+            else currentX = X;
+            if (Mathf.Abs(currentY - Y) > 0.005f)
+                currentY = currentY + (Y - currentY) / DampingRate;
+            else currentY = Y;
+            if (Mathf.Abs(currentZ - Z) > 0.005f)
+                currentZ = currentZ + (Z - currentZ) / DampingRate;
+            else currentZ = Z;
 
-            Target.transform.rotation = Quaternion.Euler(currentX, currentY, currentZ);
+            var newPosition = Target.transform.position;
+            newPosition.x = currentX;
+            newPosition.y = currentY;
+            newPosition.z = currentZ;
+
+            Target.transform.position = newPosition;
         }
+
     }
 }

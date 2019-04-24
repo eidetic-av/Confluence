@@ -15,15 +15,16 @@ public class ControlChange : RuntimeNode
 {
     public String DeviceName;
     public InputDevice Device { get; private set; }
-    public Midi.Channel Channel;
+    // public Midi.Channel Channel;
     public int Number;
     public bool BiDirectional;
-    [Output(ShowBackingValue.Always)] public int Int;
-    [Output(ShowBackingValue.Always)] public float Float;
 
-    protected override void Init()
+    int intValue;
+    [Output] public int Int => BiDirectional ? intValue - 64 : intValue;
+    [Output] public float Float => Int / 127f;
+
+    internal override void Awake()
     {
-        Debug.Log("init");
         foreach (InputDevice inputDevice in InputDevice.InstalledDevices)
         {
             if (inputDevice.Name.ToLower().Equals(DeviceName.ToLower()))
@@ -34,27 +35,24 @@ public class ControlChange : RuntimeNode
         }
         if (Device != null)
         {
-            Device.Open();
-            Device.StartReceiving(null);
-            Device.ControlChange += UpdateValues;
-            Debug.LogFormat("Opened MIDI Device: {0}", Device.Name);
+            if (!Device.IsOpen)
+            {
+                Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
+                Device.Open();
+                Device.StartReceiving(null);
+                Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
+            }
+
+            Device.ControlChange += (ControlChangeMessage m) =>
+            {
+                if (m.Control.Number() == Number) intValue = m.Value;
+            };
         }
     }
 
-    void UpdateValues(ControlChangeMessage m)
+    internal override void Exit()
     {
-        if (m.Channel == Channel)
-        {
-            if (m.Control.Number() == Number)
-            {
-                Int = m.Value;
-                Float = (m.Value / 127f);
-                if (BiDirectional)
-                {
-                    Int -= 64;
-                    Float -= .5f;
-                }
-            }
-        }
+        if (Device != null && Device.IsOpen)
+            Device.Close();
     }
 }
