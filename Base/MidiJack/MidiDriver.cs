@@ -152,7 +152,10 @@ namespace MidiJack
 
         void Update()
         {
-            if (ShouldUpdate) DequeueMessages();
+#if UNITY_EDITOR
+            if (ShouldUpdate)
+#endif
+                DequeueMessages();
         }
 
         public void DequeueMessages()
@@ -181,24 +184,24 @@ namespace MidiJack
                 var message = new MidiMessage(data);
 
                 // Split the first byte.
-                var statusCode = (StatusCode) (message.status >> 4);
+                var statusCode = (StatusCode)(message.status >> 4);
                 var channelNumber = message.status & 0xf;
 
                 if (statusCode == StatusCode.NoteOn)
                 {
                     var velocity = 1.0f / 127 * message.data2 + 1;
                     _channelArray[channelNumber]._noteArray[message.data1] = velocity;
-                    _channelArray[(int) MidiChannel.All]._noteArray[message.data1] = velocity;
+                    _channelArray[(int)MidiChannel.All]._noteArray[message.data1] = velocity;
                     if (noteOnDelegate != null)
-                        noteOnDelegate((MidiChannel) channelNumber, message.data1, velocity - 1);
+                        noteOnDelegate((MidiChannel)channelNumber, message.data1, velocity - 1);
                 }
 
                 else if (statusCode == StatusCode.NoteOff || (statusCode == StatusCode.NoteOn && message.data2 == 0))
                 {
                     _channelArray[channelNumber]._noteArray[message.data1] = -1;
-                    _channelArray[(int) MidiChannel.All]._noteArray[message.data1] = -1;
+                    _channelArray[(int)MidiChannel.All]._noteArray[message.data1] = -1;
                     if (noteOffDelegate != null)
-                        noteOffDelegate((MidiChannel) channelNumber, message.data1);
+                        noteOffDelegate((MidiChannel)channelNumber, message.data1);
                 }
 
                 else if (statusCode == StatusCode.ControlChange)
@@ -208,9 +211,9 @@ namespace MidiJack
                     // Update the channel if it already exists, or add a new channel.
                     _channelArray[channelNumber]._knobMap[message.data1] = level;
                     // Do again for All-ch.
-                    _channelArray[(int) MidiChannel.All]._knobMap[message.data1] = level;
+                    _channelArray[(int)MidiChannel.All]._knobMap[message.data1] = level;
                     if (knobDelegate != null)
-                        knobDelegate((MidiChannel) channelNumber, message.data1, level);
+                        knobDelegate((MidiChannel)channelNumber, message.data1, level);
                 }
 
                 else if (statusCode == StatusCode.Clock)

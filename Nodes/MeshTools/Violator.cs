@@ -39,7 +39,7 @@ namespace Eidetic.Confluence.MeshTools
 
             if (Bypass) OutputMesh = InputMesh;
 
-            if (Bypass || Freeze) return;
+            if (Bypass || Freeze || InputMesh == null) return;
 
             // Allocate memory for the vertices because we
             // calculate their new positions on multiple threads

@@ -13,10 +13,14 @@ namespace Eidetic.Confluence
             MainThreadDispatcher.Instantiate();
             if (Instance != null) return Instance;
             else return Instance = new GameObject("RuntimeNodeUpdater")
-                .WithHideFlags(HideFlags.NotEditable)
-                .InDontDestroyMode()
-                .AddComponent<RuntimeNodeUpdater>();
+              .WithHideFlags(HideFlags.NotEditable)
+              .InDontDestroyMode()
+              .AddComponent<RuntimeNodeUpdater>();
         }
+
+        RuntimeNodeUpdater() {
+        }
+
         public void Awake() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Awake());
         public void Start() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Start());
         public void Update()

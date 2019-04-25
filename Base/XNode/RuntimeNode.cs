@@ -11,19 +11,34 @@ using XNode;
 
 namespace Eidetic.Confluence
 {
+
+#if UNITY_EDITOR
     [InitializeOnLoad]
+#endif
     public abstract class RuntimeNode : Node
     {
         public static List<RuntimeNode> ActiveNodes { get; protected set; }
         static RuntimeNode()
         {
             ActiveNodes = new List<RuntimeNode>();
+#if UNITY_EDITOR
+
             EditorApplication.playModeStateChanged += (stateChange) =>
             {
                 if (stateChange == PlayModeStateChange.EnteredPlayMode) OnPlay();
                 else if (stateChange == PlayModeStateChange.ExitingPlayMode) OnExit();
             };
+#else
+            foreach (var node in Resources.Load<RuntimeGraph>("TrickFilm").nodes)
+            {
+                ActiveNodes.Add(node as RuntimeNode);
+            }
+            OnPlay();
+#endif
         }
+#if UNITY_STANDALONE
+        [RuntimeInitializeOnLoadMethod]
+#endif
         private static void OnPlay() => RuntimeNodeUpdater.Instantiate();
         private static void OnExit() => ActiveNodes.ForEachOnMain(n => n.Exit());
 
