@@ -41,6 +41,7 @@ namespace Eidetic.Confluence
         protected override void Init()
         {
             TargetObjectName = LastTargetObjectName = _targetName;
+            RefreshTargetValueSetter();
         }
 
         void OnValidate()
@@ -55,14 +56,17 @@ namespace Eidetic.Confluence
             }
 
             if (ComponentTypeName != LastComponentTypeName || PropertyName != LastPropertyName || updatedTarget)
-            {
-                var component = Target.GetComponent(ComponentTypeName);
-                var property = component.GetType().GetProperty(PropertyName);
-                var setMethod = property.GetSetMethod();
-                Setter = (float value) => setMethod.Invoke(component, new object[] { value });
-            }
+                RefreshTargetValueSetter();
 
             LastValidatedTime = Time.time;
+        }
+
+        void RefreshTargetValueSetter()
+        {
+            var component = Target.GetComponent(ComponentTypeName);
+            var property = component.GetType().GetProperty(PropertyName);
+            var setMethod = property.GetSetMethod();
+            Setter = (float value) => setMethod.Invoke(component, new object[] { value });
         }
 
         // Update is called once per frame
