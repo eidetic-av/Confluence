@@ -1,3 +1,4 @@
+
 using MidiJack;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -28,6 +29,13 @@ namespace Eidetic.Confluence
             RuntimeNode.ActiveNodes.ForEachOnMain(n => n.ValueUpdate());
             RuntimeNode.ActiveNodes.ForEachOnMain(n => n.EarlyUpdate());
             RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Update());
+
+            // Todo: definitely move this elsewhere
+            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+            {
+                if (Input.GetKeyDown(KeyCode.F4))
+                    Application.Quit();
+            }
         }
         public void LateUpdate() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.LateUpdate());
     }

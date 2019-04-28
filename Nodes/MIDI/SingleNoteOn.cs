@@ -61,6 +61,12 @@ public class SingleNoteOn : RuntimeNode
 
     [Output] public int Velocity;
 
+    [Output] public float VelocityFloat => Velocity / 127f;
+
+    [Output] public int LastNoteVelocity;
+
+    [Output] public float LastNoteVelocityFloat => LastNoteVelocity / 127f;
+
     bool noteOffTrigger = false;
     [Output]
     public bool NoteOffTrigger
@@ -109,6 +115,7 @@ public class SingleNoteOn : RuntimeNode
                     if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber) {
                         NoteOn = true;
                         Velocity = m.Velocity;
+                        LastNoteVelocity = Velocity;
                     }
                 };
 
