@@ -1,96 +1,154 @@
+using Midi;
+using Eidetic;
+using Eidetic.Confluence;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Eidetic.Confluence;
-using Eidetic.Utility;
-using MidiJack;
 using UnityEngine;
 using XNode;
 
-namespace Eidetic.Confluence.Midi
+[CreateNodeMenu("MIDI/NoteOn"),
+    NodeTint(Colors.ExternalInputTint)]
+public class NoteOn : RuntimeNode
 {
-    [CreateNodeMenu("MIDI/NoteOn"), NodeTint(Colors.ExternalInputTint)]
-    public class NoteOn : RuntimeNode
+    public String DeviceName;
+    public InputDevice Device { get; private set; }
+    public Midi.Channel Channel;
+
+    bool noteOn = false;
+    [Output]
+    public bool NoteIsOn
     {
-        [SerializeField] public MidiChannel Channel;
-        [SerializeField] public int MinNoteNumber = 0;
-        [SerializeField] public int MaxNoteNumber = 127;
-
-        bool noteOnTrigger = false;
-        [Output] public bool NoteOnTrigger
+        get => noteOn;
+        set
         {
-            get
+            if (value)
             {
-                if (noteOnTrigger)
+                noteOn = true;
+                Trigger = true;
+            }
+            else
+            {
+                noteOn = false;
+                NoteOffTrigger = true;
+                Velocity = 0;
+            }
+        }
+    }
+    [Output] public int NoteOnInt => NoteIsOn ? 1 : 0;
+    bool trigger = false;
+    [Output]
+    public bool Trigger
+    {
+        get
+        {
+            if (trigger)
+            {
+                trigger = false;
+                return true;
+            }
+            return false;
+        }
+        set
+        {
+            trigger = value;
+        }
+    }
+    [Output] public int TriggerInt => Trigger ? 1 : 0;
+
+    [Output] public int Velocity;
+
+    [Output] public float VelocityFloat => Velocity / 127f;
+
+    [Output] public int NoteNumber;
+
+    [Output] public float NoteNumberFloat => Velocity / 127f;
+
+    [Output] public int LastNoteVelocity;
+
+    [Output] public float LastNoteVelocityFloat => LastNoteVelocity / 127f;
+
+    bool noteOffTrigger = false;
+    [Output]
+    public bool NoteOffTrigger
+    {
+        get
+        {
+            if (noteOffTrigger)
+            {
+                noteOffTrigger = false;
+                return true;
+            }
+            return false;
+        }
+        set
+        {
+            noteOffTrigger = value;
+        }
+    }
+    [Output] public int NoteOffTriggerInt => NoteOffTrigger ? 1 : 0;
+
+    internal override void Start()
+    {
+        base.Start();
+        if (Application.isPlaying)
+        {
+            foreach (InputDevice inputDevice in InputDevice.InstalledDevices)
+            {
+                if (inputDevice.Name.ToLower().Equals(DeviceName.ToLower()))
                 {
-                    noteOnTrigger = false;
-                    return true;
+                    Device = inputDevice;
+                    break;
                 }
-                return false;
             }
-        }
-
-        bool noteOffTrigger = false;
-        [Output] public bool NoteOffTrigger
-        {
-            get
+            if (Device != null)
             {
-                if (noteOffTrigger)
+                if (!InputDevice.OpenedDevices.Contains(Device))
                 {
-                    noteOffTrigger = false;
-                    return true;
+                    Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
+                    Device.Open();
+                    Device.StartReceiving(null);
+                    Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
                 }
-                return false;
-            }
-        }
 
-        [Output] public int NoteNumber = 0;
-        [Output] public float NotePosition => NoteNumber.Map(MinNoteNumber, MaxNoteNumber, 0f, 1f);
-        [Output] public float Velocity = 0f;
-        [Output] public bool NoteIsOn => Velocity != 0;
-
-        new public void OnEnable()
-        {
-            base.OnEnable();
-
-            Threads.RunAtStart(() =>
-            {
-                MidiDriver.Instance.noteOnDelegate += OnNoteOnReceived;
-                MidiDriver.Instance.noteOffDelegate += OnNoteOffReceived;
-            });
-        }
-
-        void OnDestroy()
-        {
-            if (!Application.isPlaying) return;
-            MidiDriver.Instance.noteOnDelegate -= OnNoteOnReceived;
-            MidiDriver.Instance.noteOffDelegate -= OnNoteOffReceived;
-        }
-
-        void OnNoteOnReceived(MidiChannel channel, int note, float velocity)
-        {
-            if (channel == Channel && note >= MinNoteNumber && note <= MaxNoteNumber)
-            {
-                if (velocity != 0)
+                Device.NoteOn += (NoteOnMessage m) =>
                 {
-                    NoteNumber = note;
-                    Velocity = velocity;
-                    noteOnTrigger = true;
-                }
-                else OnNoteOffReceived(channel, note);
+                    if (m.Channel == Channel)
+                    {
+                        Threads.RunOnMain(() =>
+                        {
+                            NoteNumber = m.Pitch.NoteNumber();
+                            Velocity = m.Velocity;
+                            NoteIsOn = Velocity > 0;
+                            if (NoteIsOn)
+                                LastNoteVelocity = Velocity;
+                            Trigger = true;
+                        });
+                    }
+                };
+
+                Device.NoteOff += (NoteOffMessage m) =>
+                {
+                    if (m.Channel == Channel)
+                    {
+                        NoteNumber = m.Pitch.NoteNumber();
+                        NoteIsOn = false;
+                        Velocity = 0;
+                        NoteOffTrigger = true;
+                    }
+                };
             }
         }
+    }
 
-        void OnNoteOffReceived(MidiChannel channel, int note)
+    internal override void Exit()
+    {
+        if (Device != null && Device.IsOpen)
         {
-            if (channel == Channel && note >= MinNoteNumber && note <= MaxNoteNumber)
-            {
-                NoteNumber = note;
-                Velocity = 0f;
-                noteOffTrigger = true;
-            }
+            Device.StopReceiving();
+            Device.Close();
         }
     }
 }

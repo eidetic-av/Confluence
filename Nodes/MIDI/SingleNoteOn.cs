@@ -112,17 +112,23 @@ public class SingleNoteOn : RuntimeNode
 
                 Device.NoteOn += (NoteOnMessage m) =>
                 {
-                    if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber) {
-                        Velocity = m.Velocity;
-                        LastNoteVelocity = Velocity;
-                        NoteOn = Velocity > 0;
-                        Trigger = true;
+                    if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
+                    {
+                        Threads.RunOnMain(() =>
+                        {
+                            Velocity = m.Velocity;
+                            NoteOn = Velocity > 0;
+                            if (NoteOn)
+                                LastNoteVelocity = Velocity;
+                            Trigger = true;
+                        });
                     }
                 };
 
                 Device.NoteOff += (NoteOffMessage m) =>
                 {
-                    if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber) {
+                    if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
+                    {
                         NoteOn = false;
                         Velocity = 0;
                         NoteOffTrigger = true;

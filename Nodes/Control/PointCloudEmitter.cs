@@ -14,9 +14,11 @@ namespace Eidetic.Confluence
             if (Input == -1) return;
 
             if (Input != LastInput)
+            {
                 if (PointCloudReceiver.Instance != null)
                     if (PointCloudReceiver.Instance.ParticleSystems[Input] != null)
                         PointCloudReceiver.Instance.ParticleSystems[Input].Emit = true;
+            }
 
             LastInput = Input;
         }
