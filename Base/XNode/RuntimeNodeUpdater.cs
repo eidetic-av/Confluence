@@ -3,6 +3,7 @@ using MidiJack;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Eidetic.Unity.Utility;
+using UnityEditor;
 
 namespace Eidetic.Confluence
 {
@@ -14,16 +15,32 @@ namespace Eidetic.Confluence
             MainThreadDispatcher.Instantiate();
             if (Instance != null) return Instance;
             else return Instance = new GameObject("RuntimeNodeUpdater")
-              .WithHideFlags(HideFlags.NotEditable)
-              .InDontDestroyMode()
               .AddComponent<RuntimeNodeUpdater>();
         }
 
-        RuntimeNodeUpdater() {
+        RuntimeNodeUpdater()
+        {
         }
 
-        public void Awake() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Awake());
-        public void Start() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Start());
+        public void Awake()
+        {
+            var graph = Resources.Load<RuntimeGraph>("TrickFilm");
+            foreach (var node in graph.nodes)
+                ((RuntimeNode)node).OnEnable();
+                
+            Threads.RunAtStart(() =>
+            {
+                RuntimeNode.ActiveNodes.ForEach(n => n.Awake());
+            });
+        }
+
+        public void Start()
+        {
+            Threads.RunOnMain(() =>
+            {
+                RuntimeNode.ActiveNodes.ForEach(n => n.Start());
+            });
+        }
         public void Update()
         {
             RuntimeNode.ActiveNodes.ForEachOnMain(n => n.ValueUpdate());
@@ -38,5 +55,11 @@ namespace Eidetic.Confluence
             }
         }
         public void LateUpdate() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.LateUpdate());
+
+        public void OnDestroy()
+        {
+            foreach (var node in RuntimeNode.ActiveNodes)
+                node.OnDestroy();
+        }
     }
 }

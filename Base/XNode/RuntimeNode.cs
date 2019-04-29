@@ -5,42 +5,17 @@ using System.Linq;
 using System.Reflection;
 using Eidetic.Unity.Utility;
 using Eidetic.Utility;
-using UnityEditor;
 using UnityEngine;
 using XNode;
 
 namespace Eidetic.Confluence
 {
-
-#if UNITY_EDITOR
-    [InitializeOnLoad]
-#endif
     public abstract class RuntimeNode : Node
     {
-        public static List<RuntimeNode> ActiveNodes { get; protected set; }
-        static RuntimeNode()
-        {
-            ActiveNodes = new List<RuntimeNode>();
-#if UNITY_EDITOR
+        public static List<RuntimeNode> ActiveNodes { get; set; } = new List<RuntimeNode>();
 
-            EditorApplication.playModeStateChanged += (stateChange) =>
-            {
-                if (stateChange == PlayModeStateChange.EnteredPlayMode) OnPlay();
-                else if (stateChange == PlayModeStateChange.ExitingPlayMode) OnExit();
-            };
-#else
-            foreach (var node in Resources.Load<RuntimeGraph>("TrickFilm").nodes)
-            {
-                ActiveNodes.Add(node as RuntimeNode);
-            }
-            OnPlay();
-#endif
-        }
-#if UNITY_STANDALONE
         [RuntimeInitializeOnLoadMethod]
-#endif
         private static void OnPlay() => RuntimeNodeUpdater.Instantiate();
-        private static void OnExit() => ActiveNodes.ForEachOnMain(n => n.Exit());
 
         public Dictionary<string, Func<object>> Getters { get; private set; }
         public Dictionary<string, Action<object>> Setters { get; private set; }
@@ -74,9 +49,8 @@ namespace Eidetic.Confluence
                 }
             }
         }
-        void OnDestroy()
+        public void OnDestroy()
         {
-            ActiveNodes.Remove(this);
             Destroy();
             if (Application.isPlaying) Exit();
         }
@@ -106,7 +80,10 @@ namespace Eidetic.Confluence
         internal void ValueUpdate()
         {
             foreach (var port in Ports.Where(port => port.IsInput && port.IsConnected))
+            {
+                if (!Setters.ContainsKey(port.MemberName)) continue;
                 Setters[port.MemberName].Invoke(port.Connection.Node.GetValue(port.Connection));
+            }
         }
         internal virtual void Awake() { }
         internal virtual void Start()

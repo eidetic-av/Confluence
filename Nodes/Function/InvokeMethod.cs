@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System;
@@ -8,10 +8,11 @@ using XNode;
 
 namespace Eidetic.Confluence
 {
-    [CreateNodeMenu("Function/PropertyManipulator"),
+    [CreateNodeMenu("Function/InvokeMethod"),
         NodeTint(Colors.ControllerTint)]
-    public class PropertyManipulator : RuntimeNode
+    public class InvokeMethod : RuntimeNode
     {
+
         public static readonly float ValidationInterval = .5f;
         public float LastValidatedTime { get; private set; }
 
@@ -25,23 +26,22 @@ namespace Eidetic.Confluence
         string LastComponentTypeName;
 
         [SerializeField]
-        string PropertyName;
-        string LastPropertyName;
+        string MethodName;
+        string LastMethodName;
 
-        Action<float> Setter;
+        Action<int> Method;
 
-        [Input] public float Input;
-        float currentInput;
-
-        [Input] public float DampingRate = 3f;
+        int lastInput;
+        [Input]
+        public int Input { get; set; }
 
         public GameObject Target
         { get; private set; }
 
-        override protected void Init()
+        protected override void Init()
         {
             TargetObjectName = LastTargetObjectName = _targetName;
-            Threads.RunAtStart(RefreshTargetValueSetter);
+            RefreshTargetValueSetter();
         }
 
         void OnValidate()
@@ -55,7 +55,7 @@ namespace Eidetic.Confluence
                 updatedTarget = true;
             }
 
-            if (ComponentTypeName != LastComponentTypeName || PropertyName != LastPropertyName || updatedTarget)
+            if (ComponentTypeName != LastComponentTypeName || MethodName != LastMethodName || updatedTarget)
                 RefreshTargetValueSetter();
 
             LastValidatedTime = Time.time;
@@ -63,24 +63,19 @@ namespace Eidetic.Confluence
 
         void RefreshTargetValueSetter()
         {
-            if (Target == null) return;
             var component = Target.GetComponent(ComponentTypeName);
-            if (component == null) return;
-            var property = component.GetType().GetProperty(PropertyName);
-            if (property == null) return;
-            var setMethod = property.GetSetMethod();
-            if (setMethod == null) return;
-            Setter = (float value) => setMethod.Invoke(component, new object[] { value });
+            var method = component.GetType().GetMethod(MethodName);
+            Method = (int value) => method.Invoke(component, new object[] { value });
         }
 
-        // Update is called once per frame
-        internal override void Update()
+        override internal void Update()
         {
-            if (Mathf.Abs(currentInput - Input) > 0.005f)
-                currentInput = currentInput + (Input - currentInput) / DampingRate;
-
-            if (Setter != null)
-                Setter.Invoke(currentInput);
+            if (lastInput != Input)
+            {
+                if (Method != null)
+                    Method.Invoke(Input);
+                lastInput = Input;
+            }
         }
 
     }

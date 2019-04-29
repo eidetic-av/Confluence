@@ -8,16 +8,11 @@ namespace Eidetic.Confluence
     [CreateNodeMenu("Utility/Print")]
     public class Print : RuntimeNode
     {
-        [Input(ShowBackingValue.Never, ConnectionType.Override)] public float Input;
+        [Input] public float Input { get; set; }
 
-        public float GetValue()
+        internal override void LateUpdate()
         {
-            return GetInputValue<float>("Input");
-        }
-
-        internal override void Update()
-        {
-            Debug.Log(GetValue());
+            Debug.Log(Input);
         }
     }
 }
