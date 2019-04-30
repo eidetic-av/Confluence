@@ -74,7 +74,7 @@ namespace Eidetic.Confluence
         }
 
         // Update is called once per frame
-        internal override void Update()
+        internal override void EarlyUpdate()
         {
             if (Mathf.Abs(currentInput - Input) > 0.005f)
                 currentInput = currentInput + (Input - currentInput) / DampingRate;

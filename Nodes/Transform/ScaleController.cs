@@ -6,9 +6,9 @@ using XNode;
 
 namespace Eidetic.Confluence
 {
-    [CreateNodeMenu("Transform/TranslationController"),
+    [CreateNodeMenu("Transform/ScaleController"),
         NodeTint(Colors.ControllerTint)]
-    public class TranslationController : RuntimeNode
+    public class ScaleController : RuntimeNode
     {
         public static readonly float ValidationInterval = .5f;
         public float LastValidatedTime { get; private set; }
@@ -24,14 +24,14 @@ namespace Eidetic.Confluence
 
         float currentX, currentY, currentZ;
 
-        Vector3 Translation => new Vector3(X, Y, Z);
+        Vector3 Scale => new Vector3(X, Y, Z);
 
         [Input] public float DampingRate = 3f;
 
         public GameObject Target
         { get; private set; }
 
-        protected override void Init()
+        internal override void Awake()
         {
             TargetName = LastTargetName = _targetName;
         }
@@ -45,7 +45,8 @@ namespace Eidetic.Confluence
 
             LastValidatedTime = Time.time;
         }
-        
+
+        // Update is called once per frame
         internal override void Update()
         {
             if (Target == null) return;
@@ -60,12 +61,12 @@ namespace Eidetic.Confluence
                 currentZ = currentZ + (Z - currentZ) / DampingRate;
             else currentZ = Z;
 
-            var newPosition = Target.transform.position;
-            newPosition.x = currentX;
-            newPosition.y = currentY;
-            newPosition.z = currentZ;
+            var newScale = Target.transform.localScale;
+            newScale.x = currentX;
+            newScale.y = currentY;
+            newScale.z = currentZ;
 
-            Target.transform.position = newPosition;
+            Target.transform.localScale = newScale;
         }
 
     }
