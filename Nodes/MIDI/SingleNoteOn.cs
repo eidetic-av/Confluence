@@ -87,54 +87,83 @@ public class SingleNoteOn : RuntimeNode
     }
     [Output] public int NoteOffTriggerInt => NoteOffTrigger ? 1 : 0;
 
+    float time;
+
     internal override void Start()
     {
         base.Start();
+        //if (Application.isPlaying)
+        //{
+        //    foreach (InputDevice inputDevice in InputDevice.InstalledDevices)
+        //    {
+        //        if (inputDevice.Name.ToLower().Equals(DeviceName.ToLower()))
+        //        {
+        //            Device = inputDevice;
+        //            break;
+        //        }
+        //    }
+        //    if (Device != null)
+        //    {
+        //        if (!InputDevice.OpenedDevices.Contains(Device))
+        //        {
+        //            Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
+        //            Device.Open();
+        //            Device.StartReceiving(null);
+        //            Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
+        //        }
+
+        //        Device.NoteOn += (NoteOnMessage m) =>
+        //        {
+        //            if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
+        //            {
+        //                Velocity = m.Velocity;
+        //                NoteOn = Velocity > 0;
+        //                if (NoteOn)
+        //                {
+        //                    Threads.RunOnMain(() => Debug.Log(m.Time));
+        //                    LastNoteVelocity = Velocity;
+        //                    Trigger = true;
+        //                }
+        //            }
+        //        };
+
+        //        Device.NoteOff += (NoteOffMessage m) =>
+        //        {
+        //            if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
+        //            {
+        //                NoteOn = false;
+        //                Velocity = 0;
+        //                NoteOffTrigger = true;
+        //            }
+        //        };
+        //    }
+        //}
+
         if (Application.isPlaying)
         {
-            foreach (InputDevice inputDevice in InputDevice.InstalledDevices)
-            {
-                if (inputDevice.Name.ToLower().Equals(DeviceName.ToLower()))
-                {
-                    Device = inputDevice;
-                    break;
-                }
-            }
-            if (Device != null)
-            {
-                if (!InputDevice.OpenedDevices.Contains(Device))
-                {
-                    Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
-                    Device.Open();
-                    Device.StartReceiving(null);
-                    Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
-                }
+            //GameObject.Find("ChuckSub").GetComponent<ChuckSubInstance>().RunCode(@"
+		       // SinOsc foo => dac;
+		       // while( true )
+		       // {
+			      //  Math.random2f( 300, 1000 ) => foo.freq;
+			      //  100::ms => now;
+		       // }
+	        //");
+        }
 
-                Device.NoteOn += (NoteOnMessage m) =>
-                {
-                    if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
-                    {
-                        Threads.RunOnMain(() =>
-                        {
-                            Velocity = m.Velocity;
-                            NoteOn = Velocity > 0;
-                            if (NoteOn)
-                                LastNoteVelocity = Velocity;
-                            Trigger = true;
-                        });
-                    }
-                };
+    }
 
-                Device.NoteOff += (NoteOffMessage m) =>
-                {
-                    if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
-                    {
-                        NoteOn = false;
-                        Velocity = 0;
-                        NoteOffTrigger = true;
-                    }
-                };
-            }
+    int t = 0;
+    internal override void Update()
+    {
+        base.Update();
+        if (Trigger)
+        {
+            Debug.Log(Time.time);
+            if (t++ % 2 == 0)
+                Camera.main.backgroundColor = Color.white;
+            else
+                Camera.main.backgroundColor = Color.black;
         }
     }
 

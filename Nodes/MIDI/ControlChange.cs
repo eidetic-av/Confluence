@@ -15,16 +15,10 @@ public class ControlChange : RuntimeNode
 {
     public String DeviceName;
     public InputDevice Device { get; private set; }
-    // public Midi.Channel Channel;
+    public Channel Channel;
     public int Number;
-    public bool BiDirectional;
-
-    // float ccValue;
-    // [Output] public int Int => Mathf.RoundToInt(ccValue * 127);
-    // [Output] public float Float => BiDirectional ? ccValue - 0.5f : ccValue;
     
-    int ccValue;
-    [Output] public int Int => BiDirectional ? ccValue - 64 : ccValue;
+    [Output] public int Int;
     [Output] public float Float => Int / 127f;
 
     internal override void Start()
@@ -32,10 +26,6 @@ public class ControlChange : RuntimeNode
         base.Start();
         if (Application.isPlaying)
         {
-            // MidiJack.MidiDriver.Instance.knobDelegate += (MidiJack.MidiChannel channel, int knobNumber, float knobValue) =>
-            // {
-            //         if (knobNumber == Number) ccValue = knobValue;
-            // };
             foreach (InputDevice inputDevice in InputDevice.InstalledDevices)
             {
                 if (inputDevice.Name.ToLower().Equals(DeviceName.ToLower()))
@@ -56,7 +46,8 @@ public class ControlChange : RuntimeNode
 
                 Device.ControlChange += (ControlChangeMessage m) =>
                 {
-                    if (m.Control.Number() == Number) ccValue = m.Value;
+                    if (m.Channel == Channel && m.Control.Number() == Number)
+                        Int = m.Value;
                 };
             }
         }
