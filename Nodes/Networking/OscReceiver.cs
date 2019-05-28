@@ -32,6 +32,8 @@ namespace Eidetic.Confluence.Networking
             }
         }
 
+        [SerializeField] public bool Debug = false;
+
         OscServer Server;
 
         new public void OnEnable()
@@ -49,7 +51,7 @@ namespace Eidetic.Confluence.Networking
             Server.MessageDispatcher.AddRootNodeCallback("unity", OnMessageReceived);
         }
 
-        void OnDestroy()
+        new void OnDestroy()
         {
             Receivers[Server].Remove(this);
             if (Receivers[Server].Count == 0)
@@ -64,6 +66,7 @@ namespace Eidetic.Confluence.Networking
 
         internal override void Update()
         { }
+
         void OnMessageReceived(string address, OscDataHandle data)
         {
             var subAddressStartIndex = address.IndexOf('/', 1);
@@ -74,6 +77,9 @@ namespace Eidetic.Confluence.Networking
                 Float = data.GetElementAsFloat(0);
                 Boolean = Integer != 0;
                 trigger = Boolean;
+
+                if (Debug)
+                    UnityEngine.Debug.Log(Float);
             }
         }
     }

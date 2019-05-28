@@ -46,6 +46,7 @@ public class ControlChange : RuntimeNode
 
                 Device.ControlChange += (ControlChangeMessage m) =>
                 {
+                    Debug.Log(m.Control.Number());
                     if (m.Channel == Channel && m.Control.Number() == Number)
                         Int = m.Value;
                 };

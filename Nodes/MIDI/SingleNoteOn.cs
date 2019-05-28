@@ -92,52 +92,52 @@ public class SingleNoteOn : RuntimeNode
     internal override void Start()
     {
         base.Start();
-        //if (Application.isPlaying)
-        //{
-        //    foreach (InputDevice inputDevice in InputDevice.InstalledDevices)
-        //    {
-        //        if (inputDevice.Name.ToLower().Equals(DeviceName.ToLower()))
-        //        {
-        //            Device = inputDevice;
-        //            break;
-        //        }
-        //    }
-        //    if (Device != null)
-        //    {
-        //        if (!InputDevice.OpenedDevices.Contains(Device))
-        //        {
-        //            Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
-        //            Device.Open();
-        //            Device.StartReceiving(null);
-        //            Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
-        //        }
+        if (Application.isPlaying)
+        {
+            foreach (InputDevice inputDevice in InputDevice.InstalledDevices)
+            {
+                if (inputDevice.Name.ToLower().Equals(DeviceName.ToLower()))
+                {
+                    Device = inputDevice;
+                    break;
+                }
+            }
+            if (Device != null)
+            {
+                if (!InputDevice.OpenedDevices.Contains(Device))
+                {
+                    Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
+                    Device.Open();
+                    Device.StartReceiving(null);
+                    Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
+                }
 
-        //        Device.NoteOn += (NoteOnMessage m) =>
-        //        {
-        //            if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
-        //            {
-        //                Velocity = m.Velocity;
-        //                NoteOn = Velocity > 0;
-        //                if (NoteOn)
-        //                {
-        //                    Threads.RunOnMain(() => Debug.Log(m.Time));
-        //                    LastNoteVelocity = Velocity;
-        //                    Trigger = true;
-        //                }
-        //            }
-        //        };
+                Device.NoteOn += (NoteOnMessage m) =>
+                {
+                    if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
+                    {
+                        Velocity = m.Velocity;
+                        NoteOn = Velocity > 0;
+                        if (NoteOn)
+                        {
+                            Threads.RunOnMain(() => Debug.Log(m.Time));
+                            LastNoteVelocity = Velocity;
+                            Trigger = true;
+                        }
+                    }
+                };
 
-        //        Device.NoteOff += (NoteOffMessage m) =>
-        //        {
-        //            if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
-        //            {
-        //                NoteOn = false;
-        //                Velocity = 0;
-        //                NoteOffTrigger = true;
-        //            }
-        //        };
-        //    }
-        //}
+                Device.NoteOff += (NoteOffMessage m) =>
+                {
+                    if (m.Channel == Channel && m.Pitch.NoteNumber() == NoteNumber)
+                    {
+                        NoteOn = false;
+                        Velocity = 0;
+                        NoteOffTrigger = true;
+                    }
+                };
+            }
+        }
 
         if (Application.isPlaying)
         {

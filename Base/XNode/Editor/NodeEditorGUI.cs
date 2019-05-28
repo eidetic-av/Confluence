@@ -11,7 +11,7 @@ namespace XNodeEditor
     /// <summary> Contains GUI methods </summary>
     public partial class NodeEditorWindow
     {
-        public const int HitTargetSize = 48;
+        public const int HitTargetSize = 22;
 
         public static GUILayoutOption[] HitTargetSizeOption => new GUILayoutOption[]
         {
