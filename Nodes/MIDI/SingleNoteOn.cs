@@ -106,10 +106,10 @@ public class SingleNoteOn : RuntimeNode
             {
                 if (!InputDevice.OpenedDevices.Contains(Device))
                 {
-                    Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
+                    if (Debug) UnityEngine.Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
                     Device.Open();
                     Device.StartReceiving(null);
-                    Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
+                    if (Debug) UnityEngine.Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
                 }
 
                 Device.NoteOn += (NoteOnMessage m) =>
@@ -120,7 +120,7 @@ public class SingleNoteOn : RuntimeNode
                         NoteOn = Velocity > 0;
                         if (NoteOn)
                         {
-                            Threads.RunOnMain(() => Debug.Log(m.Time));
+                            if (Debug) Threads.RunOnMain(() => UnityEngine.Debug.Log(m.Time));
                             LastNoteVelocity = Velocity;
                             Trigger = true;
                         }
@@ -159,11 +159,6 @@ public class SingleNoteOn : RuntimeNode
         base.Update();
         if (Trigger)
         {
-            Debug.Log(Time.time);
-            if (t++ % 2 == 0)
-                Camera.main.backgroundColor = Color.white;
-            else
-                Camera.main.backgroundColor = Color.black;
         }
     }
 

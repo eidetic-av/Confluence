@@ -26,6 +26,39 @@ namespace Eidetic.Confluence
                 mainModule.simulationSpeed = value;
             }
         }
+        
+        [SerializeField] float emissionRate = 1;
+        [Input]
+        public float EmissionRate
+        {
+            set
+            {
+                var emissionModule = ParticleSystem.emission;
+                emissionModule.rateOverTimeMultiplier = value;
+            }
+        }
+
+        [SerializeField] float gravity = 1;
+        [Input]
+        public float Gravity
+        {
+            set
+            {
+                var mainModule = ParticleSystem.main;
+                mainModule.gravityModifier = value;
+            }
+        }
+
+        [SerializeField] float startSize = 1;
+        [Input]
+        public float StartSize
+        {
+            set
+            {
+                var mainModule = ParticleSystem.main;
+                mainModule.startSizeMultiplier = value;
+            }
+        }
 
         [SerializeField] float maxParticles = 1000;
         [Input]

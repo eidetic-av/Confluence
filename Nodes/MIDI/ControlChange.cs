@@ -38,15 +38,15 @@ public class ControlChange : RuntimeNode
             {
                 if (!InputDevice.OpenedDevices.Contains(Device))
                 {
-                    Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
+                    UnityEngine.Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
                     Device.Open();
                     Device.StartReceiving(null);
-                    Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
+                    UnityEngine.Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
                 }
 
                 Device.ControlChange += (ControlChangeMessage m) =>
                 {
-                    Debug.Log(m.Control.Number());
+                    UnityEngine.Debug.Log(m.Control.Number());
                     if (m.Channel == Channel && m.Control.Number() == Number)
                         Int = m.Value;
                 };

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Eidetic.Unity.Utility;
 using UnityEditor;
+using System.Linq;
 
 namespace Eidetic.Confluence
 {
@@ -14,34 +15,23 @@ namespace Eidetic.Confluence
         {
             MainThreadDispatcher.Instantiate();
             if (Instance != null) return Instance;
-            else return Instance = new GameObject("RuntimeNodeUpdater")
-              .AddComponent<RuntimeNodeUpdater>();
-        }
-
-        RuntimeNodeUpdater()
-        {
+            else return Instance = new GameObject("RuntimeNodeUpdater").AddComponent<RuntimeNodeUpdater>();
         }
 
         public void Awake()
         {
-            var graph = Resources.Load<RuntimeGraph>("DefaultRuntimeGraph");
+            RuntimeNode.ActiveNodes.Clear();
 
-            foreach (var node in graph.nodes)
-                ((RuntimeNode)node).OnEnable();
-                
-            Threads.RunAtStart(() =>
-            {
-                RuntimeNode.ActiveNodes.ForEach(n => n.Awake());
-            });
+            var activeGraphs = Resources.LoadAll<RuntimeGraph>("").Where(g => g.LoadOnPlay);
+
+            activeGraphs.SelectMany(g => g.nodes)
+                .Cast<RuntimeNode>().ToList()
+                .ForEach(n => n.OnEnable());
+
+            Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Awake()));
+            Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Start()));
         }
 
-        public void Start()
-        {
-            Threads.RunOnMain(() =>
-            {
-                RuntimeNode.ActiveNodes.ForEach(n => n.Start());
-            });
-        }
         public void Update()
         {
             RuntimeNode.ActiveNodes.ForEachOnMain(n => n.ValueUpdate());
@@ -51,16 +41,11 @@ namespace Eidetic.Confluence
             // Todo: definitely move this elsewhere
             if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
             {
-                if (Input.GetKeyDown(KeyCode.F4))
-                    Application.Quit();
+                if (Input.GetKeyDown(KeyCode.F4)) Application.Quit();
             }
         }
         public void LateUpdate() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.LateUpdate());
 
-        public void OnDestroy()
-        {
-            foreach (var node in RuntimeNode.ActiveNodes)
-                node.OnDestroy();
-        }
+        public void OnDestroy() => RuntimeNode.ActiveNodes.ForEach(n => n.OnDestroy());
     }
 }

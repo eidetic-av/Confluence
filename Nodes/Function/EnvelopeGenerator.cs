@@ -26,13 +26,12 @@ namespace Eidetic.Confluence
 
         [Input] public float Length = 1f;
         [Input] public AnimationCurve Shape = AnimationCurve.EaseInOut(1, 1, 0, 0);
+        
+        [Output] public float Value => Shape.Evaluate(EnvelopePosition);
 
-        float value = 0f;
-        [Output] float Value => Shape.Evaluate(EnvelopePosition);
-        bool running;
-        [Output] bool Running => EnvelopeTimer.IsRunning;
-        float envelopePosition;
-        [Output] float EnvelopePosition
+        [Output] public bool Running => EnvelopeTimer.IsRunning;
+        
+        [Output] public float EnvelopePosition
         {
             get
             {

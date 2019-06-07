@@ -55,7 +55,7 @@ namespace Eidetic.Confluence
                     if (knobNumber.Equals(ccNumber))
                     {
                         portField.SetValue(this, knobValue);
-                        Debug.Log("cc: " + ccNumber + ", " + knobValue);
+                        UnityEngine.Debug.Log("cc: " + ccNumber + ", " + knobValue);
                     }
                 }
             };

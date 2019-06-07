@@ -117,7 +117,7 @@ namespace XNode
             }
             else if (HasPort(fieldName))
             {
-                Debug.LogWarning("Port '" + fieldName + "' already exists in " + name, this);
+                UnityEngine.Debug.LogWarning("Port '" + fieldName + "' already exists in " + name, this);
                 return ports[fieldName];
             }
             NodePort port = new NodePort(fieldName, type, direction, connectionType, this);
@@ -208,7 +208,7 @@ namespace XNode
         /// <param name="port">The requested port.</param>
         public virtual object GetValue(NodePort port)
         {
-            Debug.LogWarning("No GetValue(NodePort port) override defined for " + GetType());
+            UnityEngine.Debug.LogWarning("No GetValue(NodePort port) override defined for " + GetType());
             return null;
         }
         #endregion

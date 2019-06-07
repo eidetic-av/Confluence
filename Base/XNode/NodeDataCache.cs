@@ -97,7 +97,7 @@ namespace XNode
 
                 if (inputAttribute == null && outputAttribute == null) continue;
 
-                if (inputAttribute != null && outputAttribute != null) Debug.LogError("Field " + fieldInfo[i].Name + " of type " + nodeType.FullName + " cannot be both input and output.");
+                if (inputAttribute != null && outputAttribute != null) UnityEngine.Debug.LogError("Field " + fieldInfo[i].Name + " of type " + nodeType.FullName + " cannot be both input and output.");
                 else
                 {
                     if (!portDataCache.ContainsKey(nodeType)) portDataCache.Add(nodeType, new List<NodePort>());

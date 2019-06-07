@@ -7,7 +7,7 @@ public class MidiTest : MonoBehaviour
 {
     async void Start()
     {
-        Eidetic.Buddah.Logger.LogDelegate = Debug.LogFormat;
+        Eidetic.Buddah.Logger.LogDelegate = UnityEngine.Debug.LogFormat;
     }
 
     private void Update()

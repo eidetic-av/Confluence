@@ -21,6 +21,8 @@ namespace Eidetic.Confluence
         public Dictionary<string, Action<object>> Setters { get; private set; }
         public Dictionary<string, FieldInfo> BackingFields { get; private set; }
 
+        protected bool Debug;
+
         new public void OnEnable()
         {
             base.OnEnable();

@@ -12,7 +12,7 @@ namespace Eidetic.Confluence
 
         internal override void LateUpdate()
         {
-            Debug.Log(Input);
+            UnityEngine.Debug.Log(Input);
         }
     }
 }

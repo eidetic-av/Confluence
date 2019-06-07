@@ -107,10 +107,10 @@ public class NoteOn : RuntimeNode
             {
                 if (!InputDevice.OpenedDevices.Contains(Device))
                 {
-                    Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
+                    UnityEngine.Debug.LogFormat("Opening MIDI Device: {0}", Device.Name);
                     Device.Open();
                     Device.StartReceiving(null);
-                    Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
+                    UnityEngine.Debug.LogFormat("Successfully opened MIDI Device: {0}", Device.Name);
                 }
 
                 Device.NoteOn += (NoteOnMessage m) =>

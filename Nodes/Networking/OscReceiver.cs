@@ -32,8 +32,6 @@ namespace Eidetic.Confluence.Networking
             }
         }
 
-        [SerializeField] public bool Debug = false;
-
         OscServer Server;
 
         new public void OnEnable()
@@ -48,7 +46,7 @@ namespace Eidetic.Confluence.Networking
                 Receivers[Server].Add(this);
             else Receivers[Server] = new List<OscReceiver>().With(this);
 
-            Server.MessageDispatcher.AddRootNodeCallback("unity", OnMessageReceived);
+            Server.MessageDispatcher.AddRootNodeCallback("track", OnMessageReceived);
         }
 
         new void OnDestroy()
@@ -61,7 +59,7 @@ namespace Eidetic.Confluence.Networking
                 Server.Dispose();
             }
 
-            Server.MessageDispatcher.RemoveRootNodeCallback("unity", OnMessageReceived);
+            Server.MessageDispatcher.RemoveRootNodeCallback("track", OnMessageReceived);
         }
 
         internal override void Update()
