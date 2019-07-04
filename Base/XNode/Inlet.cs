@@ -1,4 +1,5 @@
-namespace Eidetic.Confluence {
+namespace Eidetic.Confluence
+{
     public class Inlet : RuntimeNode
     {
         public RuntimeGraphHolder Holder;

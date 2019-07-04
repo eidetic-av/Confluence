@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 
-namespace XNodeEditor {
+namespace XNodeEditor
+{
     /// <summary> Contains reflection-related info </summary>
     public partial class NodeEditorWindow {
         /// <summary> Custom node tint colors defined with [NodeColor(r, g, b)] </summary>

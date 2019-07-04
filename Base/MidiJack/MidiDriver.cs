@@ -21,9 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+using Eidetic.Unity.Utility;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Eidetic.Unity.Utility;
 using UnityEngine;
 
 namespace MidiJack

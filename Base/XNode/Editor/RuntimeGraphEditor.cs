@@ -1,7 +1,3 @@
-using System;
-using UnityEngine;
-using UnityEditor;
-using XNode;
 using XNodeEditor;
 
 namespace Eidetic.Confluence

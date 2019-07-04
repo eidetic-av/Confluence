@@ -1,7 +1,4 @@
-﻿using XNode;
-using Eidetic.Utility;
-
-namespace Eidetic.Confluence
+﻿namespace Eidetic.Confluence
 {
     [CreateNodeMenu("Math/Loop")]
     public class Loop : RuntimeNode

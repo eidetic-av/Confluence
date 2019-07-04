@@ -22,9 +22,9 @@
 // THE SOFTWARE.
 //
 using System;
-using UnityEngine;
-using UnityEditor;
 using System.Runtime.InteropServices;
+using UnityEditor;
+using UnityEngine;
 
 namespace MidiJack
 {

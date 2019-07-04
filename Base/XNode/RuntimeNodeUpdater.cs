@@ -1,10 +1,5 @@
-
-using MidiJack;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using Eidetic.Unity.Utility;
-using UnityEditor;
 using System.Linq;
+using UnityEngine;
 
 namespace Eidetic.Confluence
 {

@@ -1,6 +1,4 @@
 using UnityEngine;
-using XNode;
-using static UnityEngine.ParticleSystem;
 
 namespace Eidetic.Confluence.Shuriken
 {

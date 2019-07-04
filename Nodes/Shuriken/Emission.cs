@@ -1,10 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Eidetic.Unity.Utility;
-using Eidetic.Utility;
-using UnityEditor;
+﻿using Eidetic.Utility;
 using UnityEngine;
-using XNode;
 using static UnityEngine.ParticleSystem;
 namespace Eidetic.Confluence.Shuriken
 {

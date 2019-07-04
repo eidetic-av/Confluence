@@ -1,10 +1,8 @@
+using Eidetic.Utility;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Eidetic.Unity.Utility;
-using Eidetic.Utility;
 using UnityEngine;
 using XNode;
 

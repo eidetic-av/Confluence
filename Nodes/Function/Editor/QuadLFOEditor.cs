@@ -1,6 +1,5 @@
-using UnityEngine;
 using UnityEditor;
-using XNode;
+using UnityEngine;
 using XNodeEditor;
 
 namespace Eidetic.Confluence

@@ -1,13 +1,7 @@
-using Midi;
-using Eidetic;
 using Eidetic.Confluence;
+using Midi;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
-using XNode;
 
 [CreateNodeMenu("MIDI/SingleNoteOn"),
     NodeTint(Colors.ExternalInputTint)]

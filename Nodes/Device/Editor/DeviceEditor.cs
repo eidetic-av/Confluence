@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 using UnityEditor;
-using XNode;
+using UnityEngine;
 using XNodeEditor;
 
 namespace Eidetic.Confluence

@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using XNode;
 
-namespace Eidetic.Confluence {
+namespace Eidetic.Confluence
+{
     [CreateNodeMenu("Texture/TextureController"),
         NodeTint(Colors.ControllerTint)]
     public class TextureController : RuntimeNode

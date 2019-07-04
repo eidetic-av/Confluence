@@ -1,4 +1,3 @@
-using XNode;
 using Eidetic.Utility;
 
 namespace Eidetic.Confluence

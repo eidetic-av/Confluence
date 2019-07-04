@@ -1,10 +1,8 @@
+using Eidetic.Unity.Utility;
 using System.Collections.Generic;
 using System.Linq;
-using Eidetic.Unity.Utility;
-using Eidetic.Utility;
 using UnityEngine;
 using XNode;
-using static System.Collections.Specialized.NotifyCollectionChangedAction;
 using static UnityEngine.ParticleSystem;
 
 namespace Eidetic.Confluence.Shuriken

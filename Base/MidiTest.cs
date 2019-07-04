@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Eidetic.Buddah.Midi;
 using UnityEngine;
-using Eidetic.Buddah.Midi;
 
 public class MidiTest : MonoBehaviour
 {

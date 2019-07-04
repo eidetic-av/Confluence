@@ -1,8 +1,7 @@
-using UnityEngine;
+using MidiJack;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using MidiJack;
 
 namespace Eidetic.Confluence
 {

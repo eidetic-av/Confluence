@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace XNodeEditor {
+namespace XNodeEditor
+{
     public static class NodeEditorPreferences {
         public enum NoodleType { Curve, Line, Angled, Cable }
 

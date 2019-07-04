@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using XNode;
 
-namespace Eidetic.Confluence {
+namespace Eidetic.Confluence
+{
     [CreateNodeMenu("Transform/AutoRotate"),
         NodeTint(Colors.ControllerTint)]
     public class AutoRotate : RuntimeNode

@@ -1,9 +1,8 @@
 using System;
-using UnityEngine;
 using XNode;
-using MidiJack;
 
-namespace Eidetic.Confluence {
+namespace Eidetic.Confluence
+{
     public abstract partial class Device {
 
         /// <summary>

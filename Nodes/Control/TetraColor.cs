@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Eidetic.Confluence {
+namespace Eidetic.Confluence
+{
     public class TetraColor : RuntimeNode
     {
         public Color[] Colors = new Color[] {

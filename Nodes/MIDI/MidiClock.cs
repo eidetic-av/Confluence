@@ -1,13 +1,5 @@
-using MidiJack;
-using Unity.Jobs;
-using Unity.Collections;
-using UnityEngine;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
-using XNode;
 using Eidetic.Buddah.Midi;
+using UnityEngine;
 
 namespace Eidetic.Confluence.Midi
 {

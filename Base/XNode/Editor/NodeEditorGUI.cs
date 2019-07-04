@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Eidetic.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Eidetic.Utility;
-using Eidetic.Confluence;
 
 namespace XNodeEditor
 {

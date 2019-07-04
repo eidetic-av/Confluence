@@ -3,7 +3,8 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-namespace XNodeEditor {
+namespace XNodeEditor
+{
     [InitializeOnLoad]
     public partial class NodeEditorWindow : EditorWindow {
         public static NodeEditorWindow current;

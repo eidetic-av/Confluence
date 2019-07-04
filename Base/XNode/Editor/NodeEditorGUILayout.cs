@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using Eidetic.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-using Eidetic.Utility;
-using Eidetic.Confluence;
-
 using static XNodeEditor.NodeEditorWindow;
 
 namespace XNodeEditor

@@ -1,7 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace XNodeEditor {
+namespace XNodeEditor
+{
     public static class NodeEditorResources {
         // Textures
         public static Texture2D dot { get { return _dot != null ? _dot : _dot = Resources.Load<Texture2D>("xnode_dot"); } }

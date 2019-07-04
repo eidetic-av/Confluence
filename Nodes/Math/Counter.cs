@@ -1,6 +1,4 @@
-﻿using XNode;
-using Eidetic.Utility;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Eidetic.Confluence
 {
