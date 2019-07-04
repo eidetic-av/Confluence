@@ -42,7 +42,7 @@ namespace Eidetic.Confluence.Networking
                 Receivers[Server].Add(this);
             else Receivers[Server] = new List<OscReceiver>().With(this);
 
-            Server.MessageDispatcher.AddRootNodeCallback("track", OnMessageReceived);
+            Server.MessageDispatcher.AddRootNodeCallback("pascal", OnMessageReceived);
         }
 
         new void OnDestroy()
@@ -55,7 +55,7 @@ namespace Eidetic.Confluence.Networking
                 Server.Dispose();
             }
 
-            Server.MessageDispatcher.RemoveRootNodeCallback("track", OnMessageReceived);
+            Server.MessageDispatcher.RemoveRootNodeCallback("pascal", OnMessageReceived);
         }
 
         internal override void Update()
@@ -63,6 +63,7 @@ namespace Eidetic.Confluence.Networking
 
         void OnMessageReceived(string address, OscDataHandle data)
         {
+            UnityEngine.Debug.Log(address + ": " + data.GetElementAsString(0));
             var subAddressStartIndex = address.IndexOf('/', 1);
             var subAddress = address.Substring(subAddressStartIndex, address.Length - subAddressStartIndex);
             if (subAddress == MessageAddress | subAddress.TrimStart('/') == MessageAddress)

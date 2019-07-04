@@ -16,8 +16,12 @@ namespace Eidetic.Confluence.Networking
 
         [Output] public float azim { get; set; } // Degrees 0-180
         [Output] public float dist { get; set; } // Metres 1-10
-        [Output] public float fo { get; set; } // Fiddle output Hz (~30-5000)
-        [Output] public float amp { get; set; } // normalised volume (0-1)
+        [Output] public float centroid { get; set; }
+        [Output] public float flatness { get; set; }
+        [Output] public float flux { get; set; }
+        [Output] public float harmonicity { get; set; }
+        [Output] public float energy { get; set; }
+        [Output] public float pitch { get; set; }
 
         OscServer Server;
 
@@ -67,11 +71,27 @@ namespace Eidetic.Confluence.Networking
                     case "dist":
                         dist = data.GetElementAsFloat(0);
                         break;
-                    case "fo":
-                        fo = data.GetElementAsFloat(0);
+                }
+            } else if (data.GetElementAsString(0) != null && data.GetElementAsString(0) == TrackId){
+                switch (subAddress[1])
+                {
+                    case "centroid":
+                        centroid = data.GetElementAsFloat(1);
                         break;
-                    case "amp":
-                        amp = data.GetElementAsFloat(0);
+                    case "flatness":
+                        flatness = data.GetElementAsFloat(1);
+                        break;
+                    case "flux":
+                        flux = data.GetElementAsFloat(1);
+                        break;
+                    case "harmonicity":
+                        harmonicity = data.GetElementAsFloat(1);
+                        break;
+                    case "energy":
+                        energy = data.GetElementAsFloat(1);
+                        break;
+                    case "pitch":
+                        pitch = data.GetElementAsFloat(1);
                         break;
                 }
             }
