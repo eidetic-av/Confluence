@@ -14,8 +14,14 @@ namespace Eidetic.Confluence
         [Input(ShowBackingValue.Always, ConnectionType.Override)] public float OffsetX;
         [Input(ShowBackingValue.Always, ConnectionType.Override)] public float OffsetY;
 
+        [Input(ShowBackingValue.Always, ConnectionType.Override)] public float Hue = 0;
+        [Input(ShowBackingValue.Always, ConnectionType.Override)] public float Saturation = 0;
+        [Input(ShowBackingValue.Always, ConnectionType.Override)] public float Value = 1;
+
         Vector2 MainTextureScale = new Vector2();
         Vector2 MainTextureOffset = new Vector2();
+
+        Color MainColor = new Color();
 
         internal override void Update()
         {
@@ -46,16 +52,35 @@ namespace Eidetic.Confluence
                                 MainTextureOffset.x = OffsetX;
                             break;
                         case "OffsetY":
-                            float? offsetY;;
+                            float? offsetY;
                             if (port.TryGetInputValue(out offsetY))
                                 OffsetY = offsetY.Value;
                                 MainTextureOffset.y = OffsetY;
+                            break;
+                        case "Hue":
+                            float? hue; 
+                            if (port.TryGetInputValue(out hue))
+                                Hue = hue.Value;
+                            break;
+                        case "Saturation":
+                            float? saturation; 
+                            if (port.TryGetInputValue(out saturation))
+                                Saturation = saturation.Value;
+                            break;
+                        case "Value":
+                            float? value; 
+                            if (port.TryGetInputValue(out value))
+                                Value = value.Value;
                             break;
                     }
                 });
 
             Material.SetTextureScale("_MainTex", MainTextureScale);
             Material.SetTextureOffset("_MainTex", MainTextureOffset);
+
+            MainColor = Color.HSVToRGB(Hue, Saturation, Value);
+
+            Material.SetColor("_Color", MainColor);
         }
     }
 }

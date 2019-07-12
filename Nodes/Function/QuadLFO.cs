@@ -3,7 +3,7 @@ using XNode;
 
 namespace Eidetic.Confluence
 {
-    [CreateNodeMenu("Function/EnvelopeGenerator"),
+    [CreateNodeMenu("Function/QuadLFO"),
         NodeTint(Colors.FunctionTint)]
     public class QuadLFO : RuntimeNode
     {

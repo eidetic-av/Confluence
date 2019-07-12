@@ -35,8 +35,8 @@ namespace Eidetic.Confluence
                 var position = EnvelopeTimer.Elapsed.TotalSeconds / Length;
                 if (position > 1)
                 {
-                    EnvelopeTimer.Reset();
-                    position = 0;
+                    EnvelopeTimer.Stop();
+                    position = 1;
                 }
                 return (float) position;
             }

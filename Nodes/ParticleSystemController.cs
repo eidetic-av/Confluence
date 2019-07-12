@@ -20,6 +20,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var mainModule = ParticleSystem.main;
                 mainModule.simulationSpeed = value;
             }
@@ -31,6 +32,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var emissionModule = ParticleSystem.emission;
                 emissionModule.rateOverTimeMultiplier = value;
             }
@@ -42,6 +44,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var mainModule = ParticleSystem.main;
                 mainModule.gravityModifier = value;
             }
@@ -53,8 +56,12 @@ namespace Eidetic.Confluence
         {
             set
             {
-                var mainModule = ParticleSystem.main;
-                mainModule.startSizeMultiplier = value;
+                if (ParticleSystem == null) return;
+                if (startSize > 0)
+                {
+                    var mainModule = ParticleSystem.main;
+                    mainModule.startSizeMultiplier = value;
+                }
             }
         }
 
@@ -64,6 +71,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var mainModule = ParticleSystem.main;
                 mainModule.maxParticles = Mathf.RoundToInt(value);
             }
@@ -76,6 +84,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var noiseModule = ParticleSystem.noise;
                 if (value == 0)
                     noiseModule.enabled = false;
@@ -94,6 +103,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var noiseModule = ParticleSystem.noise;
                 noiseModule.frequency = value;
             }
@@ -106,6 +116,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var velocityModule = ParticleSystem.velocityOverLifetime;
                 velocityModule.enabled = true;
                 velocityModule.orbitalX = value;
@@ -119,6 +130,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var velocityModule = ParticleSystem.velocityOverLifetime;
                 velocityModule.enabled = true;
                 velocityModule.orbitalY = value;
@@ -132,9 +144,24 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var velocityModule = ParticleSystem.velocityOverLifetime;
                 velocityModule.enabled = true;
                 velocityModule.radial = value;
+            }
+        }
+
+
+        [SerializeField] float externalForces = 0;
+        [Input]
+        public float ExternalForces
+        {
+            set
+            {
+                if (ParticleSystem == null) return;
+                var externalForcesModule = ParticleSystem.externalForces;
+                externalForcesModule.enabled = true;
+                externalForcesModule.multiplier = value;
             }
         }
 
@@ -144,6 +171,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 var rendererModule = ParticleSystem.GetComponent<ParticleSystemRenderer>();
                 rendererModule.lengthScale = value;
                 rendererModule.cameraVelocityScale = value;
@@ -157,6 +185,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 if (value < 0) return;
                 var colorBySpeedModule = ParticleSystem.colorBySpeed;
                 Color startingColor = colorBySpeedModule.color.gradient.colorKeys[0].color;
@@ -184,6 +213,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 if (value < 0) return;
                 var colorBySpeedModule = ParticleSystem.colorBySpeed;
                 Color startingColor = colorBySpeedModule.color.gradient.colorKeys[0].color;
@@ -211,6 +241,7 @@ namespace Eidetic.Confluence
         {
             set
             {
+                if (ParticleSystem == null) return;
                 if (value < 0) return;
                 var colorBySpeedModule = ParticleSystem.colorBySpeed;
                 Color startingColor = colorBySpeedModule.color.gradient.colorKeys[0].color;
@@ -229,6 +260,19 @@ namespace Eidetic.Confluence
                 color.gradient = gradient;
 
                 colorBySpeedModule.color = color;
+            }
+        }
+
+
+        [SerializeField] bool enableTrail = false;
+        [Input]
+        public bool EnableTrail
+        {
+            set
+            {
+                if (ParticleSystem == null) return;
+                var trailsModule = ParticleSystem.trails;
+                trailsModule.enabled = value;
             }
         }
     }
