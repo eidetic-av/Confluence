@@ -23,6 +23,22 @@ namespace Eidetic.Confluence.Networking
         [Output] public float energy { get; set; }
         [Output] public float pitch { get; set; }
 
+        [SerializeField] bool onset = false;
+        [Output]
+        public bool Onset
+        {
+            set => onset = value;
+            get
+            {
+                if (onset)
+                {
+                    onset = false;
+                    return true;
+                }
+                else return false;
+            }
+        }
+
         OscServer Server;
 
         new public void OnEnable()
@@ -72,7 +88,9 @@ namespace Eidetic.Confluence.Networking
                         dist = data.GetElementAsFloat(0);
                         break;
                 }
-            } else if (data.GetElementAsString(0) != null && data.GetElementAsString(0) == TrackId){
+            }
+            else if (data.GetElementAsString(0) != null && data.GetElementAsString(0) == TrackId)
+            {
                 switch (subAddress[1])
                 {
                     case "centroid":
@@ -92,6 +110,9 @@ namespace Eidetic.Confluence.Networking
                         break;
                     case "pitch":
                         pitch = data.GetElementAsFloat(1);
+                        break;
+                    case "onset":
+                        Onset = data.GetElementAsFloat(1) != 0;
                         break;
                 }
             }

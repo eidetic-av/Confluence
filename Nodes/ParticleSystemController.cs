@@ -14,6 +14,18 @@ namespace Eidetic.Confluence
             ParticleSystem = GameObject.Find(Target).GetComponent<ParticleSystem>();
         }
 
+        [SerializeField] float lifetime = 1;
+        [Input]
+        public float Lifetime
+        {
+            set
+            {
+                if (ParticleSystem == null) return;
+                var mainModule = ParticleSystem.main;
+                mainModule.startLifetimeMultiplier = value;
+            }
+        }
+
         [SerializeField] float speed = 1;
         [Input]
         public float Speed
@@ -106,6 +118,19 @@ namespace Eidetic.Confluence
                 if (ParticleSystem == null) return;
                 var noiseModule = ParticleSystem.noise;
                 noiseModule.frequency = value;
+            }
+        }
+
+
+        [SerializeField] float noiseScrollSpeed = 0;
+        [Input]
+        public float NoiseScrollSpeed
+        {
+            set
+            {
+                if (ParticleSystem == null) return;
+                var noiseModule = ParticleSystem.noise;
+                noiseModule.scrollSpeed = value;
             }
         }
 
