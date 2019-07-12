@@ -24,7 +24,7 @@ namespace Eidetic.Confluence
 
         public void Awake()
         {
-            var graph = Resources.Load<RuntimeGraph>("TrickFilm");
+            var graph = Resources.Load<RuntimeGraph>("EOCGraph");
             foreach (var node in graph.nodes)
                 ((RuntimeNode)node).OnEnable();
                 

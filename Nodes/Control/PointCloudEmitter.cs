@@ -11,12 +11,12 @@ namespace Eidetic.Confluence
 
         internal override void EarlyUpdate()
         {
-            if (Input != LastInput && Input != -1)
-            {
-                if (PointCloudReceiver.Instance != null)
-                    if (PointCloudReceiver.Instance.ParticleSystems[Input] != null)
-                        PointCloudReceiver.Instance.ParticleSystems[Input].Emit = true;
-            }
+            // if (Input != LastInput && Input != -1)
+            // {
+            //     if (LiveScanReceiver.Instance != null)
+            //         if (LiveScanReceiver.Instance.ParticleSystems[Input] != null)
+            //             LiveScanReceiver.Instance.ParticleSystems[Input].Emit = true;
+            // }
 
             LastInput = Input;
         }

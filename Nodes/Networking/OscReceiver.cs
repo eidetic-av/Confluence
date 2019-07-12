@@ -15,8 +15,10 @@ namespace Eidetic.Confluence.Networking
         internal static Dictionary<int, OscServer> Servers = new Dictionary<int, OscServer>();
         internal static Dictionary<OscServer, List<OscReceiver>> Receivers = new Dictionary<OscServer, List<OscReceiver>>();
 
-        [SerializeField] public int Port = 9000;
+        [SerializeField] public int Port = 8888;
         [SerializeField] public string MessageAddress = "/address-name";
+
+        [SerializeField] public bool DebugMessages = false;
 
         [Output] public int Integer = 0;
         [Output] public float Float = 0f;
@@ -46,10 +48,10 @@ namespace Eidetic.Confluence.Networking
                 Receivers[Server].Add(this);
             else Receivers[Server] = new List<OscReceiver>().With(this);
 
-            Server.MessageDispatcher.AddRootNodeCallback("unity", OnMessageReceived);
+            Server.MessageDispatcher.AddRootNodeCallback("track", OnMessageReceived);
         }
 
-        void OnDestroy()
+        new public void OnDestroy()
         {
             Receivers[Server].Remove(this);
             if (Receivers[Server].Count == 0)
@@ -59,7 +61,7 @@ namespace Eidetic.Confluence.Networking
                 Server.Dispose();
             }
 
-            Server.MessageDispatcher.RemoveRootNodeCallback("unity", OnMessageReceived);
+            Server.MessageDispatcher.RemoveRootNodeCallback("track", OnMessageReceived);
         }
 
         internal override void Update()
@@ -70,6 +72,7 @@ namespace Eidetic.Confluence.Networking
             var subAddress = address.Substring(subAddressStartIndex, address.Length - subAddressStartIndex);
             if (subAddress == MessageAddress | subAddress.TrimStart('/') == MessageAddress)
             {
+                if (DebugMessages) Debug.Log(address + ": " + data.GetElementAsString(0));
                 Integer = data.GetElementAsInt(0);
                 Float = data.GetElementAsFloat(0);
                 Boolean = Integer != 0;

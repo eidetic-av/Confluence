@@ -60,12 +60,14 @@ namespace Eidetic.Confluence
                 currentZ = currentZ + (Z - currentZ) / DampingRate;
             else currentZ = Z;
 
-            var newPosition = Target.transform.position;
+            // var newPosition = Target.transform.position;
+            var newPosition = Target.transform.localPosition;
             newPosition.x = currentX;
             newPosition.y = currentY;
             newPosition.z = currentZ;
 
-            Target.transform.position = newPosition;
+            // Target.transform.position = newPosition;
+            Target.transform.localPosition = newPosition;
         }
 
     }

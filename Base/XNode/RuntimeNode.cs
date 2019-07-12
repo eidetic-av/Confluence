@@ -82,6 +82,9 @@ namespace Eidetic.Confluence
             foreach (var port in Ports.Where(port => port.IsInput && port.IsConnected))
             {
                 if (!Setters.ContainsKey(port.MemberName)) continue;
+                if (Setters[port.MemberName] == null) continue;
+                if (port.Connection == null) continue;
+                if (port.Connection.Node == null) continue;
                 Setters[port.MemberName].Invoke(port.Connection.Node.GetValue(port.Connection));
             }
         }
