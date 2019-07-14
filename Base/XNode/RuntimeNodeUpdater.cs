@@ -21,16 +21,19 @@ namespace Eidetic.Confluence
 
             foreach (var graph in allGraphs)
             {
-                graph.OnActivate += () =>
+                graph.nodes.Cast<RuntimeNode>().ToList().ForEach(n =>
                 {
-                    graph.nodes.Cast<RuntimeNode>().ToList().ForEach(n =>
+                    Threads.RunAtStart(() =>
                     {
                         n.Graph = graph;
                         n.OnEnable();
                     });
-                    Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Awake()));
-                    Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Start()));
-                };
+                });
+                Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Awake()));
+                Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Start()));
+                //graph.OnActivate += () =>
+                //{
+                //};
             }
         }
 

@@ -10,7 +10,7 @@ namespace Eidetic.Confluence
     public class PointCloudController : RuntimeNode
     {
         [SerializeField] public int TargetSystem = 0;
-        
+
         [SerializeField] bool emit;
         [Input]
         public bool Emit
@@ -100,7 +100,6 @@ namespace Eidetic.Confluence
         }
 
         PointCloudReceiver Receiver;
-
         internal override void Start()
         {
             base.Start();

@@ -15,8 +15,7 @@ namespace Eidetic.Confluence
         [RuntimeInitializeOnLoadMethod]
         private static void OnPlay() => RuntimeNodeUpdater.Instantiate();
 
-        public RuntimeGraph Graph;
-
+        [HideInInspector] public RuntimeGraph Graph;
         public bool Active => Graph.Active;
 
         public Dictionary<string, Func<object>> Getters { get; private set; }

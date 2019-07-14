@@ -7,6 +7,7 @@ namespace Eidetic.Confluence
     [CreateAssetMenu]
     public class RuntimeGraph : NodeGraph
     {
+        [SerializeField] bool LoadOnStartup = false;
         [SerializeField] bool active = false;
         public bool Active
         {
@@ -23,7 +24,7 @@ namespace Eidetic.Confluence
 
         public void OnEnable()
         {
-            if (Active) OnActivate();
+            if (LoadOnStartup) Active = true;
         }
 
         /// <summary> Add a node to the graph by type </summary>

@@ -7,9 +7,9 @@ namespace Eidetic.Confluence
     {
         [Input] public float Input { get; set; }
 
-        internal override void LateUpdate()
+        internal override void Update()
         {
-            base.LateUpdate();
+            base.Update();
             UnityEngine.Debug.Log(Input);
         }
     }

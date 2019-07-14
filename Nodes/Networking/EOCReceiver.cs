@@ -22,6 +22,9 @@ namespace Eidetic.Confluence.Networking
         [Output] public float harmonicity { get; set; }
         [Output] public float energy { get; set; }
         [Output] public float pitch { get; set; }
+        [Output] public float pascalX { get; set; }
+        [Output] public float pascalY { get; set; }
+        [Output] public float pascalPitch { get; set; }
 
         [SerializeField] bool onset = false;
         [Output]
@@ -54,6 +57,7 @@ namespace Eidetic.Confluence.Networking
             else Tracks[Server] = new List<EOCReceiver>().With(this);
 
             Server.MessageDispatcher.AddRootNodeCallback("track", OnMessageReceived);
+            Server.MessageDispatcher.AddRootNodeCallback("pascal", OnPascalMessageReceived);
         }
 
         new void OnDestroy()
@@ -67,6 +71,23 @@ namespace Eidetic.Confluence.Networking
             }
 
             Server.MessageDispatcher.RemoveRootNodeCallback("track", OnMessageReceived);
+            Server.MessageDispatcher.RemoveRootNodeCallback("pascal", OnPascalMessageReceived);
+        }
+
+        void OnPascalMessageReceived(string address, OscDataHandle data)
+        {
+            if (address.Contains("x"))
+            {
+                pascalX = data.GetElementAsFloat(0);
+            }
+            else if (address.Contains("y"))
+            {
+                pascalY = data.GetElementAsFloat(0);
+            }
+            else if (address.Contains("pitch"))
+            {
+                pascalPitch = data.GetElementAsFloat(0);
+            }
         }
 
         void OnMessageReceived(string address, OscDataHandle data)

@@ -11,7 +11,8 @@ namespace Eidetic.Confluence
 
         internal override void Awake()
         {
-            ParticleSystem = GameObject.Find(Target).GetComponent<ParticleSystem>();
+            if (GameObject.Find(Target) != null)
+                ParticleSystem = GameObject.Find(Target).GetComponent<ParticleSystem>();
         }
 
         [SerializeField] float lifetime = 1;
