@@ -39,6 +39,7 @@ public class Trigger : RuntimeNode
 
     internal override void LateUpdate()
     {
+        base.LateUpdate();
         lastInput = Input;
     }
 }

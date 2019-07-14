@@ -69,9 +69,6 @@ namespace Eidetic.Confluence.Networking
             Server.MessageDispatcher.RemoveRootNodeCallback("track", OnMessageReceived);
         }
 
-        internal override void Update()
-        { }
-
         void OnMessageReceived(string address, OscDataHandle data)
         {
             var subAddressStartIndex = address.IndexOf('/', 1);

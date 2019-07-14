@@ -15,6 +15,10 @@ namespace Eidetic.Confluence
         [RuntimeInitializeOnLoadMethod]
         private static void OnPlay() => RuntimeNodeUpdater.Instantiate();
 
+        public RuntimeGraph Graph;
+
+        public bool Active => Graph.Active;
+
         public Dictionary<string, Func<object>> Getters { get; private set; }
         public Dictionary<string, Action<object>> Setters { get; private set; }
         public Dictionary<string, FieldInfo> BackingFields { get; private set; }
@@ -79,6 +83,7 @@ namespace Eidetic.Confluence
         public override object GetValue(NodePort port) => Getters[port.MemberName]();
         internal void ValueUpdate()
         {
+            if (!Active) return;
             foreach (var port in Ports.Where(port => port.IsInput && port.IsConnected))
             {
                 if (!Setters.ContainsKey(port.MemberName)) continue;
@@ -96,9 +101,18 @@ namespace Eidetic.Confluence
             // validation, side-effects etc. may still need to be invoked.
             RunSetters();
         }
-        internal virtual void EarlyUpdate() { }
-        internal virtual void Update() { }
-        internal virtual void LateUpdate() { }
+        internal virtual void EarlyUpdate()
+        {
+            if (!Active) return;
+        }
+        internal virtual void Update()
+        {
+            if (!Active) return;
+        }
+        internal virtual void LateUpdate()
+        {
+            if (!Active) return;
+        }
         internal virtual void Destroy() { }
         internal virtual void Exit() { }
     }

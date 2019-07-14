@@ -29,6 +29,7 @@ namespace Eidetic.Confluence.MeshTools
 
         internal override void Update()
         {
+            base.Update();
             if (RefreshOutput)
             {
                 MeshPublisher.Meshes.TryGetValue(OutputMeshId, out var mesh);

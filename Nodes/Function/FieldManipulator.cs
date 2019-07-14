@@ -63,6 +63,7 @@ namespace Eidetic.Confluence
         // Update is called once per frame
         internal override void Update()
         {
+            base.Update();
             if (Target == null) return;
 
             if (Mathf.Abs(currentInput - Input) > 0.005f)

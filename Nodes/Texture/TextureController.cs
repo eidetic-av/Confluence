@@ -25,6 +25,7 @@ namespace Eidetic.Confluence
 
         internal override void Update()
         {
+            base.Update();
             if (Material == null) return;
 
             // Update values from each input port

@@ -65,6 +65,7 @@ namespace Eidetic.Confluence
 
         override internal void Update()
         {
+            base.Update();
             if (lastInput != Input)
             {
                 if (Method != null)

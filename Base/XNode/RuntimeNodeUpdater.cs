@@ -17,14 +17,21 @@ namespace Eidetic.Confluence
         {
             RuntimeNode.ActiveNodes.Clear();
 
-            var activeGraphs = Resources.LoadAll<RuntimeGraph>("").Where(g => g.LoadOnPlay);
+            var allGraphs = Resources.LoadAll<RuntimeGraph>("");
 
-            activeGraphs.SelectMany(g => g.nodes)
-                .Cast<RuntimeNode>().ToList()
-                .ForEach(n => n.OnEnable());
-
-            Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Awake()));
-            Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Start()));
+            foreach (var graph in allGraphs)
+            {
+                graph.OnActivate += () =>
+                {
+                    graph.nodes.Cast<RuntimeNode>().ToList().ForEach(n =>
+                    {
+                        n.Graph = graph;
+                        n.OnEnable();
+                    });
+                    Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Awake()));
+                    Threads.RunAtStart(() => RuntimeNode.ActiveNodes.ForEach(n => n.Start()));
+                };
+            }
         }
 
         public void Update()

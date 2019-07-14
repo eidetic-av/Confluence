@@ -8,6 +8,7 @@
 
         internal override void EarlyUpdate()
         {
+            base.EarlyUpdate();
             if (Input != LastInput && Input != -1)
             {
                 if (PointCloudReceiver.Instance != null)

@@ -23,6 +23,7 @@ namespace Eidetic.Confluence
 
         internal override void Update()
         {
+            base.Update();
             if (Increment)
             {
                 if (Time.time > lastUpdateTime + updateInterval)

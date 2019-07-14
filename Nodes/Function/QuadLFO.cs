@@ -121,6 +121,7 @@ namespace Eidetic.Confluence
 
         internal override void Update()
         {
+            base.Update();
             Oscillator.Speed = Clock;
         }
 

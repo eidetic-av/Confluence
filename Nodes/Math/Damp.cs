@@ -13,6 +13,7 @@ namespace Eidetic.Confluence
 
         internal override void Update()
         {
+            base.Update();
             if (Mathf.Abs(Output - Input) > 0.005f)
                 Output = Output + (Input - Output) / DampingRate;
         }
