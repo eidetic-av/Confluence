@@ -22,44 +22,44 @@ namespace Eidetic.Confluence
         {
         }
 
-        public void Awake()
-        {
-            var graph = Resources.Load<RuntimeGraph>("EOCGraph");
-            foreach (var node in graph.nodes)
-                ((RuntimeNode)node).OnEnable();
+        // public void Awake()
+        // {
+        //     var graph = Resources.Load<RuntimeGraph>("EOCGraph");
+        //     foreach (var node in graph.nodes)
+        //         ((RuntimeNode)node).OnEnable();
                 
-            Threads.RunAtStart(() =>
-            {
-                RuntimeNode.ActiveNodes.ForEach(n => n.Awake());
-            });
-        }
+        //     Threads.RunAtStart(() =>
+        //     {
+        //         RuntimeNode.ActiveNodes.ForEach(n => n.Awake());
+        //     });
+        // }
 
-        public void Start()
-        {
-            Threads.RunOnMain(() =>
-            {
-                RuntimeNode.ActiveNodes.ForEach(n => n.Start());
-            });
-        }
-        public void Update()
-        {
-            RuntimeNode.ActiveNodes.ForEachOnMain(n => n.ValueUpdate());
-            RuntimeNode.ActiveNodes.ForEachOnMain(n => n.EarlyUpdate());
-            RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Update());
+        // public void Start()
+        // {
+        //     Threads.RunOnMain(() =>
+        //     {
+        //         RuntimeNode.ActiveNodes.ForEach(n => n.Start());
+        //     });
+        // }
+        // public void Update()
+        // {
+        //     RuntimeNode.ActiveNodes.ForEachOnMain(n => n.ValueUpdate());
+        //     RuntimeNode.ActiveNodes.ForEachOnMain(n => n.EarlyUpdate());
+        //     RuntimeNode.ActiveNodes.ForEachOnMain(n => n.Update());
 
-            // Todo: definitely move this elsewhere
-            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
-            {
-                if (Input.GetKeyDown(KeyCode.F4))
-                    Application.Quit();
-            }
-        }
-        public void LateUpdate() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.LateUpdate());
+        //     // Todo: definitely move this elsewhere
+        //     if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+        //     {
+        //         if (Input.GetKeyDown(KeyCode.F4))
+        //             Application.Quit();
+        //     }
+        // }
+        // public void LateUpdate() => RuntimeNode.ActiveNodes.ForEachOnMain(n => n.LateUpdate());
 
-        public void OnDestroy()
-        {
-            foreach (var node in RuntimeNode.ActiveNodes)
-                node.OnDestroy();
-        }
+        // public void OnDestroy()
+        // {
+        //     foreach (var node in RuntimeNode.ActiveNodes)
+        //         node.OnDestroy();
+        // }
     }
 }
